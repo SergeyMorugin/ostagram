@@ -35,6 +35,8 @@ gem 'net-ssh'
 
 gem 'net-scp'
 
+gem 'sidekiq'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
