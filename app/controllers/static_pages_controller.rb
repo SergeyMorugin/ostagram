@@ -44,24 +44,18 @@ class StaticPagesController < ApplicationController
           comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations 100"
           comm += " -style_image input/template.jpg -content_image input/input.jpg -output_image output/out.png"
           comm += " > output/output.log 2> output/error.log &"
-          c.exec(comm) {exit}
+          c.exec(comm)
         end
 
         #@result += res
       end
 
-      Net::SCP.start(@hostname, @username, :ssh => { :password => @password }) do |scp|
+      #Net::SCP.start(@hostname, @username, :ssh => { :password => @password }) do |scp|
         # upload a file to a remote server
-        scp.upload! "/path", "@neural_path/output"
+       # scp.download! "#{@neural_path}/output", "/home/matthew/RubymineProjects/ostagram/tmp/output"
+      #end
 
-        # upload from an in-memory buffer
-        scp.upload! StringIO.new("some data to upload"), "/remote/path"
-
-        # run multiple downloads in parallel
-        d1 = scp.download("/remote/path", "/local/path")
-        d2 = scp.download("/remote/path2", "/local/path2")
-        [d1, d2].each { |d| d.wait }
-      end
+      Net::SCP.download!(@hostname, @username,"#{@neural_path}/output/out.png", "/home/matthew/RubymineProjects/ostagram/tmp/output/out.png", :ssh => { :password => @password }) ;
 
 
     #ssh = Net::SSH.start(@hostname, @username, :password => @password)
