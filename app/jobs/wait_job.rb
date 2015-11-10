@@ -1,13 +1,9 @@
 require 'net/ssh'
 require 'net/scp'
-class ImageJob
-  @STATUS_ERROR = -1
-  @STATUS_NOT_PROCESSED = 0
-  @STATUS_IN_PROCESS = 1
-  @STATUS_PROCESSED = 2
+class WaitJob
 
 
-  @queue = :server1
+  @queue = :server1_wait_answer
   #
   @hostname = "localhost"
   @username = "root"
@@ -17,29 +13,40 @@ class ImageJob
 
   @local_tmp_path = Rails.root.join('tmp/output')
 
-  def set_config()
-    file = Rails.root.join('config/config.secret')
-    config = get_param_config(file, :workservers, :s1)
+  def set_config(config)
+    #
     @hostname = config["host"]
     @username = config["username"]
     @password = config["password"]
     @local_tmp_path = Rails.root.join('tmp/output')
-    @remote_neural_path = config["remote_neural_path"]
-    @iteration_count = 5
+    @remote_neural_path = "/home/margo/neural-style-master"#config["remote_neural_path"]
+    @iteration_count = 1
 
   end
 
 
-  #def self.perform(config)
-   # @hostname = config["host"]
-   # @username = config["username"]
-   # @password = config["password"]
-   # @local_tmp_path = "/home/matthew/RubymineProjects/ostagram/tmp/output"#Rails.root.join('tmp/output')
-   # @remote_neural_path = "/home/margo/neural-style-master"#config["remote_neural_path"]
-   # @iteration_count = 5
-    #
-    #self.execute()
- # end
+  def self.perform(*arg)
+    hostname = arg[0]
+    username = arg[1]
+    password = arg[2]
+    remote_neural_path = arg[3]
+    iteration_count = arg[4]
+    begin
+      # Sent task for image
+
+      Net::SSH.start(hostname, username, :password => password) do |ssh|
+        comm = "cd #{remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
+        comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{iteration_count*100}"
+        comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
+        comm += " > output/output.log 2> output/error.log &"
+        ssh.exec!(comm)
+        ssh.shutdown!
+      end
+    rescue
+
+    end
+    true
+  end
 
   def execute
     imgs = QueueImage.all()
@@ -47,6 +54,8 @@ class ImageJob
     item = imgs.first(1)[0]
     execute_image(item)
     #wait_image
+
+
   end
 
   def execute_image(item)
@@ -63,9 +72,12 @@ class ImageJob
     return "upload_stule_image: false" unless upload_image(item.style_image, "output/template.png")
     #Run process
     #return "process_image: false" unless
-    process_image()
+        process_image
 
-    return "wait_images: false" unless wait_images
+    #Download result
+    #return "process_image: false" unless download_image("out.png")
+
+    return "wait_image: false" unless wait_image
     #Change status to PROCESSED
     #item.status = @STATUS_PROCESSED
     #item.save
@@ -74,16 +86,14 @@ class ImageJob
 
   protected
 
-  def wait_images
+  def wait_image
     iter = 1
-    sleep 5
     while true
       begin
         # Sent task for image
         rem = "#{@remote_neural_path}/output/output.log"
         loc = "#{@local_tmp_path}/output.log"
         Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
-        break unless File.exist?(loc)
         str = File.read(loc)
         s = "Iteration #{iter}00"
         if !str.nil? && str.scan(s).size > 0
@@ -94,7 +104,7 @@ class ImageJob
 
       end
       break if iter > @iteration_count
-      sleep 2
+      #wait 1000
     end
     true
   end
@@ -173,22 +183,16 @@ class ImageJob
     true
   end
 
-
-  def process_image2
-    Resque.enqueue(WaitJob, @hostname, @username, @password, @remote_neural_path ,@iteration_count)
-  end
-
   def process_image
-
     begin
       # Sent task for image
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
         comm = "cd #{@remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
         comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{@iteration_count*100}"
         comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
-        comm += " > output/output.log 2> output/error.log & \n"
-        ssh.exec!(comm)
-        #ssh.shutdown!
+        comm += " > output/output.log 2> output/error.log &"
+        ssh.exec(comm)
+        ssh.shutdown!
         a = 123
         a = a +123
         b = a + 123
