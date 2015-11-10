@@ -6,7 +6,7 @@ class ImageJob
   @hostname = "192.168.1.100"
   @username = "margo"
   @neural_path = "/home/margo/neural-style-master"
-  @password = "(ntvg123"
+  @password = ""
 
   def self.perform(num)
     # здесь делаем важные и полезные вещи
