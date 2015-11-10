@@ -15,10 +15,10 @@ ActiveRecord::Schema.define(version: 20151110105542) do
 
   create_table "queue_images", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "content_image"
-    t.string   "style_image"
+    t.string   "content_image",              null: false
+    t.string   "style_image",                null: false
     t.string   "init_str",      default: ""
-    t.integer  "status",        default: 1
+    t.integer  "status",        default: 0
     t.string   "result"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false

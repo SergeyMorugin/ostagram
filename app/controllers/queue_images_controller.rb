@@ -28,7 +28,7 @@ class QueueImagesController < ApplicationController
 
     respond_to do |format|
       if @queue_image.save
-        format.html { redirect_to @queue_image, notice: 'Queue image was successfully created.' }
+        format.html { redirect_to queue_images_path, notice: 'Queue image was successfully created.' }
         format.json { render :show, status: :created, location: @queue_image }
       else
         format.html { render :new }

@@ -25,7 +25,9 @@ class ImageJob
     @password = config["password"]
     @local_tmp_path = Rails.root.join('tmp/output')
     @remote_neural_path = config["remote_neural_path"]
-    @iteration_count = 2
+    @iteration_count = 10
+    @content_image = "jpg"
+    @style_image = "jpg"
 
   end
 
@@ -69,8 +71,10 @@ class ImageJob
     # Clear remote tmp folger
     return "rm_file_on_server: false" unless rm_file_on_server
     #Upload images to workserver
-    return "upload_content_image: false" unless upload_image(item.content_image, "output/input.png")
-    return "upload_stule_image: false" unless upload_image(item.style_image, "output/template.png")
+    @content_image = "input.#{item.content_image.to_s.split('.').last}"
+    @style_image = "template.#{item.style_image.to_s.split('.').last}"
+    return "upload_content_image: false" unless upload_image(item.content_image, "output/#{@content_image}")
+    return "upload_stule_image: false" unless upload_image(item.style_image, "output/#{@style_image}")
     #Run process
     #return "process_image: false" unless
     process_image()
@@ -196,8 +200,8 @@ class ImageJob
       # Sent task for image
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
         comm = "cd #{@remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
-        comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{@iteration_count*100}"
-        comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
+        comm += " && th neural_style.lua -gpu -1 -image_size 500 -num_iterations #{@iteration_count*100}"
+        comm += " -style_image output/#{@style_image} -content_image output/#{@content_image} -output_image output/out.png"
         comm += " > output/output.log 2> output/error.log & \n"
         ssh.exec!(comm)
         #ssh.shutdown!
