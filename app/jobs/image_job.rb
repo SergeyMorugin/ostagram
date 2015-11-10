@@ -3,10 +3,19 @@ require 'net/scp'
 class ImageJob
   @queue = :server1
   #
-  @hostname = "192.168.1.100"
-  @username = "margo"
-  @neural_path = "/home/margo/neural-style-master"
-  @password = @SERVER_PASSWORD
+  @hostname = "localhost"
+  @username = "root"
+  @remote_neural_path = "~/neural-style-master"
+  @password = "123"
+
+  def set_config(config)
+    #
+    @hostname = config["host"]
+    @username = config["username"]
+    @password = config["password"]
+    @remote_neural_path = config["remote_neural_path"]
+  end
+
 
   def self.perform(num)
     # здесь делаем важные и полезные вещи
@@ -18,7 +27,7 @@ class ImageJob
     #get_server_name()
     #if get_server_name != nil
       #&& rm_file_on_server
-    @password = @SERVER_PASSWORD
+    @password
 
 
 
@@ -40,7 +49,7 @@ class ImageJob
   def rm_file_on_server
     begin
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
-        output = ssh.exec!("rm -rf #{@neural_path}/output/*")
+        output = ssh.exec!("rm -rf #{@remote_neural_path}/output/*")
         return true
       end
     rescue
@@ -52,7 +61,7 @@ class ImageJob
   def download_image(filename)
     begin
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
-        output = ssh.exec!("rm -rf #{@neural_path}/output/*")
+        output = ssh.exec!("rm -rf #{@remote_neural_path}/output/*")
         return true
       end
     rescue
@@ -71,9 +80,9 @@ class ImageJob
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
         output = ssh.exec!("hostname")
         unless output.nil?
-          res = ssh.exec!("rm -rf #{@neural_path}/output/*")
+          res = ssh.exec!("rm -rf #{@remote_neural_path}/output/*")
           ssh.open_channel do |c|
-            comm = "cd #{@neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
+            comm = "cd #{@remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
             comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations 100"
             comm += " -style_image input/template.jpg -content_image input/input.jpg -output_image output/ou#{num}t.png"
             comm += " > output/output.log 2> output/error.log &"
@@ -86,7 +95,7 @@ class ImageJob
     end
     begin
       # Downloads files
-      Net::SCP.download!(@hostname, @username,"#{@neural_path}/output/ou#{num}t.png", "/home/matthew/RubymineProjects/ostagram/tmp/output/ou#{num}t.png", :ssh => { :password => @password })
+      Net::SCP.download!(@hostname, @username,"#{@remote_neural_path}/output/ou#{num}t.png", "/home/matthew/RubymineProjects/ostagram/tmp/output/ou#{num}t.png", :ssh => { :password => @password })
     rescue
       return "Unable to connect to download result"
     end

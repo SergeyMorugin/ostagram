@@ -20,7 +20,10 @@ class StaticPagesController < ApplicationController
   protected
 
   def process_image
+    file = Rails.root.join('config/config.secret')
+    par = get_param_config(file, :workservers, :s1)
     pri = ImageJob.new
+    pri.set_config(par)
     @result = pri.execute
     #if pri.execute
      # @result = "OK"

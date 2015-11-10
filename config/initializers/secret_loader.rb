@@ -17,7 +17,7 @@ def load_config
   Ostagram::Application.config.secret_key_base = secure_token
   #
   file = Rails.root.join('config/config.secret')
-  par = get_param_config(file, :server1, :password)
+  #par = get_param_config(file, :server1, :password)
   #
   Ostagram::Application.config.action_mailer.delivery_method = :smtp
   par = load_settings(file)
