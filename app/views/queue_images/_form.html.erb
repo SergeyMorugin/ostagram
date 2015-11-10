@@ -12,10 +12,6 @@
   <% end %>
 
   <div class="field">
-    #<%= f.label :user_id %><br>
-    #<%= f.number_field :user_id %>
-  </div>
-  <div class="field">
     <%= f.label :content_image %><br>
     <%= f.file_field :content_image %>
   </div>
@@ -27,15 +23,7 @@
     <%= f.label :init_str %><br>
     <%= f.text_field :init_str %>
   </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.number_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :result %><br>
-    <%= f.text_field :result %>
-  </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Run", class: "btn btn-large btn-primary" %>
   </div>
 <% end %>

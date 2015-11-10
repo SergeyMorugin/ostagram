@@ -6,7 +6,7 @@ class ImageJob
   @hostname = "192.168.1.100"
   @username = "margo"
   @neural_path = "/home/margo/neural-style-master"
-  @password = ""
+  @password = @SERVER_PASSWORD
 
   def self.perform(num)
     # здесь делаем важные и полезные вещи
@@ -15,10 +15,10 @@ class ImageJob
   end
 
   def execute
-    get_server_name()
+    #get_server_name()
     #if get_server_name != nil
       #&& rm_file_on_server
-
+    @password = @SERVER_PASSWORD
 
 
 
@@ -50,6 +50,14 @@ class ImageJob
   end
 
   def download_image(filename)
+    begin
+      Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
+        output = ssh.exec!("rm -rf #{@neural_path}/output/*")
+        return true
+      end
+    rescue
+      return false
+    end
 
   end
 
