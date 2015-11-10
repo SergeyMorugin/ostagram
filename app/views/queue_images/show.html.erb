@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @queue_image.user_id %>
+</p>
+
+<p>
+  <strong>Content image:</strong>
+  <%= @queue_image.content_image %>
+</p>
+
+<p>
+  <strong>Style image:</strong>
+  <%= @queue_image.style_image %>
+</p>
+
+<p>
+  <strong>Init str:</strong>
+  <%= @queue_image.init_str %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @queue_image.status %>
+</p>
+
+<p>
+  <strong>Result:</strong>
+  <%= @queue_image.result %>
+</p>
+
+<%= link_to 'Edit', edit_queue_image_path(@queue_image) %> |
+<%= link_to 'Back', queue_images_path %>
