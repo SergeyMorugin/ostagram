@@ -35,7 +35,10 @@ gem 'net-ssh'
 
 gem 'net-scp'
 
-gem 'sidekiq'
+#gem 'sidekiq'
+
+gem 'resque'
+#gem 'resue-scheduler'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

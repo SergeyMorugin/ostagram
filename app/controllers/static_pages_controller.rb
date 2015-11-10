@@ -8,7 +8,8 @@ class StaticPagesController < ApplicationController
   end
 
   def about
-    ProcessImageJob.perform_later "asd"
+    Resque.enqueue(ImageJob)
+        #ProcessImageJob.perform_later "asd"
   end
 
   def error
