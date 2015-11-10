@@ -25,7 +25,7 @@ class ImageJob
     @password = config["password"]
     @local_tmp_path = Rails.root.join('tmp/output')
     @remote_neural_path = config["remote_neural_path"]
-    @iteration_count = 5
+    @iteration_count = 2
 
   end
 
@@ -42,18 +42,28 @@ class ImageJob
  # end
 
   def execute
-    imgs = QueueImage.all()
-    return "images zero" if imgs.nil? || imgs.count == 0
-    item = imgs.first(1)[0]
-    execute_image(item)
-    #wait_image
+    while true
+      imgs = QueueImage.where("status < 2")
+      if !imgs.nil? && imgs.count > 0
+      item = imgs.first(1)[0]
+      execute_image(item)
+      else
+        #return "Zero"
+      end
+      sleep 5
+      #wait_image
+      #loc =  "#{@local_tmp_path}/out.png"
+      #file = File.read(loc)
+      #ImageMailer.send_image(1, 5, file).deliver_now
+      #ImageMailer.send_image(1,5,file).deliver_now
+    end
   end
 
   def execute_image(item)
     return "image zero" if item.nil?
     #Change status to IN_PROCESS
-    #item.status = @STATUS_IN_PROCESS
-    #item.save
+    #item.status = @STATUS_PROCESSED
+    item.update({:status => 2})
     # Check connection to workserver
     return "get_server_name: false" if get_server_name.nil?
     # Clear remote tmp folger
@@ -100,9 +110,11 @@ class ImageJob
   end
 
   def save_image(iter_num)
-    if iter_num < @iteration_count ? name = "out_#{iter_num}00.png" : name = "out.png"
-    end
+    iter_num < @iteration_count ? name = "out_#{iter_num}00.png" : name = "out.png"
     download_image(name)
+    loc =  "#{@local_tmp_path}/#{name}"
+    file = File.read(loc)
+    ImageMailer.send_image(iter_num, @iteration_count, file).deliver_now
   end
 
   def get_server_name
@@ -189,9 +201,6 @@ class ImageJob
         comm += " > output/output.log 2> output/error.log & \n"
         ssh.exec!(comm)
         #ssh.shutdown!
-        a = 123
-        a = a +123
-        b = a + 123
         #ssh.wait(10)
         #ssh.open_channel do |c|
          #  c.exec(comm)
