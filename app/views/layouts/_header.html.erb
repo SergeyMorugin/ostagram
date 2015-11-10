@@ -4,7 +4,9 @@
           <%= link_to "Ostagram", root_path, id: "logo" %>
           <nav>
             <ul class="nav nav-pills pull-right">
+              <li><%= link_to "Start",    about_path %></li>
               <li><%= link_to "Home",    root_path %></li>
+              <li><%= link_to "Images",    queue_images_path %></li>
               <% if false %>
                   <li><%= link_to 'Products', models_path %>,  </li>
                   <% if current_user.admin? %>

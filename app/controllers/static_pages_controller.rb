@@ -1,5 +1,5 @@
-require 'net/ssh'
-require 'net/scp'
+#require 'net/ssh'
+#require 'net/scp'
 
 class StaticPagesController < ApplicationController
   @@index = 0
@@ -20,9 +20,14 @@ class StaticPagesController < ApplicationController
   protected
 
   def process_image
-    pri = ImageJob.new
-    @result = pri.execute
-    #if pri.execute
+    file = Rails.root.join('config/config.secret')
+    par = get_param_config(file, :workservers, :s1)
+    Resque.enqueue(ResqueJob)
+
+    #pri = ImageJob.new
+    #pri.set_config
+    #@result = pri.execute
+    #pri.execute
      # @result = "OK"
     #else
     #  @result = "Error"

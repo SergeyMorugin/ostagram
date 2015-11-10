@@ -1,18 +1,18 @@
-==Ostagram
+=Ostagram
 
 
 This program presents an algorithm for combining the content of one image with the style of another image using convolutional neural networks.
 
-=Requirements
+==Requirements
 
 I test with Rails 4.2
 
 
-=Installation
+==Installation
 
 
 
-=More Information
+==More Information
 
 
 Please see the https://github.com/jcjohnson/neural-style

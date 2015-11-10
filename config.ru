@@ -2,4 +2,4 @@
 require 'resque/server'
 require ::File.expand_path('../config/environment', __FILE__)
 run Rails.application
-#run Rack::URLMap.new "/" => Ostagram::Application,  "/resque" => Resque::Server.new
+run Rack::URLMap.new "/" => Ostagram::Application,  "/resque" => Resque::Server.new

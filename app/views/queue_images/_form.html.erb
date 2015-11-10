@@ -1,0 +1,29 @@
+<%= form_for(@queue_image, :html => {:multipart => true}) do |f| %>
+  <% if @queue_image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@queue_image.errors.count, "error") %> prohibited this queue_image from being saved:</h2>
+
+      <ul>
+      <% @queue_image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :content_image %><br>
+    <%= f.file_field :content_image %>
+  </div>
+  <div class="field">
+    <%= f.label :style_image %><br>
+    <%= f.file_field :style_image %>
+  </div>
+  <div class="field">
+    <%= f.label :init_str %><br>
+    <%= f.text_field :init_str %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Run", class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>
