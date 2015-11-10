@@ -13,6 +13,7 @@ class ImageJob
   @username = "root"
   @password = "123"
   @remote_neural_path = "~/neural-style-master"
+  @iteration_count
 
   @local_tmp_path = Rails.root.join('tmp/output')
 
@@ -23,6 +24,7 @@ class ImageJob
     @password = config["password"]
     @local_tmp_path = Rails.root.join('tmp/output')
     @remote_neural_path = "/home/margo/neural-style-master"#config["remote_neural_path"]
+    @iteration_count = 1
 
   end
 
@@ -36,30 +38,66 @@ class ImageJob
   def execute
     imgs = QueueImage.all()
     return "images zero" if imgs.nil? || imgs.count == 0
-    img = imgs.first(1)[0]
-    return "image zero" if img.nil?
+    item = imgs.first(1)[0]
+    #execute_image(item)
+    wait_image
+
+
+  end
+
+  def execute_image(item)
+    return "image zero" if item.nil?
     #Change status to IN_PROCESS
-    #img.status = @STATUS_IN_PROCESS
-    #img.save
+    #item.status = @STATUS_IN_PROCESS
+    #item.save
     # Check connection to workserver
     return "get_server_name: false" if get_server_name.nil?
     # Clear remote tmp folger
     return "rm_file_on_server: false" unless rm_file_on_server
     #Upload images to workserver
-    return "upload_content_image: false" unless upload_image(img.content_image, "output/input.png")
-    return "upload_stule_image: false" unless upload_image(img.style_image, "output/template.png")
+    return "upload_content_image: false" unless upload_image(item.content_image, "output/input.png")
+    return "upload_stule_image: false" unless upload_image(item.style_image, "output/template.png")
     #Run process
     return "process_image: false" unless process_image
 
-      #&& rm_file_on_server
-      #%w"rm -rf #{@local_tmp_path}"
-      #upload_image("","output/input.jpg")
-      #upload_image("","output/template.jpg")
-
+    #Download result
+    return "process_image: false" unless download_image("out.png")
+    #Change status to PROCESSED
+    #item.status = @STATUS_PROCESSED
+    #item.save
     "OK"
   end
 
   protected
+
+  def wait_image
+    iter = 1
+    while true
+      begin
+        # Sent task for image
+        rem = "#{@remote_neural_path}/output/output.log"
+        loc = "#{@local_tmp_path}/output.log"
+        Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
+        str = File.read(loc)
+        s = "Iteration #{iter}00"
+        if !str.nil? && str.scan(s).size > 0
+          save_image(iter)
+          iter += 1
+        end
+      rescue
+
+      end
+      break if iter > @iteration_count
+      #wait 1000
+    end
+    true
+  end
+
+  def save_image(iter_num)
+    if iter_num < @iteration_count ? name = "out#{iter_num}00.png" : name = "out.png"
+    end
+    download_image(name)
+  end
 
   def get_server_name
     output = "1"
@@ -79,13 +117,25 @@ class ImageJob
     end
     true
   end
+  def download_data(filename)
+    begin
+      # Downloads files
+      rem = "#{@remote_neural_path}/#{filename}"
+      str = ""
+      #loc =  "#{@local_tmp_path}/#{filename}"
+      Net::SCP.download!(@hostname, @username,rem,loc,:password => @password )
+    rescue
+      return false
+    end
+    true
+  end
 
   def download_image(filename)
     begin
       # Downloads files
-      rem = "#{@remote_neural_path}/input/#{filename}"
+      rem = "#{@remote_neural_path}/output/#{filename}"
       loc =  "#{@local_tmp_path}/#{filename}"
-      Net::SCP.download!(@hostname, @username,rem,loc,:ssh => { :password => @password })
+      Net::SCP.download!(@hostname, @username, rem, loc, :password => @password )
     rescue
       return false
     end
@@ -123,8 +173,8 @@ class ImageJob
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
         ssh.open_channel do |c|
           comm = "cd #{@remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
-          comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations 100"
-          comm += " -style_image input/template.jpg -content_image input/input.jpg -output_image output/ou#{num}t.png"
+          comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{@iteration_count*100}"
+          comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
           comm += " > output/output.log 2> output/error.log &"
           c.exec(comm)
         end
