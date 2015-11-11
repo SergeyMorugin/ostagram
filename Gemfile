@@ -31,6 +31,10 @@ gem 'carrierwave', '~> 0.10'
 
 gem 'mini_magick'
 
+#gem 'rmagick'
+
+#gem 'cloudinary'
+
 gem 'net-ssh'
 
 gem 'net-scp'

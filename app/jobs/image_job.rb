@@ -45,10 +45,17 @@ class ImageJob
 
   def execute
     while true
-      imgs = QueueImage.where("status < 2")
-      if !imgs.nil? && imgs.count > 0
-      item = imgs.first(1)[0]
-      execute_image(item)
+      imgs = QueueImage.where("status = 0")
+      if !imgs.nil? && imgs.count > 0 && !imgs.first(1)[0].nil?
+        item = imgs.first(1)[0]
+        res = execute_image(item)
+        if !res.nil?
+          if res == "OK"
+            item.update({:status => 2})
+          else
+            item.update({:status => -1, :result => res})
+          end
+        end
       else
         #return "Zero"
       end
@@ -62,10 +69,10 @@ class ImageJob
   end
 
   def execute_image(item)
-    return "image zero" if item.nil?
+    return nil if item.nil?
     #Change status to IN_PROCESS
     #item.status = @STATUS_PROCESSED
-    item.update({:status => 2})
+    item.update({:status => 1})
     # Check connection to workserver
     return "get_server_name: false" if get_server_name.nil?
     # Clear remote tmp folger

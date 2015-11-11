@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20151110105542) do
     t.string   "style_image",                null: false
     t.string   "init_str",      default: ""
     t.integer  "status",        default: 0
-    t.string   "result"
+    t.string   "result",        default: ""
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
