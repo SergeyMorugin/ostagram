@@ -31,16 +31,19 @@ class WaitJob
     password = arg[2]
     remote_neural_path = arg[3]
     iteration_count = arg[4]
+    content_image = arg[5]
+    style_image = arg[6]
+
     begin
       # Sent task for image
 
       Net::SSH.start(hostname, username, :password => password) do |ssh|
         comm = "cd #{remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
         comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{iteration_count*100}"
-        comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
+        comm += " -style_image output/#{style_image} -content_image output/#{content_image} -output_image output/out.png"
         comm += " > output/output.log 2> output/error.log &"
         ssh.exec!(comm)
-        ssh.shutdown!
+        #ssh.shutdown!
       end
     rescue
 
@@ -189,13 +192,10 @@ class WaitJob
       Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
         comm = "cd #{@remote_neural_path} && export PATH=$PATH:/home/margo/torch/install/bin"
         comm += " && th neural_style.lua -gpu -1 -image_size 50 -num_iterations #{@iteration_count*100}"
-        comm += " -style_image output/template.png -content_image output/input.png -output_image output/out.png"
+        comm += " -style_image output/template.jpg -content_image output/input.jpg-output_image output/out.png"
         comm += " > output/output.log 2> output/error.log &"
-        ssh.exec(comm)
-        ssh.shutdown!
-        a = 123
-        a = a +123
-        b = a + 123
+        ssh.exec!(comm)
+        #ssh.shutdown!
         #ssh.wait(10)
         #ssh.open_channel do |c|
          #  c.exec(comm)

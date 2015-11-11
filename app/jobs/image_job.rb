@@ -197,11 +197,13 @@ class ImageJob
   end
 
 
-  def process_image2
-    Resque.enqueue(WaitJob, @hostname, @username, @password, @remote_neural_path ,@iteration_count)
+  def process_image
+    Resque.enqueue(WaitJob, @hostname, @username, @password, @remote_neural_path ,@iteration_count, @content_image, @style_image)
+    sleep(5)
+    Resque.remove_queue(:server1_wait_answer) ##AND KILL Buhahaha
   end
 
-  def process_image
+  def process_image3
 
     begin
       # Sent task for image

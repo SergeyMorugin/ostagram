@@ -12,18 +12,14 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :content_image %><br>
+    <%= f.label "Обрабатываемое изображение" %><br>
     <%= f.file_field :content_image %>
   </div>
   <div class="field">
-    <%= f.label :style_image %><br>
+    <%= f.label "Шаблон"%><br>
     <%= f.file_field :style_image %>
   </div>
-  <div class="field">
-    <%= f.label :init_str %><br>
-    <%= f.text_field :init_str %>
-  </div>
   <div class="actions">
-    <%= f.submit "Run", class: "btn btn-large btn-primary" %>
+    <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
   </div>
 <% end %>
