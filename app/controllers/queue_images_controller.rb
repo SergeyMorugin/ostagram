@@ -4,7 +4,7 @@ class QueueImagesController < ApplicationController
   # GET /queue_images
   # GET /queue_images.json
   def index
-    @queue_images = QueueImage.all
+    @items= QueueImage.all
   end
 
   # GET /queue_images/1
