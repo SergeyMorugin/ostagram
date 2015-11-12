@@ -4,6 +4,7 @@ class StaticPagesController < ApplicationController
   include WorkerHelper
   include DebHelper
   def home
+    redirect_to queue_images_path
   end
 
   def about

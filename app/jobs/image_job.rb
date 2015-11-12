@@ -36,6 +36,8 @@ class ImageJob
     @init_params = config["init_params"] + " -num_iterations #{@iteration_count*100}" #  -output_image output/"
     @content_image_name = "content.jpg"
     @style_image_name = "style.jpg"
+    ##debug
+    config["password"] = "*"
     write_log "config: #{config.to_s}"
   end
 
@@ -67,6 +69,7 @@ class ImageJob
 
   def execute_image(item)
     return nil if item.nil?
+    write_log "-----------------------"
     write_log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
     item.update({:status => 1})
