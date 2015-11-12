@@ -1,4 +1,5 @@
 class QueueImagesController < ApplicationController
+  include WorkerHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy]
 
   # GET /queue_images
@@ -19,6 +20,7 @@ class QueueImagesController < ApplicationController
 
   # GET /queue_images/1/edit
   def edit
+
   end
 
   # POST /queue_images
@@ -28,7 +30,8 @@ class QueueImagesController < ApplicationController
 
     respond_to do |format|
       if @queue_image.save
-        format.html { redirect_to queue_images_path, notice: 'Queue image was successfully created.' }
+        start_workers()
+        format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавленено в очередь обработки.' }
         format.json { render :show, status: :created, location: @queue_image }
       else
         format.html { render :new }
@@ -56,7 +59,7 @@ class QueueImagesController < ApplicationController
   def destroy
     @queue_image.destroy
     respond_to do |format|
-      format.html { redirect_to queue_images_url, notice: 'Queue image was successfully destroyed.' }
+      format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
       format.json { head :no_content }
     end
   end

@@ -1,7 +1,9 @@
 <h3>Ваша коллекция, господин</h3>
+<%= link_to "Добавить изображения", new_queue_image_path,  class: "btn btn-large btn-primary" %>
+<h3></h3>
 <ol class="microposts">
   <%= render partial: 'item', collection:  @items %>
 </ol>
 
-<%= link_to "Добавить изображения", new_queue_image_path,  class: "btn btn-large btn-primary" %>
+
 
