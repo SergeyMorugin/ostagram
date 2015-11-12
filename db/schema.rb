@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110105542) do
+ActiveRecord::Schema.define(version: 20151112173942) do
+
+  create_table "processed_images", force: :cascade do |t|
+    t.integer  "queque_image_id", null: false
+    t.integer  "iter",            null: false
+    t.string   "image",           null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "queue_images", force: :cascade do |t|
     t.integer  "user_id"
