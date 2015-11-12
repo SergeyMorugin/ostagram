@@ -22,8 +22,8 @@ class StaticPagesController < ApplicationController
   protected
 
   def process_image
-    write_log "asdagf"
-    #start_workers
+    #write_log "Start"
+    start_workers
   end
 
 end

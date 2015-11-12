@@ -48,7 +48,7 @@ class ImageJob
     #
     write_log "-----------------------Execute Demon---------------------------"
     while true
-      imgs = QueueImage.where("status = 0 ")
+      imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         item = imgs.first
         res = execute_image(item)
