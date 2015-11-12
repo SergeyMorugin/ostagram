@@ -2,7 +2,7 @@
 
 class StaticPagesController < ApplicationController
   include WorkerHelper
-
+  include DebHelper
   def home
   end
 
@@ -21,7 +21,8 @@ class StaticPagesController < ApplicationController
   protected
 
   def process_image
-    start_workers
+    write_log "asdagf"
+    #start_workers
   end
 
 end

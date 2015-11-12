@@ -1,6 +1,7 @@
 require 'net/ssh'
 require 'net/scp'
 class ImageJob
+  include DebHelper
   #@queue = :error_server
   #
   @STATUS_ERROR = -1
@@ -16,6 +17,7 @@ class ImageJob
   @local_tmp_path = '~/tmp/output'
 
   def initialize(worker_name)
+    write_log "-----------------------Start Demon---------------------------"
     set_config(worker_name)
   end
 
@@ -34,7 +36,7 @@ class ImageJob
     @init_params = config["init_params"] + " -num_iterations #{@iteration_count*100}" #  -output_image output/"
     @content_image_name = "content.jpg"
     @style_image_name = "style.jpg"
-
+    write_log "config: #{config.to_s}"
   end
 
   def execute
@@ -42,10 +44,11 @@ class ImageJob
     #send_start_process_comm()
     #return
     #
+    write_log "-----------------------Execute Demon---------------------------"
     while true
       imgs = QueueImage.where("status = 0 ")
-      if !imgs.nil? && imgs.count > 0 && !imgs.first(1)[0].nil?
-        item = imgs.first(1)[0]
+      if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
+        item = imgs.first
         res = execute_image(item)
         if !res.nil?
           if res == "OK"
@@ -55,6 +58,7 @@ class ImageJob
           end
         end
       else
+        write_log "-----------------------Stop Demon---------------------------"
         return "Zero"
       end
       sleep 5
@@ -63,6 +67,7 @@ class ImageJob
 
   def execute_image(item)
     return nil if item.nil?
+    write_log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
     item.update({:status => 1})
 
@@ -79,7 +84,7 @@ class ImageJob
     return "upload_stule_image: false" unless upload_image(item.style_image, "output/#{@style_image_name}")
     #Run process
     send_start_process_comm()
-    sleep 5
+    sleep 10
     # Wait processed images
     errors = wait_images()
     if errors.nil?
@@ -96,6 +101,7 @@ class ImageJob
   protected
 
   def check_neural_start
+    write_log "check_neural_start"
     begin
       # Check error log
       rem = "#{@remote_neural_path}/output/error.log"
@@ -123,11 +129,15 @@ class ImageJob
   end
 
   def wait_images
+
     iter = 1
     # Check remote neural process start
     res = check_neural_start
+    write_log "DEBUG check_neural_start fail: #{res}" unless res.nil?
     return res unless res.nil?
+    write_log "wait_images"
     #
+
     while true
       begin
         # Sent task for image
@@ -156,6 +166,7 @@ class ImageJob
     loc =  "#{@local_tmp_path}/#{name}"
     file = File.read(loc)
     ImageMailer.send_image(iter_num, @iteration_count, file).deliver_now
+    write_log "save_image: #{name}"
   end
 
   def get_server_name
@@ -222,6 +233,7 @@ class ImageJob
   end
 
   def send_start_process_comm
+    write_log "send_start_process_comm"
     if create_n_upload_script
       begin
         Net::SSH.start(@hostname, @username, :password => @password) do |ssh|

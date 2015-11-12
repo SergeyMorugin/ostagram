@@ -5,7 +5,7 @@ class QueueImagesController < ApplicationController
   # GET /queue_images
   # GET /queue_images.json
   def index
-    @items= QueueImage.all
+    @items= QueueImage.all.order('created_at DESC')
   end
 
   # GET /queue_images/1
