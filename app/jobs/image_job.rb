@@ -43,22 +43,15 @@ class ImageJob
 
   def execute
     #debug
+    #wait_images(QueueImage.find(1))
     #send_start_process_comm()
     #return
-    #
-    write_log "-----------------------Execute Demon---------------------------"
+    # write_log "-----------------------Execute Demon---------------------------"
     while true
       imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         item = imgs.first
         res = execute_image(item)
-        if !res.nil?
-          if res == "OK"
-            item.update({:status => 2})
-          else
-            item.update({:status => -1, :result => res})
-          end
-        end
       else
         write_log "-----------------------Stop Demon---------------------------"
         return "Zero"
@@ -69,6 +62,7 @@ class ImageJob
 
   def execute_image(item)
     return nil if item.nil?
+    process_time = Time.now
     write_log "-----------------------"
     write_log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
@@ -89,13 +83,18 @@ class ImageJob
     send_start_process_comm()
     sleep 10
     # Wait processed images
-    errors = wait_images()
+    errors = wait_images(item)
+    write_log "process time: #{Time.now - process_time}"
+    process_time = Time.at(Time.now - process_time)
+
     if errors.nil?
+      item.update({:status => 2, :ptime => process_time})
       "OK"
     else
-      item.update({:result => errors})
+      item.update({:status => -1, :result => errors, :ptime => process_time })
       "wait_images: #{errors}"
     end
+
     #Change status to PROCESSED
     #item.status = @STATUS_PROCESSED
     #item.save
@@ -123,7 +122,7 @@ class ImageJob
       return "No output log" unless File.exist?(loc)
       str = File.read(loc)
       if !str.nil?
-        return str if str.scan("conv5_4").size == 0
+        #return str if str.scan("conv5_4").size == 0
       end
     rescue
       return "Error during download error.log and output.log"
@@ -131,16 +130,14 @@ class ImageJob
     nil
   end
 
-  def wait_images
-
-    iter = 1
+  def wait_images(item)
     # Check remote neural process start
     res = check_neural_start
     write_log "DEBUG check_neural_start fail: #{res}" unless res.nil?
     return res unless res.nil?
     write_log "wait_images"
     #
-
+    iter = 1
     while true
       begin
         # Sent task for image
@@ -151,7 +148,7 @@ class ImageJob
         str = File.read(loc)
         s = "Iteration #{iter}00"
         if !str.nil? && str.scan(s).size > 0
-          save_image(iter)
+          download_n_save_result(iter,item)
           iter += 1
         end
       rescue
@@ -163,13 +160,31 @@ class ImageJob
     nil
   end
 
-  def save_image(iter_num)
-    iter_num < @iteration_count ? name = "out_#{iter_num}00.png" : name = "out.png"
+  def download_n_save_result(iter_num,item)
+    if iter_num < @iteration_count
+      name = "out_#{iter_num}00.png"
+      num = iter_num
+    else
+      name = "out.png"
+      num = 0
+    end
     download_image(name)
     loc =  "#{@local_tmp_path}/#{name}"
-    file = File.read(loc)
-    ImageMailer.send_image(iter_num, @iteration_count, file).deliver_now
+    save_image(num,item,loc)
+
+    ImageMailer.send_image(iter_num, @iteration_count, File.read(loc)).deliver_now
+    #
     write_log "save_image: #{name}"
+  end
+
+  def save_image(iter_num,item,loc)
+    pimg = Pimage.new
+    pimg.queue_image_id = item.id
+    pimg.iterate = iter_num
+    File.open(loc) do |f|
+      pimg.imageurl = f
+    end
+    pimg.save!
   end
 
   def get_server_name

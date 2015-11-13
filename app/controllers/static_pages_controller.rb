@@ -8,7 +8,8 @@ class StaticPagesController < ApplicationController
   end
 
   def about
-    process_image
+    #start_workers
+    #process_image
   end
 
   def error
@@ -22,8 +23,11 @@ class StaticPagesController < ApplicationController
   protected
 
   def process_image
-    #write_log "Start"
+    write_log "Start"
     start_workers
+    loc =  Rails.root.join("tmp/output/out.png")
+    file = File.read(loc)
+
   end
 
 end

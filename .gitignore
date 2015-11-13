@@ -18,5 +18,5 @@
 /.idea/*
 /shared
 /config/*.secret
-/public/uploads
+/public/uploads/*
 #/config/secrets.yml

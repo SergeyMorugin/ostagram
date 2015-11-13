@@ -46,8 +46,14 @@ class AvatarUploader < CarrierWave::Uploader::Base
      process :round
      #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
      #process :convert => format
+  end
 
-   end
+  #version :mini do
+    #process convert: 'png'
+    #process :resize_to_fit => [50, 50]
+    #process :resize_to_fill => [30, 30]
+    #process :round
+  #end
 
 
 
