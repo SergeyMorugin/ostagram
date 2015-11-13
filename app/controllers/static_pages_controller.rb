@@ -1,37 +1,32 @@
-#require 'net/ssh'
-#require 'net/scp'
+#require 'worker_helper'
 
 class StaticPagesController < ApplicationController
-  @@index = 0
-
+  include WorkerHelper
+  include DebHelper
   def home
+    redirect_to queue_images_path
   end
 
   def about
-    #@@index += 1
-    #Resque.enqueue(ImageJob, @@index)
-        #ProcessImageJob.perform_later "asd"
-    process_image
+    #start_workers
+    #process_image
   end
 
   def error
+
+  end
+
+  def admin_page
+
   end
 
   protected
 
   def process_image
-    file = Rails.root.join('config/config.secret')
-    par = get_param_config(file, :workservers, :s1)
-    Resque.enqueue(ResqueJob)
-
-    #pri = ImageJob.new
-    #pri.set_config
-    #@result = pri.execute
-    #pri.execute
-     # @result = "OK"
-    #else
-    #  @result = "Error"
-    #end
+    write_log "Start"
+    start_workers
+    loc =  Rails.root.join("tmp/output/out.png")
+    file = File.read(loc)
 
   end
 

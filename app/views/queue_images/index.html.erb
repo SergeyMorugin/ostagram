@@ -1,37 +1,10 @@
-<p id="notice"><%= notice %></p>
+<h4></h4>
+<%= link_to "Добавить изображения", new_queue_image_path,  class: "btn btn-large btn-primary" %>
+<h3></h3>
+<h3></h3>
+<ol class="microposts">
+  <%= render partial: 'item', collection:  @items %>
+</ol>
 
-<h1>Listing Queue Images</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Content image</th>
-      <th>Style image</th>
-      <th>Init str</th>
-      <th>Status</th>
-      <th>Result</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @queue_images.each do |queue_image| %>
-      <tr>
-        <td><%= queue_image.user_id %></td>
-        <td><%= queue_image.content_image %></td>
-        <td><%= queue_image.style_image %></td>
-        <td><%= queue_image.init_str %></td>
-        <td><%= queue_image.status %></td>
-        <td><%= queue_image.result %></td>
-        <td><%= link_to 'Show', queue_image %></td>
-        <td><%= link_to 'Edit', edit_queue_image_path(queue_image) %></td>
-        <td><%= link_to 'Destroy', queue_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Queue image', new_queue_image_path %>

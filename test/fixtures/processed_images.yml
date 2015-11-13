@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  queque_image_id: 1
+  iter: 1
+  image: MyString
+
+two:
+  queque_image_id: 1
+  iter: 1
+  image: MyString

@@ -5,8 +5,8 @@ class CreateQueueImages < ActiveRecord::Migration
       t.string :content_image, null: false
       t.string :style_image, null: false
       t.string :init_str, default: ""
-      t.integer :status , default: 0
-      t.string :result
+      t.integer :status, default: 0
+      t.string :result, default: ""
 
       t.timestamps null: false
     end
