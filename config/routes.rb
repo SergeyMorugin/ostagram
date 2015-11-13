@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+
+
+  resources :queue_images
+  match '/about', to: 'static_pages#about', via: 'get'
+  match '/home', to: 'static_pages#home', via: 'get'
+  match '/error', to: 'static_pages#error', via: 'get'
+  match '/admin', to: 'admin_pages#error', via: 'get'
+
+  root "static_pages#home"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

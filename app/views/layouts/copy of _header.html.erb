@@ -1,0 +1,24 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <%= link_to "Ostagram", root_path, id: "logo" %>
+          <nav>
+            <ul class="nav nav-pills pull-right">
+              <li><%= link_to "Start",    about_path %></li>
+              <li><%= link_to "Home",    root_path %></li>
+              <li><%= link_to "Images",    queue_images_path %></li>
+              <% if false %>
+                  <li><%= link_to 'Products', models_path %>,  </li>
+                  <% if current_user.admin? %>
+                      <li><%= link_to 'All users', edit_user_registration_path %>,  </li>
+                  <% end %>
+                  <li><%= link_to 'Hello, '+ current_user.email, models_path %>,  </li>
+                  <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %> </li>
+              <% else %>
+                  <li> <%= link_to 'Sign in', root_path %> </li>
+              <% end %>
+            </ul>
+          </nav>
+        </div>
+      </div>
+</header>
