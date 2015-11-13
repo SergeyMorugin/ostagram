@@ -1,7 +1,7 @@
 <%= form_for(@queue_image, :html => {:multipart => true}) do |f| %>
   <% if @queue_image.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@queue_image.errors.count, "error") %> prohibited this queue_image from being saved:</h2>
+      <h2><%= pluralize(@queue_image.errors.count, "error") %> Неверно заполненные данные:</h2>
 
       <ul>
       <% @queue_image.errors.full_messages.each do |message| %>
@@ -10,15 +10,21 @@
       </ul>
     </div>
   <% end %>
-
+  <h3></h3>
+    <h3></h3>
   <div class="field">
-    <%= f.label "Обрабатываемое изображение" %><br>
+    <%= f.label "обрабатываемое изображение" %><br>
     <%= f.file_field :content_image %>
   </div>
   <div class="field">
-    <%= f.label "Шаблон"%><br>
+    <%= f.label "шаблон"%><br>
     <%= f.file_field :style_image %>
   </div>
+    <div class="field">
+      <%= f.label "email"%><br>
+      <%= f.email_field :user_id %>
+    </div>
+
   <div class="actions">
     <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
   </div>

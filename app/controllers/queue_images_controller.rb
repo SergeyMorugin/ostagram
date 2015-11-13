@@ -2,6 +2,7 @@ class QueueImagesController < ApplicationController
   include WorkerHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy]
 
+  @VALID_EMAIL = /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/
   # GET /queue_images
   # GET /queue_images.json
   def index
@@ -26,11 +27,18 @@ class QueueImagesController < ApplicationController
   # POST /queue_images
   # POST /queue_images.json
   def create
-    @queue_image = QueueImage.new(queue_image_params)
+    unless valid_queue_image_params
+      redirect_to new_queue_image_path
+      return
+    end
+    #
+    eml = params[:queue_image][:user_id]
+    usr = User.find_or_create_by(email: eml)
+    @queue_image = usr.queue_images.build(queue_image_params)
 
     respond_to do |format|
       if @queue_image.save
-        start_workers()
+        #start_workers()
         format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавленено в очередь обработки.' }
         format.json { render :show, status: :created, location: @queue_image }
       else
@@ -72,6 +80,25 @@ class QueueImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def queue_image_params
-      params.require(:queue_image).permit(:user_id, :content_image, :style_image, :init_str, :status, :result)
+      params.require(:queue_image).permit(:content_image, :style_image) #, :init_str, :status, :result)
     end
+
+    def valid_queue_image_params
+      par = params[:queue_image][:content_image]
+      if par.nil?
+        flash[:alert] = "Пожалуйста, добавте изображение для обработке"
+        return false
+      elsif params[:queue_image][:style_image].nil?
+        flash[:alert] = "Пожалуйста, добавте изображение шаблона"
+        return false
+      elsif params[:queue_image][:user_id].blank?
+        flash[:alert] = "Пожалуйста, укажите вашу почту"
+        return false
+      elsif !(params[:queue_image][:user_id] =~ /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/)
+        flash[:alert] = "Пожалуйста, проверте правильность написания вашей почты"
+        return false
+      end
+      true
+    end
+
 end
