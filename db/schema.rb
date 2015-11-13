@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113135441) do
+ActiveRecord::Schema.define(version: 20151113142017) do
 
   create_table "pimages", force: :cascade do |t|
     t.integer  "queue_image_id"
@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20151113135441) do
     t.time     "ptime"
     t.datetime "stime"
     t.datetime "ftime"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
