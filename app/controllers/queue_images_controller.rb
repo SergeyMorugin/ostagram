@@ -2,7 +2,6 @@ class QueueImagesController < ApplicationController
   include WorkerHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy]
 
-  @VALID_EMAIL = /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/
   # GET /queue_images
   # GET /queue_images.json
   def index
@@ -38,7 +37,7 @@ class QueueImagesController < ApplicationController
 
     respond_to do |format|
       if @queue_image.save
-        #start_workers()
+        start_workers()
         format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавленено в очередь обработки.' }
         format.json { render :show, status: :created, location: @queue_image }
       else

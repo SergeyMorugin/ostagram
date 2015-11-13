@@ -1,3 +1,4 @@
+<% debug = true %>
 <%res_img = item.result_image if item.status > 1%>
 <li id="<%= item.id %>">
   <div class="row">
@@ -10,16 +11,13 @@
     <div class="col-md-2">
       <%= link_to(image_tag(item.style_image.thumb.url, alt:item.style_image, class: "productImage"), item.style_image.url) %>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
       <h1>=</h1>
     </div>
-
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
       <%= link_to(image_tag(res_img.imageurl.thumb.url class: "productImage"), res_img.imageurl.url) if !res_img.nil?%>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
       <% if false %>
       <span class="user">
        <%= link_to "поделиться", item, method: :delete,
@@ -27,12 +25,9 @@
       </span>
        <% end %>
 
-      <% if item.status != 1 %>
 
-      <% end %>
+      <span class="content"><p>Добавлено: <%= item.created_at.strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
 
-      <span class="content"><%= link_to "удалить", item, method: :delete,
-                                        data: { confirm: "You sure?" } %> </span>
 
       <span class="timestamp">
         <% if item.status < 0 %>
@@ -42,12 +37,16 @@
         <% elsif item.status == 1 %>
             <p> Обрабатывается </p>
         <% elsif item.status > 1 %>
-            <p> Обработано за <%= item.ptime.to_s.split(' ').second if !item.ptime.nil? %> </p>
+            <p> Обработано за <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %> </p>
         <% end %>
-
       </span>
 
-
+      <span class="user">
+        <p> </p>
+        <% if debug && item.status != 1 %>
+        <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
+         <% end %>
+      </span>
 
     </div>
 

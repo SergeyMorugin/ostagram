@@ -36,6 +36,7 @@ class ImageJob
     @init_params = config["init_params"] + " -num_iterations #{@iteration_count*100}" #  -output_image output/"
     @content_image_name = "content.jpg"
     @style_image_name = "style.jpg"
+    @admin_email = ["admin_email"]
     ##debug
     config["password"] = "*"
     write_log "config: #{config.to_s}"
@@ -84,14 +85,16 @@ class ImageJob
     sleep 10
     # Wait processed images
     errors = wait_images(item)
+    #
     write_log "process time: #{Time.now - process_time}"
     process_time = Time.at(Time.now - process_time)
-
+    #
     if errors.nil?
-      item.update({:status => 2, :ftime => Time.now})
+      item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
       "OK"
     else
-      item.update({:status => -1, :result => errors, :ftime => Time.now })
+      item.update({:status => -1, :result => errors, :ftime => Time.now, :ptime => process_time})
+      ImageMailer.send_error(@admin_email,errors,item).deliver_now
       "wait_images: #{errors}"
     end
 
@@ -105,35 +108,44 @@ class ImageJob
   def check_neural_start
     write_log "check_neural_start"
     begin
+      errors = ""
+      # Check a output log
+      rem = "#{@remote_neural_path}/output/output.log"
+      loc = "#{@local_tmp_path}/output.log"
+      Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
+      if File.exist?(loc)
+        log_str = File.read(loc)
+        if !log_str.nil?
+          #return str if str.scan("conv5_4").size == 0
+        end
+      else
+        error = "NO OUTPUT.LOG!\n\n"
+      end
+
       # Check error log
       rem = "#{@remote_neural_path}/output/error.log"
       loc = "#{@local_tmp_path}/error.log"
       Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
       if File.exist?(loc)
-        str = File.read(loc)
-        if !str.nil?
-          return str if str.scan("error").size > 0
+        err_str = File.read(loc)
+        if !err_str.nil?
+          errors += "ERROR_IN_FILE!\n\n" if str.scan("error").size > 0
         end
       end
-      # Check a output log
-      rem = "#{@remote_neural_path}/output/output.log"
-      loc = "#{@local_tmp_path}/output.log"
-      Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
-      return "No output log" unless File.exist?(loc)
-      str = File.read(loc)
-      if !str.nil?
-        #return str if str.scan("conv5_4").size == 0
-      end
     rescue
-      return "Error during download error.log and output.log"
+      errors +="ERROR during download error.log and output.log\n\n"
     end
-    nil
+    if error.blank?
+      nil
+    else
+      error += "output.log:\n\n#{log_str}\n\nerrror.log\n\nerr_str"
+    end
   end
 
   def wait_images(item)
     # Check remote neural process start
     res = check_neural_start
-    write_log "DEBUG check_neural_start fail: #{res}" unless res.nil?
+    #write_log "DEBUG check_neural_start fail: #{res}" unless res.nil?
     return res unless res.nil?
     write_log "wait_images"
     #
@@ -172,7 +184,7 @@ class ImageJob
     loc =  "#{@local_tmp_path}/#{name}"
     save_image(num,item,loc)
 
-    ImageMailer.send_image(iter_num, @iteration_count, File.read(loc)).deliver_now
+    ImageMailer.send_image(item.user, iter_num, @iteration_count, File.read(loc)).deliver_now
     #
     write_log "save_image: #{name}"
   end
