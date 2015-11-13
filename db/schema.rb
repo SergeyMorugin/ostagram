@@ -21,14 +21,6 @@ ActiveRecord::Schema.define(version: 20151113135441) do
     t.datetime "updated_at",     null: false
   end
 
-  create_table "processed_images", force: :cascade do |t|
-    t.integer  "queue_image_id", null: false
-    t.integer  "iter",           null: false
-    t.string   "image",          null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
   create_table "queue_images", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "content_image",              null: false
@@ -39,8 +31,8 @@ ActiveRecord::Schema.define(version: 20151113135441) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.time     "ptime"
-    t.time     "stime"
-    t.time     "ftime"
+    t.datetime "stime"
+    t.datetime "ftime"
   end
 
 end

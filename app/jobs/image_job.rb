@@ -63,11 +63,11 @@ class ImageJob
   def execute_image(item)
     return nil if item.nil?
     process_time = Time.now
+
     write_log "-----------------------"
     write_log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
-    item.update({:status => 1})
-
+    item.update({:status => 1, :stime => process_time})
     # Check connection to workserver
     return "get_server_name: false" if get_server_name.nil?
 
@@ -88,10 +88,10 @@ class ImageJob
     process_time = Time.at(Time.now - process_time)
 
     if errors.nil?
-      item.update({:status => 2, :ptime => process_time})
+      item.update({:status => 2, :ftime => Time.now})
       "OK"
     else
-      item.update({:status => -1, :result => errors, :ptime => process_time })
+      item.update({:status => -1, :result => errors, :ftime => Time.now })
       "wait_images: #{errors}"
     end
 
