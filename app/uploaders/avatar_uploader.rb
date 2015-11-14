@@ -42,7 +42,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
      process :resize_to_fill => [100, 100]
      #cloudinary_transformation :effect => "brightness:30", :radius => 20,
      #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
-
+     process convert: 'png'
      process :round
      #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
      #process :convert => format

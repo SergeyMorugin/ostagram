@@ -17,12 +17,13 @@ class ImageJob
   @local_tmp_path = '~/tmp/output'
 
   def initialize(worker_name)
-    write_log "-----------------------Start Demon---------------------------"
+    log "-----------------------Start Demon---------------------------"
     set_config(worker_name)
   end
 
   def set_config(worker_name)
     return if worker_name.nil?
+    @worker_name = worker_name.to_s
     file = Rails.root.join('config/config.secret')
     config = get_param_config(file, :workservers, worker_name.to_sym)
     return if config.blank?
@@ -39,7 +40,7 @@ class ImageJob
     @admin_email = ["admin_email"]
     ##debug
     config["password"] = "*"
-    write_log "config: #{config.to_s}"
+    log "config: #{config.to_s}"
   end
 
   def execute
@@ -47,14 +48,14 @@ class ImageJob
     #wait_images(QueueImage.find(1))
     #send_start_process_comm()
     #return
-    # write_log "-----------------------Execute Demon---------------------------"
+    # log "-----------------------Execute Demon---------------------------"
     while true
       imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         item = imgs.first
         res = execute_image(item)
       else
-        write_log "-----------------------Stop Demon---------------------------"
+        log "-----------------------Stop Demon---------------------------"
         return "Zero"
       end
       sleep 5
@@ -65,8 +66,8 @@ class ImageJob
     return nil if item.nil?
     process_time = Time.now
 
-    write_log "-----------------------"
-    write_log "execute_image item.id = #{item.id}"
+    log "-----------------------"
+    log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
     item.update({:status => 1, :stime => process_time})
     # Check connection to workserver
@@ -86,7 +87,7 @@ class ImageJob
     # Wait processed images
     errors = wait_images(item)
     #
-    write_log "process time: #{Time.now - process_time}"
+    log "process time: #{Time.now - process_time}"
     process_time = Time.at(Time.now - process_time)
     #
     if errors.nil?
@@ -106,7 +107,7 @@ class ImageJob
   protected
 
   def check_neural_start
-    write_log "check_neural_start"
+    log "check_neural_start"
     begin
       errors = ""
       # Check a output log
@@ -145,9 +146,9 @@ class ImageJob
   def wait_images(item)
     # Check remote neural process start
     res = check_neural_start
-    #write_log "DEBUG check_neural_start fail: #{res}" unless res.nil?
+    #log "DEBUG check_neural_start fail: #{res}" unless res.nil?
     return res unless res.nil?
-    write_log "wait_images"
+    log "wait_images"
     #
     iter = 1
     while true
@@ -160,6 +161,7 @@ class ImageJob
         str = File.read(loc)
         s = "Iteration #{iter}00"
         if !str.nil? && str.scan(s).size > 0
+          sleep 2
           download_n_save_result(iter,item)
           iter += 1
         end
@@ -186,7 +188,7 @@ class ImageJob
 
     ImageMailer.send_image(item.user, iter_num, @iteration_count, File.read(loc)).deliver_now
     #
-    write_log "save_image: #{name}"
+    log "save_image: #{name}"
   end
 
   def save_image(iter_num,item,loc)
@@ -263,7 +265,7 @@ class ImageJob
   end
 
   def send_start_process_comm
-    write_log "send_start_process_comm"
+    log "send_start_process_comm"
     if create_n_upload_script
       begin
         Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
@@ -277,6 +279,10 @@ class ImageJob
       end
     end
     false
+  end
+
+  def log(msg)
+    write_log(msg, @worker_name)
   end
 
 

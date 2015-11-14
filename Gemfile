@@ -42,6 +42,8 @@ gem 'net-scp'
 #gem 'sidekiq'
 
 gem 'resque'
+
+gem 'lightbox-bootstrap-rails'
 #gem 'resue-scheduler'
 
 # Use ActiveModel has_secure_password
