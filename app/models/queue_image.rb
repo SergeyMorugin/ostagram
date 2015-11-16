@@ -5,6 +5,8 @@ class QueueImage < ActiveRecord::Base
   mount_uploader :style_image, AvatarUploader
 
   def result_image
-    pimages.where("iterate = 0").first
+    if pimages.count > 0
+      pimages.all.order('created_at ASC').first
+    end
   end
 end

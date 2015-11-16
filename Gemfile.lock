@@ -88,7 +88,8 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.3)
     kgio (2.10.0)
-    lightbox-bootstrap-rails (3.3.0.2)
+    lightbox2-rails (2.7.1)
+      railties (>= 3.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -207,7 +208,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
   jquery-rails
-  lightbox-bootstrap-rails
+  lightbox2-rails
   mini_magick
   net-scp
   net-ssh

@@ -13,5 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require lightbox-bootstrap
+//= require lightbox
 //= require_tree .

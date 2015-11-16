@@ -15,10 +15,12 @@ class ImageJob
   @remote_neural_path = "~/neural-style-master"
   @iteration_count = 10
   @local_tmp_path = '~/tmp/output'
+  @worker_name = :server1
 
   def initialize(worker_name)
-    log "-----------------------Start Demon---------------------------"
-    set_config(worker_name)
+    log "-----------------------Start Demon: #{worker_name}---------------------"
+    @worker_name = worker_name
+    #set_config(worker_name)
   end
 
   def set_config(worker_name)
@@ -52,6 +54,7 @@ class ImageJob
     while true
       imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
+        set_config(:worker_name)
         item = imgs.first
         res = execute_image(item)
       else
@@ -185,8 +188,9 @@ class ImageJob
     download_image(name)
     loc =  "#{@local_tmp_path}/#{name}"
     save_image(num,item,loc)
-
-    ImageMailer.send_image(item.user, iter_num, @iteration_count, File.read(loc)).deliver_now
+    if iter_num == @iteration_count
+      ImageMailer.send_image(item.user, iter_num, @iteration_count, File.read(loc)).deliver_now
+    end
     #
     log "save_image: #{name}"
   end

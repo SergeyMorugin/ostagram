@@ -43,7 +43,8 @@ gem 'net-scp'
 
 gem 'resque'
 
-gem 'lightbox-bootstrap-rails'
+gem 'lightbox2-rails'
+#gem 'lightbox-bootstrap-rails'
 #gem 'resue-scheduler'
 
 # Use ActiveModel has_secure_password

@@ -34,15 +34,16 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # end
   # process convert: 'png'
   # Create different versions of your uploaded files:
-  process :resize_to_fit => [1600, 1600]
+  process :resize_to_fit => [1600, 1600], if: :is_for_process?
 
   version :thumb do
      #process convert: 'png'
      process :resize_to_fit => [150, 150]
+     process convert: 'png'
      process :resize_to_fill => [100, 100]
      #cloudinary_transformation :effect => "brightness:30", :radius => 20,
      #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
-     process convert: 'png'
+
      process :round
      #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
      #process :convert => format
@@ -55,6 +56,10 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #process :round
   #end
 
+
+  def is_for_process? picture
+    model.class.to_s.underscore != "pimage"
+  end
 
 
   # Add a white list of extensions which are allowed to be uploaded.
