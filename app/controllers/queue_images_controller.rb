@@ -5,7 +5,7 @@ class QueueImagesController < ApplicationController
   # GET /queue_images
   # GET /queue_images.json
   def index
-    @items= QueueImage.all.order('created_at DESC')
+    @items= QueueImage.where("status < 2").order('created_at DESC')
   end
 
   # GET /queue_images/1
@@ -38,7 +38,7 @@ class QueueImagesController < ApplicationController
     respond_to do |format|
       if @queue_image.save
         start_workers()
-        format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавленено в очередь обработки.' }
+        format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавлены в очередь обработки.' }
         format.json { render :show, status: :created, location: @queue_image }
       else
         format.html { render :new }
@@ -85,10 +85,10 @@ class QueueImagesController < ApplicationController
     def valid_queue_image_params
       par = params[:queue_image][:content_image]
       if par.nil?
-        flash[:alert] = "Пожалуйста, добавте изображение для обработке"
+        flash[:alert] = "Пожалуйста, добавьте изображение для обработки"
         return false
       elsif params[:queue_image][:style_image].nil?
-        flash[:alert] = "Пожалуйста, добавте изображение шаблона"
+        flash[:alert] = "Пожалуйста, добавьте изображение шаблона"
         return false
       elsif params[:queue_image][:user_id].blank?
         flash[:alert] = "Пожалуйста, укажите вашу почту"

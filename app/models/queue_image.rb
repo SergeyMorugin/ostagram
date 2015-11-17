@@ -6,7 +6,7 @@ class QueueImage < ActiveRecord::Base
 
   def result_image
     if pimages.count > 0
-      pimages.all.order('created_at ASC').first
+      pimages.all.order('created_at DESC').first
     end
   end
 end

@@ -34,19 +34,31 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # end
   # process convert: 'png'
   # Create different versions of your uploaded files:
-  process :resize_to_fit => [1600, 1600], if: :is_for_process?
+  process :resize_to_fit => [1600, 1600], if: :is_content_style_image?
 
-  version :thumb do
-     #process convert: 'png'
-     process :resize_to_fit => [150, 150]
-     process convert: 'png'
-     process :resize_to_fill => [100, 100]
-     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
-     #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
 
-     process :round
-     #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
-     #process :convert => format
+  version :thumb200, :if => :is_content_style_image? do
+    #process convert: 'png'
+    process :resize_to_fit => [300, 300]
+    process convert: 'png'
+    process :resize_to_fill => [180, 180]
+    #cloudinary_transformation :effect => "brightness:30", :radius => 20,
+    #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
+    process :round => [10]
+
+  end
+
+  version :thumb400, :if => :is_processed_image? do
+    #process convert: 'png'
+    process :resize_to_fit => [600, 600]
+    process convert: 'png'
+    process :resize_to_fill => [400, 400]
+    #cloudinary_transformation :effect => "brightness:30", :radius => 20,
+    #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
+
+    process :round => [20]
+    #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
+    #process :convert => format
   end
 
   #version :mini do
@@ -57,8 +69,12 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #end
 
 
-  def is_for_process? picture
-    model.class.to_s.underscore != "pimage"
+  def is_processed_image? picture
+    model.class.to_s.underscore == "pimage"
+  end
+
+  def is_content_style_image? picture
+    model.class.to_s.underscore == "queue_image"
   end
 
 
@@ -87,12 +103,12 @@ class AvatarUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def round
+  def round(rad = 6)
     manipulate! do |img|
       img.format 'png'
 
       width = img[:width]-2
-      radius = width/6
+      radius = width/rad
 
       mask = ::MiniMagick::Image.open img.path
       mask.format 'png'

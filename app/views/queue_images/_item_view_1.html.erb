@@ -1,0 +1,103 @@
+<% debug = true %>
+
+<%item = item_view_1 %>
+<%res_img = item.result_image %>
+
+
+
+
+  <div class="row visible-lg styleRow-lg">
+    <div class="col-lg-6 col-lg-offset-3 ">
+
+    <div class="row styleHeadRow-lg">
+      <div class="col-lg-1 styleContentImage2-lg">
+        <%= image_tag("/like.png", alt: "like.png", class: "contentImageStyle-xs") %>
+      </div>
+
+      <div class="col-lg-7 styleHeadCol2-lg">
+        <span class="user">
+            <%= item.user.email %>
+         </span>
+      </div>
+
+      <div class="col-lg-2 styleHeadCol2-lg">
+        <span class="user">
+            <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } if debug %>
+        </span>
+      </div>
+
+      <div class="col-lg-2 styleHeadCol2-lg">
+        <span class="user">
+            <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+
+    <div class="col-lg-4 styleContentImage1-lg ">
+      <div class="row">
+        <div class="imageBlock200-lg col-lg-12" >
+          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+        <div class="imageBlock200-lg col-lg-12">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-7 imageBlock400-lg">
+      <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
+    </div>
+
+    </div></div>
+
+  </div>
+
+
+  <div class="row hidden-lg styleRow-xs "><div class=" col-md-12 col-sm-12 col-xs-12 ">
+
+
+  <div class="row styleHeadRow-xs">
+    <div class="col-md-1 col-sm-1 col-xs-1 styleHeadCol1-xs">
+      <%= image_tag("/like.png", alt: "like.png", class: "contentImageStyle-xs") %>
+    </div>
+
+    <div class="col-md-8 col-sm-8 col-xs-8 styleHeadCol2-xs">
+      <span class="textHeadStyle-xs">
+      <%= item.user.email %>
+      </span>
+    </div>
+
+    <div class="col-md-3 col-sm-3 col-xs-3 styleHeadCol2-xs">
+      <span class="textHeadStyle-xs">
+      <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+       <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs" >
+         <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "contentImageStyle-xs"), item.content_image.url, class: "contentImageStyle-xs") %>
+       </div>
+       <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs">
+         <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "contentImageStyle-xs"), item.style_image.url, class: "contentImageStyle-xs") %>
+       </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12  imageBlock200-xs" >
+        <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "contentImageStyle-xs"), res_img.imageurl.url, class: "contentImageStyle-xs")  if res_img %>
+    </div>
+  </div>
+
+
+
+
+
+</div></div>
+
+
+
+
+

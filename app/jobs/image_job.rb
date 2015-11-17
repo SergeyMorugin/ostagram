@@ -25,7 +25,7 @@ class ImageJob
 
   def set_config(worker_name)
     return if worker_name.nil?
-    @worker_name = worker_name.to_s
+    #@worker_name = worker_name.to_s
     file = Rails.root.join('config/config.secret')
     config = get_param_config(file, :workservers, worker_name.to_sym)
     return if config.blank?
@@ -33,28 +33,27 @@ class ImageJob
     @hostname = config["host"]
     @username = config["username"]
     @password = config["password"]
-    @local_tmp_path = Rails.root.join('tmp/output')
+    @local_tmp_path = Rails.root.join("tmp/#{worker_name}")
+    if !Dir.exist?(@local_tmp_path)
+      Dir.mkdir(@local_tmp_path)
+    end
     @remote_neural_path = config["remote_neural_path"]
     @iteration_count = config["iteration_count"]
     @init_params = config["init_params"] + " -num_iterations #{@iteration_count*100}" #  -output_image output/"
     @content_image_name = "content.jpg"
     @style_image_name = "style.jpg"
-    @admin_email = ["admin_email"]
+    @admin_email = config["admin_email"]
     ##debug
     config["password"] = "*"
     log "config: #{config.to_s}"
   end
 
+
   def execute
-    #debug
-    #wait_images(QueueImage.find(1))
-    #send_start_process_comm()
-    #return
-    # log "-----------------------Execute Demon---------------------------"
     while true
       imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
-        set_config(:worker_name)
+        set_config(@worker_name)
         item = imgs.first
         res = execute_image(item)
       else
@@ -64,6 +63,60 @@ class ImageJob
       sleep 5
     end
   end
+
+
+  def execute_debug
+    set_config(@worker_name)
+    is_luajit_poc_exist
+
+    return
+    while true
+      imgs = QueueImage.where("status = 0 ").order('created_at ASC')
+      if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
+        set_config(@worker_name)
+        item = imgs.first
+        #
+        process_time = Time.now
+
+        #Change status to IN_PROCESS
+        #item.update({:stime => process_time})
+        #i = 1
+        #10.times do
+        # i += 1
+        #end
+        #download_n_save_result(10,item)
+        #
+        process_time = Time.at(Time.now - process_time)
+        #item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
+      else
+        log "-----------------------Stop Demon---------------------------"
+        return "Zero"
+      end
+     # sleep 5
+    end
+  end
+
+  protected
+
+  def is_luajit_proc_exist
+    begin
+      Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
+        com = "ps axu | grep luajit"
+        output = ssh.exec!(com)
+        if output.scan("th neural_style.lua").size > 0
+          return nil
+        else
+          return output
+        end
+      end
+
+    rescue
+
+    end
+    "Command ps axu error"
+  end
+
+
 
   def execute_image(item)
     return nil if item.nil?
@@ -98,8 +151,9 @@ class ImageJob
       "OK"
     else
       item.update({:status => -1, :result => errors, :ftime => Time.now, :ptime => process_time})
-      ImageMailer.send_error(@admin_email,errors,item).deliver_now
-      "wait_images: #{errors}"
+      errors += check_neural_start
+      ImageMailer.send_error(@admin_email,"",item,errors).deliver_now
+      log "wait_images: #{errors}"
     end
 
     #Change status to PROCESSED
@@ -107,7 +161,6 @@ class ImageJob
     #item.save
   end
 
-  protected
 
   def check_neural_start
     log "check_neural_start"
@@ -123,7 +176,7 @@ class ImageJob
           #return str if str.scan("conv5_4").size == 0
         end
       else
-        error = "NO OUTPUT.LOG!\n\n"
+        errors = "NO OUTPUT.LOG!\n\n"
       end
 
       # Check error log
@@ -133,45 +186,48 @@ class ImageJob
       if File.exist?(loc)
         err_str = File.read(loc)
         if !err_str.nil?
-          errors += "ERROR_IN_FILE!\n\n" if str.scan("error").size > 0
+          errors += "ERROR_IN_FILE!\n\n" if err_str.scan("error").size > 0
         end
       end
     rescue
       errors +="ERROR during download error.log and output.log\n\n"
     end
-    if error.blank?
-      nil
-    else
-      error += "output.log:\n\n#{log_str}\n\nerrror.log\n\nerr_str"
-    end
+
+    errors += "output.log:\n\n#{log_str}\n\nerror.log:\n\n#{err_str}\n"
   end
 
   def wait_images(item)
     # Check remote neural process start
-    res = check_neural_start
+    #res = is_luajit_proc_exist#check_neural_start
     #log "DEBUG check_neural_start fail: #{res}" unless res.nil?
-    return res unless res.nil?
+    #return res unless res.nil?
     log "wait_images"
     #
     iter = 1
     while true
       begin
+        break if iter > @iteration_count
+        flag = false
         # Sent task for image
         rem = "#{@remote_neural_path}/output/output.log"
         loc = "#{@local_tmp_path}/output.log"
         Net::SCP.download!(@hostname, @username, rem, loc , :password => @password )
-        break unless File.exist?(loc)
-        str = File.read(loc)
-        s = "Iteration #{iter}00"
-        if !str.nil? && str.scan(s).size > 0
-          sleep 2
-          download_n_save_result(iter,item)
-          iter += 1
+        if File.exist?(loc)
+          str = File.read(loc)
+          s = "Iteration #{iter}00"
+          if !str.nil? && str.scan(s).size > 0
+            sleep 2
+            download_n_save_result(iter,item)
+            iter += 1
+            next
+          end
         end
       rescue
 
       end
-      break if iter > @iteration_count
+      res = is_luajit_proc_exist
+      return res unless res.nil?
+      #
       sleep 2
     end
     nil
@@ -206,7 +262,7 @@ class ImageJob
   end
 
   def get_server_name
-    output = "1"
+    output = nil
     Net::SSH.start(@hostname, @username, :password => @password) do |ssh|
       output = ssh.exec!("hostname")
     end

@@ -1,4 +1,9 @@
-<%= form_for(@queue_image, :html => {:multipart => true}) do |f| %>
+
+<div class="container">
+  <h3></h3>
+  <p>  Пожалуйста, укажите правильную Вашу почту. Обработанное изображение будут доставлено Вам на почту. </p>
+  <h3></h3>
+<%= form_for(@queue_image, :html => {:multipart => true, :class => "form-signin"}) do |f| %>
   <% if @queue_image.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@queue_image.errors.count, "error") %> Неверно заполненные данные:</h2>
@@ -10,9 +15,7 @@
       </ul>
     </div>
   <% end %>
-  <h3></h3>
-  <p>  Пожалуйста, укажите правильную Вашу почту. Изображения будут доставляться Вам на почту по мере обработки. </p>
-  <h3></h3>
+
 
   <div class="field">
     <%= f.label "обрабатываемое изображение" %><br>
@@ -24,10 +27,12 @@
   </div>
     <div class="field">
       <%= f.label "email"%><br>
-      <%= f.email_field :user_id %>
+      <%= f.email_field :user_id, cols: 60 %>
     </div>
 
   <div class="actions">
     <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
   </div>
 <% end %>
+
+</div>

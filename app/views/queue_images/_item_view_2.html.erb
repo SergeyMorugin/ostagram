@@ -1,0 +1,63 @@
+<% debug = true %>
+
+<%item = item_view_2 %>
+<%res_img = item.result_image %>
+
+<div class="row styleRow2-lg">
+
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-lg-offset-2 col-md-offset-2" >
+          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+
+
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 ">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+
+
+        <div class=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+
+          <% if false %>
+          <span class="user">
+           <%= link_to "поделиться", item, method: :delete,
+                       data: { confirm: "You sure?" } %>
+          </span>
+          <% end %>
+
+              <span class="content"><p>Добавлено: <%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
+
+          <span class="timestamp">
+            <% if item.status < 0 %>
+                <p> Ошибка при обработке </p>
+            <% elsif item.status == 0 %>
+                <p> Ожидает обработку </p>
+            <% elsif item.status == 1 %>
+                <p> Обработано на <%= item.pimages.count * 10 %>% </p>
+            <% elsif item.status > 1 %>
+                <p> Обработано за <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %> </p>
+            <% end %>
+          </span>
+
+          <span class="user">
+            <p> </p>
+            <% if debug || item.status != 1 %>
+            <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
+             <% end %>
+          </span>
+
+        </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

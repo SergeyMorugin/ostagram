@@ -1,10 +1,8 @@
-<h4></h4>
-<%= link_to "Добавить изображения", new_queue_image_path,  class: "btn btn-large btn-primary" %>
-<h3></h3>
-<h3></h3>
-<ol class="microposts">
-  <%= render partial: 'item', collection:  @items %>
-</ol>
+<% if @items.count > 0 %>
+  <%= render partial: 'item_view_2', collection:  @items %>
+<% else %>
+  <h3>Очередь на обработку пуста</h3>
+<% end %>
 
 
 

@@ -1,5 +1,5 @@
 <% debug = true %>
-<%res_img = item.result_image %>
+<%res_img = item_view_1.result_image %>
 
 <li id="<%= item.id %>">
 
@@ -11,9 +11,8 @@
   <% end %>
 
 
-      <div class="col-md-1">
+    <div class="col-md-1">
       <%= link_to(image_tag(item.content_image.thumb.url, alt:item.content_image, class: "productImage"), item.content_image.url, data:{ lightbox: "content"}) %>
-
     </div>
 
     <div class="col-md-1">
@@ -57,8 +56,6 @@
       </span>
 
     </div>
-
-
 
 
   </div>

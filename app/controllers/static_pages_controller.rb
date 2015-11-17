@@ -7,8 +7,16 @@ class StaticPagesController < ApplicationController
     redirect_to queue_images_path
   end
 
+
+  def lenta
+    @items= QueueImage.where("status > 0").order('created_at DESC')
+  end
+
   def about
-    #start_workers
+    #img_job = ImageJob.new(:server1)
+    #img_job.set_config()
+    #img_job.execute_debug
+    start_workers
     #process_image
   end
 
