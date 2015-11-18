@@ -9,6 +9,7 @@ set :username, 'deploy'
 
 set :repo_url, 'git@github.com:SergeyMorugin/ostagram.git'
 set :reils_env, 'production'
+set :branch, 'develop'
 #set :shared_path, ''
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -78,6 +79,16 @@ namespace :nginx do
       sudo :service, :nginx, :restart
     end
   end
+  task :create_db do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:create"
+        end
+      end
+    end
+  end
+
   after :append_config, :restart
 end
 
@@ -111,6 +122,9 @@ namespace :application do
   end
 end
 
+
+
+
 namespace :deploy do
   desc 'Подготовка deploy'
   task :setup do
@@ -127,15 +141,7 @@ namespace :deploy do
     end
   end
 
-  task :create_db do
-    on roles(:all) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, "db:create"
-        end
-      end
-    end
-  end
+
   task :migrate do
     on roles(:all) do
       within release_path do

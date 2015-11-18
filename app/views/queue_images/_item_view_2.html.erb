@@ -5,13 +5,19 @@
 
 <div class="row styleRow2-lg">
 
-        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-lg-offset-2 col-md-offset-2" >
+        <div class="visible-lg  col-lg-2 col-lg-offset-2" >
           <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+        <div class="visible-lg  col-lg-2">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
 
 
-        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 ">
-          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+        <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 col-md-offset-2" >
+          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle") %>
+        </div>
+        <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 ">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle") %>
         </div>
 
 
