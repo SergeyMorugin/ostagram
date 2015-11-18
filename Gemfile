@@ -44,6 +44,8 @@ gem 'net-scp'
 gem 'resque'
 
 gem 'lightbox2-rails'
+
+gem 'devise', '~> 3.5'
 #gem 'lightbox-bootstrap-rails'
 #gem 'resue-scheduler'
 
