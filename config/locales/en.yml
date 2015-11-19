@@ -21,3 +21,23 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        client:
+          attributes:
+            email:
+              blank: "Пожалуйста, укажите Ваш email адрес"
+              taken: "Данный email уже существует в системе"
+              invalid: "Пожалуйста, проверьте написание Вашего email адреса"
+            password:
+              blank: "Пожалуйста, укажите пароль"
+              confirmation: "Пароль не очень"
+            password_confirmation:
+              blank: "Пожалуйста, укажите подтверждение пароля"
+              confirmation: "Подтверждение пароля введено не верно"
+            name:
+              blank: "Пожалуйста, укажите Ваше имя"
+              taken: "Аккаунт с таким ником уже существует"
+            avatar:
+              blank: "Пожалуйста, укажите аватарку"

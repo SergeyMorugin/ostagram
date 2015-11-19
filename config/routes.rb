@@ -10,11 +10,10 @@ Rails.application.routes.draw do
   match '/home', to: 'static_pages#home', via: 'get'
   match '/error', to: 'static_pages#error', via: 'get'
   match '/lenta', to: 'static_pages#lenta', via: 'get'
-
   match '/admin', to: 'admin_pages#error', via: 'get'
 
 
-  root "static_pages#lenta"
+  root "static_pages#home"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

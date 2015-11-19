@@ -16,7 +16,7 @@
 
       <div class="col-lg-7 styleHeadCol2-lg">
         <span class="textUserStyle-lg">
-            <%= item.client.name if !item.client.nil? %>
+            <%= truncate(item.client.name, :length => 25)  if !item.client.nil? %>
          </span>
       </div>
 
@@ -65,7 +65,7 @@
 
     <div class="col-md-7 col-sm-7 col-xs-7 styleHeadCol2-xs">
       <span class="textUserStyle-xs">
-        <%= item.client.name if !item.client.nil? %>
+        <%= truncate(item.client.name, :length => 15)  if !item.client.nil? %>
       </span>
     </div>
 

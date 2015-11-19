@@ -4,7 +4,13 @@ class StaticPagesController < ApplicationController
   include WorkerHelper
   include DebHelper
   def home
-    redirect_to queue_images_path
+    if client_signed_in?
+      redirect_to lenta_path
+      return
+    else
+      redirect_to about_path
+      return
+    end
   end
 
 
@@ -19,6 +25,8 @@ class StaticPagesController < ApplicationController
     start_workers
     #process_image
   end
+
+
 
   def error
 

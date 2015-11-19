@@ -6,12 +6,12 @@
       <%= devise_error_messages! %>
 
       <div class="field">
-        <%= f.label :email %><br />
+        <%= f.label "Email:" %><br />
         <%= f.email_field :email, autofocus: true %>
       </div>
 
       <div class="field">
-        <%= f.label "пароль:" %>
+        <%= f.label "Пароль:" %>
         <% if @minimum_password_length %>
         <em>(<%= @minimum_password_length %> символов минимум)</em>
         <% end %><br />
@@ -19,17 +19,17 @@
       </div>
 
       <div class="field">
-        <%= f.label "подтверждение пароля:" %><br />
+        <%= f.label "Подтверждение пароля:" %><br />
         <%= f.password_field :password_confirmation, autocomplete: "off" %>
       </div>
 
         <div class="field">
-          <%= f.label "ваше имя или ник:" %><br />
+          <%= f.label "Ваше имя или ник:" %><br />
           <%= f.text_field :name %>
         </div>
 
         <div class="field">
-          <%= f.label "аватарка:"%><br>
+          <%= f.label "Аватарка:"%><br>
           <%= f.file_field :avatar %>
         </div>
 
