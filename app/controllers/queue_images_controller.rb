@@ -5,7 +5,7 @@ class QueueImagesController < ApplicationController
   # GET /queue_images
   # GET /queue_images.json
   def index
-    @items= QueueImage.where("status < 2").order('created_at DESC')
+    @items= QueueImage.where("status > 0 AND status < 3").order('created_at DESC')
   end
 
   # GET /queue_images/1
@@ -36,7 +36,7 @@ class QueueImagesController < ApplicationController
     #eml = params[:queue_image][:user_id]
     #usr = User.find_or_create_by(email: eml)
     @queue_image = current_client.queue_images.build(queue_image_params)
-
+    @queue_image.status = 1
     respond_to do |format|
       if @queue_image.save
         start_workers()

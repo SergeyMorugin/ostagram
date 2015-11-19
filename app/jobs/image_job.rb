@@ -4,10 +4,11 @@ class ImageJob
   include DebHelper
   #@queue = :error_server
   #
-  @STATUS_ERROR = -1
-  @STATUS_NOT_PROCESSED = 0
-  @STATUS_IN_PROCESS = 1
-  @STATUS_PROCESSED = 2
+  STATUS_ERROR = -1
+  STATUS_DELETED = 0
+  STATUS_NOT_PROCESSED = 1
+  STATUS_IN_PROCESS = 2
+  STATUS_PROCESSED = 11
   #
   @hostname = "localhost"
   @username = "root"
@@ -51,7 +52,7 @@ class ImageJob
 
   def execute
     while true
-      imgs = QueueImage.where("status = 0 ").order('created_at ASC')
+      imgs = QueueImage.where("status = #{STATUS_NOT_PROCESSED} ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         set_config(@worker_name)
         item = imgs.first
@@ -71,7 +72,7 @@ class ImageJob
     #return
 
     loop do
-      imgs = QueueImage.where("status = 0 ").order('created_at ASC')
+      imgs = QueueImage.where("status = #{STATUS_NOT_PROCESSED}").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         set_config(@worker_name)
         item = imgs.first
@@ -87,7 +88,7 @@ class ImageJob
         download_n_save_result(10,item)
         #
         process_time = Time.at(Time.now - process_time)
-        item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
+        item.update({:status => STATUS_PROCESSED, :ftime => Time.now, :ptime => process_time})
       else
         log "-----------------------Stop Demon---------------------------"
         return "Zero"
@@ -125,7 +126,7 @@ class ImageJob
     log "-----------------------"
     log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
-    item.update({:status => 1, :stime => process_time})
+    item.update({:status => STATUS_IN_PROCESS, :stime => process_time})
     # Check connection to workserver
     return "get_server_name: false" if get_server_name.nil?
 
@@ -147,10 +148,10 @@ class ImageJob
     process_time = Time.at(Time.now - process_time)
     #
     if errors.nil?
-      item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
+      item.update({:status => STATUS_PROCESSED, :ftime => Time.now, :ptime => process_time})
       "OK"
     else
-      item.update({:status => -1, :result => errors, :ftime => Time.now, :ptime => process_time})
+      item.update({:status => STATUS_ERROR, :result => errors, :ftime => Time.now, :ptime => process_time})
       errors += check_neural_start
       ImageMailer.send_error(@admin_email,"",item,errors).deliver_now
       log "wait_images: #{errors}"

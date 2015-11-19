@@ -58,6 +58,20 @@ namespace :setup do
       end
     end
   end
+
+  task :setup do
+    on roles(:all) do
+      # Upload config files
+      execute :mkdir, "-p #{shared_path}"
+      ['shared/config', 'shared/run', 'shared/log', 'shared/db'].each do |f|
+        upload!(f, shared_path, recursive: true)
+      end
+      #before "deploy:migrate", :create_db
+      # Make simlink to nginx config
+      sudo :ln, "-fs #{shared_path}/config/unicorn.conf /etc/nginx/conf.d/#{fetch(:application)}.conf"
+      invoke :deploy
+    end
+  end
 end
 
 namespace :nginx do
@@ -127,20 +141,6 @@ end
 
 namespace :deploy do
   desc 'Подготовка deploy'
-  task :setup do
-    on roles(:all) do
-      # Upload config files
-      execute :mkdir, "-p #{shared_path}"
-      ['shared/config', 'shared/run', 'shared/log', 'shared/db'].each do |f|
-        upload!(f, shared_path, recursive: true)
-      end
-      #before "deploy:migrate", :create_db
-      # Make simlink to nginx config
-      sudo :ln, "-fs #{shared_path}/config/unicorn.conf /etc/nginx/conf.d/#{fetch(:application)}.conf"
-      invoke :deploy
-    end
-  end
-
 
   task :migrate do
     on roles(:all) do

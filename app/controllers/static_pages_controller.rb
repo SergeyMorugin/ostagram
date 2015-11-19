@@ -15,14 +15,14 @@ class StaticPagesController < ApplicationController
 
 
   def lenta
-    @items= QueueImage.where("status > 1").order('ftime DESC').paginate(:page => params[:page], :per_page => 6)
+    @items= QueueImage.where("status > 9").order('ftime DESC').paginate(:page => params[:page], :per_page => 6)
   end
 
   def about
     #img_job = ImageJob.new(:server1)
     #img_job.set_config()
     #img_job.execute_debug
-    start_workers
+    #start_workers
     #process_image
   end
 

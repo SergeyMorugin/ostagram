@@ -35,11 +35,11 @@
           <span class="timestamp">
             <% if item.status < 0 %>
                 <p> Ошибка при обработке </p>
-            <% elsif item.status == 0 %>
-                <p> Ожидает обработку </p>
             <% elsif item.status == 1 %>
+                <p> Ожидает обработку </p>
+            <% elsif item.status == 2 %>
                 <p> Обработано на <%= item.pimages.count * 10 %>% </p>
-            <% elsif item.status > 1 %>
+            <% elsif item.status >= 10 %>
                 <p> Обработано за <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %> </p>
             <% end %>
           </span>
