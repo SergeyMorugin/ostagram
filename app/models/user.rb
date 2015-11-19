@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :queue_images
+  #has_many :queue_images
 
   def create_by_email(email)
     usr = Ures.where("email = #{email}")

@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20151118143239) do
     t.string   "email",                  default: "", null: false
     t.string   "name",                                null: false
     t.string   "avatar",                              null: false
-    t.datetime "lprocess",                            null: false
+    t.datetime "lastprocess"
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20151118143239) do
   end
 
   create_table "queue_images", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "client_id",                  null: false
     t.string   "content_image",              null: false
     t.string   "style_image",                null: false
     t.string   "init_str",      default: ""

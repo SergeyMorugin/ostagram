@@ -1,7 +1,7 @@
 class CreateQueueImages < ActiveRecord::Migration
   def change
     create_table :queue_images do |t|
-      t.integer :user_id
+      t.integer :client_id, null: false
       t.string :content_image, null: false
       t.string :style_image, null: false
       t.string :init_str, default: ""

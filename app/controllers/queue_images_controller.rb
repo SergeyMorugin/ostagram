@@ -30,10 +30,12 @@ class QueueImagesController < ApplicationController
       redirect_to new_queue_image_path
       return
     end
+
+
     #
-    eml = params[:queue_image][:user_id]
-    usr = User.find_or_create_by(email: eml)
-    @queue_image = usr.queue_images.build(queue_image_params)
+    #eml = params[:queue_image][:user_id]
+    #usr = User.find_or_create_by(email: eml)
+    @queue_image = current_client.queue_images.build(queue_image_params)
 
     respond_to do |format|
       if @queue_image.save
@@ -89,12 +91,6 @@ class QueueImagesController < ApplicationController
         return false
       elsif params[:queue_image][:style_image].nil?
         flash[:alert] = "Пожалуйста, добавьте изображение шаблона"
-        return false
-      elsif params[:queue_image][:user_id].blank?
-        flash[:alert] = "Пожалуйста, укажите вашу почту"
-        return false
-      elsif !(params[:queue_image][:user_id] =~ /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/)
-        flash[:alert] = "Пожалуйста, проверте правильность написания вашей почты"
         return false
       end
       true

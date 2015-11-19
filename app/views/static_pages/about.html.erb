@@ -5,7 +5,12 @@
 <p>
   Был сделан сантехником в момент запоя. Enjoy.
 </p>
-
+<% if !client_signed_in? %>
+  <h3></h3>
+  <%= link_to "Зарегистрироваться", new_client_registration_path , class: "btn btn-primary form-signin" %>
+  <h3></h3>
+  <%= link_to "Войти", new_client_session_path, class: "btn btn-primary form-signin" %>
+<% end %>
 <p>
   <%= @result %>
 </p>

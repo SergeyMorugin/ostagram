@@ -1,6 +1,6 @@
 class QueueImage < ActiveRecord::Base
   has_many :pimages , dependent: :destroy
-  belongs_to :user
+  belongs_to :client
   mount_uploader :content_image, AvatarUploader
   mount_uploader :style_image, AvatarUploader
 

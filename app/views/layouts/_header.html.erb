@@ -3,10 +3,17 @@
       <%= link_to "Ostagram", root_path, id: "logo" %>
 
       <ul class="nav nav-pills pull-right">
-        <li><%= link_to "Добавить изображения", new_queue_image_path, class: "btn btn-primary" %></li>
+        <% if client_signed_in? %>
+          <li><%= link_to "Добавить изображения", new_queue_image_path, class: "btn btn-primary" %></li>
+          <li><%= link_to "Очередь",    queue_images_path %></li>
+        <% end %>
         <li><%= link_to "Лента",    lenta_path %></li>
-        <li><%= link_to "Очередь",    queue_images_path %></li>
         <li><%= link_to "О проекте",    about_path %></li>
+        <% if client_signed_in? %>
+          <li><%= link_to "Выйти",  destroy_client_session_path, :method => :delete %></li>
+        <% else %>
+          <li><%= link_to 'Войти', new_client_session_path %></li>
+        <% end %>
       </ul>
 
     <!-- /.nav-collapse -->
@@ -27,13 +34,19 @@
 
       <%= link_to "Ostagram", root_path, class: "logoStyle" %>
     </div>
-    <div class="navbar-collapse collapse" style="height: 1px;" aria-expanded="false">
+    <div class="navbar-collapse collapse" aria-expanded="false">
       <ul class="nav navbar-nav">
-        <li><%= link_to "ОБРАБОТАТЬ ИЗОБРАЖЕНИЕ", new_queue_image_path %></li>
-        <li style="border-top: 1px solid #000000;box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);"><%= link_to "ЛЕНТА",  lenta_path %></li>
-        <li><%= link_to "ОЧЕРЕДЬ",    queue_images_path %></li>
+        <% if client_signed_in? %>
+            <li><%= link_to "ОБРАБОТАТЬ ИЗОБРАЖЕНИЕ", new_queue_image_path %></li>
+            <li style="border-top: 1px solid #000000;box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);" ><%= link_to "ОЧЕРЕДЬ",    queue_images_path %></li>
+        <% end %>
+        <li ><%= link_to "ЛЕНТА",  lenta_path %></li>
         <li><%= link_to "О ПРОЕКТЕ",    about_path %></li>
-
+        <% if client_signed_in? %>
+            <li><%= link_to "ВЫЙТИ",  destroy_client_session_path, :method => :delete %></li>
+        <% else %>
+            <li><%= link_to 'ВОЙТИ', new_client_session_path %></li>
+        <% end %>
       </ul>
     </div>
 

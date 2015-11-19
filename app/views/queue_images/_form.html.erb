@@ -1,38 +1,36 @@
-
+<h1></h1>
 <div class="container">
-  <h3></h3>
-  <p>  Пожалуйста, укажите правильную Вашу почту. Обработанное изображение будут доставлено Вам на почту. </p>
-  <h3></h3>
-<%= form_for(@queue_image, :html => {:multipart => true, :class => "form-signin"}) do |f| %>
-  <% if @queue_image.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@queue_image.errors.count, "error") %> Неверно заполненные данные:</h2>
+  <div class="row">
+    <div class="col-lg-offset-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
 
-      <ul>
-      <% @queue_image.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <%= form_for(@queue_image) do |f| %>
+      <% if @queue_image.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@queue_image.errors.count, "error") %> Неверно заполненные данные:</h2>
+
+          <ul>
+          <% @queue_image.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
+
+
+      <div class="field">
+        <%= f.label "обрабатываемое изображение" %><br>
+        <%= f.file_field :content_image %>
+      </div>
+      <div class="field">
+        <%= f.label "шаблон"%><br>
+        <%= f.file_field :style_image %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
+      </div>
+    <% end %>
+
     </div>
-  <% end %>
-
-
-  <div class="field">
-    <%= f.label "обрабатываемое изображение" %><br>
-    <%= f.file_field :content_image %>
   </div>
-  <div class="field">
-    <%= f.label "шаблон"%><br>
-    <%= f.file_field :style_image %>
-  </div>
-    <div class="field">
-      <%= f.label "email"%><br>
-      <%= f.email_field :user_id, cols: 60 %>
-    </div>
-
-  <div class="actions">
-    <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
-  </div>
-<% end %>
-
 </div>

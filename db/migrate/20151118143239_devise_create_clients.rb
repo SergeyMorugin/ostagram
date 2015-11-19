@@ -8,7 +8,7 @@ class DeviseCreateClients < ActiveRecord::Migration
       #
       t.string :name,               null: false
       t.string :avatar,             null: false
-      t.datetime :lprocess,         null: false
+      t.datetime :lastprocess#,         null: false
 
 
       t.string :encrypted_password, null: false, default: ""

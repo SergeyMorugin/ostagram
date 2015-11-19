@@ -66,11 +66,11 @@ class ImageJob
 
 
   def execute_debug
-    set_config(@worker_name)
-    is_luajit_poc_exist
+    #set_config(@worker_name)
+    #is_luajit_poc_exist
+    #return
 
-    return
-    while true
+    loop do
       imgs = QueueImage.where("status = 0 ").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         set_config(@worker_name)
@@ -84,10 +84,10 @@ class ImageJob
         #10.times do
         # i += 1
         #end
-        #download_n_save_result(10,item)
+        download_n_save_result(10,item)
         #
         process_time = Time.at(Time.now - process_time)
-        #item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
+        item.update({:status => 2, :ftime => Time.now, :ptime => process_time})
       else
         log "-----------------------Stop Demon---------------------------"
         return "Zero"
@@ -245,7 +245,7 @@ class ImageJob
     loc =  "#{@local_tmp_path}/#{name}"
     save_image(num,item,loc)
     if iter_num == @iteration_count
-      ImageMailer.send_image(item.user, iter_num, @iteration_count, File.read(loc)).deliver_now
+      ImageMailer.send_image(item.client, iter_num, @iteration_count, File.read(loc)).deliver_now
     end
     #
     log "save_image: #{name}"

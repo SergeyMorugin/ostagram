@@ -365,9 +365,9 @@ aside {
 .styleHeadRow-lg{
   margin-top: 20px;
   padding-top: 0 px;
-  height: 50px;
+  height: 48px;
   border-top: 1px solid lightgray;
-
+  border-bottom: 1px solid lightgray;
   //border-bottom: 1px solid lightgray;
 
 }
@@ -376,6 +376,22 @@ aside {
   padding-right: 0!important;
   padding-left: 0!important;
   margin-top: 15px;
+}
+
+.userAvatarStyle-lg{
+  padding-right: 0!important;
+  padding-left: 0!important;
+
+}
+
+.userAvatarImage-lg{
+  height: 100%;
+  width: 100%;
+}
+
+.textUserStyle-lg{
+  color: darkblue;
+  font-weight: bold;
 }
 
 
@@ -394,9 +410,10 @@ aside {
     //padding-top: 15px;
     //height: 50px;
     //padding-top:5%;
-    padding-bottom:2%;
+    //padding-bottom:2%;
     //border: 1px solid lightgray;
     border-top: 1px solid lightgray;
+    //border-bottom: 1px solid lightgray;
     padding-right: 0!important;
     padding-left: 0!important;
   }
@@ -407,10 +424,10 @@ aside {
   }
 
   .styleHeadCol2-xs{
-    padding-top:2%;
+    padding-top:5%;
 
     //padding-right: 0!important;
-    //padding-left: 0!important;
+    padding-left: 0!important;
   }
 
   .imageBlock200-xs{
@@ -432,13 +449,23 @@ aside {
   }
 
   .textHeadStyle-xs{
-    font-size: 4vw;
+    font-size: 5vw;
+
   }
 
 
 }
+.userAvatarImage-xl{
+  height: 100%;
+  width: 100%;
+}
 
-
+.textUserStyle-xs
+{
+  font-size: 5vw;
+  color: darkblue;
+  font-weight: bold;
+}
 
 
 

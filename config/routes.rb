@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   devise_for :clients
   resources :queue_images
+
+  get 'static_pages/lenta', as: 'user_root'
+
   match '/about', to: 'static_pages#about', via: 'get'
   match '/home', to: 'static_pages#home', via: 'get'
   match '/error', to: 'static_pages#error', via: 'get'

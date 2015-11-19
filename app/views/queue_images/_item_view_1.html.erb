@@ -10,13 +10,13 @@
     <div class="col-lg-6 col-lg-offset-3 ">
 
     <div class="row styleHeadRow-lg">
-      <div class="col-lg-1 styleContentImage2-lg">
-        <%= image_tag("/like.png", alt: "like.png", class: "contentImageStyle-xs") %>
+      <div class="col-lg-1 userAvatarStyle-lg">
+        <%= image_tag(item.client.avatar.avatar50.url, class: "userAvatarImage-lg") if !item.client.nil? %>
       </div>
 
       <div class="col-lg-7 styleHeadCol2-lg">
-        <span class="user">
-            <%= item.user.email %>
+        <span class="textUserStyle-lg">
+            <%= item.client.name if !item.client.nil? %>
          </span>
       </div>
 
@@ -59,20 +59,23 @@
 
 
   <div class="row styleHeadRow-xs">
-    <div class="col-md-1 col-sm-1 col-xs-1 styleHeadCol1-xs">
-      <%= image_tag("/like.png", alt: "like.png", class: "contentImageStyle-xs") %>
+    <div class="col-md-2 col-sm-2 col-xs-2 styleHeadCol1-xs">
+      <%= image_tag(item.client.avatar.avatar100.url, class: "userAvatarImage-xl") if !item.client.nil? %>
     </div>
 
-    <div class="col-md-8 col-sm-8 col-xs-8 styleHeadCol2-xs">
-      <span class="textHeadStyle-xs">
-      <%= item.user.email %>
+    <div class="col-md-7 col-sm-7 col-xs-7 styleHeadCol2-xs">
+      <span class="textUserStyle-xs">
+        <%= item.client.name if !item.client.nil? %>
       </span>
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-3 styleHeadCol2-xs">
+      <% if debug %>
       <span class="textHeadStyle-xs">
       <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
       </span>
+      <% end %>
+
     </div>
   </div>
 

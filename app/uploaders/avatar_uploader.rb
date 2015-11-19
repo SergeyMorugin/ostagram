@@ -3,7 +3,7 @@
 class AvatarUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
-
+  include DebHelper
   include CarrierWave::MiniMagick
   #include CarrierWave::RMagick
   #include Cloudinary::CarrierWave
@@ -61,6 +61,34 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #process :convert => format
   end
 
+  version :avatar50, :if => :is_user_avatar? do
+    #process convert: 'png'
+    process :resize_to_fit => [80, 80]
+    #process convert: 'png'
+    process :resize_to_fill => [46, 46]
+    #cloudinary_transformation :effect => "brightness:30", :radius => 20,
+    #                         :width => 100, :height => 100, :crop => :thumb, :gravity => :face
+
+    process :round => [2]
+    #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
+    #process :convert => format
+  end
+
+
+  version :avatar100, :if => :is_user_avatar? do
+    #process convert: 'png'
+    process :resize_to_fit => [150, 150]
+    #process convert: 'png'
+    process :resize_to_fill => [100, 100]
+    #cloudinary_transformation :effect => "brightness:30", :radius => 20,
+    #                         :width => 100, :height => 100, :crop => :thumb, :gravity => :face
+
+    process :round => [2]
+    #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
+    #process :convert => format
+  end
+
+
   #version :mini do
     #process convert: 'png'
     #process :resize_to_fit => [50, 50]
@@ -75,6 +103,10 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   def is_content_style_image? picture
     model.class.to_s.underscore == "queue_image"
+  end
+
+  def is_user_avatar? picture
+    model.class.to_s.underscore == "client"
   end
 
 
