@@ -15,7 +15,7 @@ class StaticPagesController < ApplicationController
 
 
   def lenta
-    @items= QueueImage.where("status > 0").order('created_at DESC')
+    @items= QueueImage.where("status > 1").order('created_at DESC').page(params[:page]).per(10)
   end
 
   def about

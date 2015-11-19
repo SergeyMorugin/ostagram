@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require lightbox
 //= require bootstrap-sprockets
+
 //= require_tree .
