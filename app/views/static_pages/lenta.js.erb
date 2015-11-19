@@ -1,8 +1,6 @@
 // views/posts/index.js.erb
-$('#content').append("<%=j render(partial: 'queue_images/item_view_1', collection: @items, format: 'html') %>");
+$('#posts').append('<%= escape_javascript render(partial: 'queue_images/item_view_1', collection: @items, format: 'html') %>');
 
-<% if @items.current_page == @items.total_pages %>
-  $('#view-more').remove();
-<% else %>
-  $('#view-more a').attr('href', '<%= url_for(page: @items.current_page + 1) %>');
-<% end %>
+
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@items) %>');
+

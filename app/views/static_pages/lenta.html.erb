@@ -1,9 +1,5 @@
-<div id="content">
+<div id="posts">
   <%= render partial: 'queue_images/item_view_1', collection:  @items %>
 </div>
 
-<% unless @items.current_page == @items.total_pages %>
-    <p id="view-more">
-      <%= link_to('Далее', url_for(page: @items.current_page + 1)) %>
-    </p>
-<% end %>
+<%= will_paginate @items %>

@@ -19,4 +19,5 @@
 /shared
 /config/*.secret
 /public/uploads/*
+/config/database.yml
 #/config/secrets.yml
