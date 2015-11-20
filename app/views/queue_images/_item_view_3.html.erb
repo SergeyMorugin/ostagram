@@ -1,38 +1,55 @@
 <% debug = false %>
 
-<%item = item_view_2 %>
+<%item = item_view_3 %>
 <%res_img = item.result_image %>
 
 <div class="row styleRow2-lg">
 
-        <div class="visible-lg  col-lg-2 col-lg-offset-2" >
+        <div class="visible-lg  col-lg-2 col-lg-offset-2 userAvatarStyle-lg" >
           <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
-        <div class="visible-lg  col-lg-2">
+        <div class="visible-lg  col-lg-2 userAvatarStyle-lg">
           <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
 
 
-        <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 col-md-offset-2" >
+        <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 col-md-offset-2 userAvatarStyle-lg" >
           <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle") %>
         </div>
-        <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 ">
+        <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
           <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle") %>
         </div>
 
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
+          <% if item.status > 4 %>
+              <div class="visible-lg" >
+                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
 
-        <div class=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+              </div>
+              <div class="hidden-lg" >
+                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle")  if res_img %>
+              </div>
+          <% else %>
+            <%= image_tag("/loading_2.png", class: "imagesStyle") %>
+          <% end %>
+        </div>
+
+
+
+
+
+        <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
 
           <% if false %>
-          <span class="user">
+          <span class="textAboutStyle">
            <%= link_to "поделиться", item, method: :delete,
                        data: { confirm: "You sure?" } %>
           </span>
           <% end %>
 
-              <span class="content"><p>Добавлено: <%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
+              <span class="textAboutStyle"><p><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
 
-          <span class="timestamp">
+          <span class="textAboutStyle">
             <% if item.status < 0 %>
                 <p> Ошибка при обработке </p>
             <% elsif item.status == 1 %>
@@ -44,17 +61,14 @@
             <% end %>
           </span>
 
-          <span class="user">
+          <span class="">
             <p> </p>
-            <% if debug || item.status != 1 %>
-            <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
-             <% end %>
+            <% if debug || item.status == 1 %>
+              <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
+            <% end %>
           </span>
 
         </div>
-
-
-
 
 </div>
 

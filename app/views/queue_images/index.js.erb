@@ -1,0 +1,5 @@
+//index.js.erb
+$('#posts').append('<%= escape_javascript render(partial: 'item_view_3', collection:  @items, format: 'html') %>');
+
+
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@items) %>');

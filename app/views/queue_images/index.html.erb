@@ -1,8 +1,9 @@
-<% if @items.count > 0 %>
-  <%= render partial: 'item_view_2', collection:  @items %>
-<% else %>
-  <h3>Очередь на обработку пуста</h3>
-<% end %>
+<div id="posts">
+  <% if @items.count > 0 %>
+      <%= render partial: 'item_view_3', collection:  @items %>
+  <% else %>
+      <h3>В вашей коллекции еще ничего нет</h3>
+  <% end %>
+</div>
 
-
-
+<%= will_paginate @items %>

@@ -19,7 +19,6 @@ class ImageJob
   @worker_name = :server1
 
   def initialize(worker_name)
-    log "-----------------------Start Demon: #{worker_name}---------------------"
     @worker_name = worker_name
     #set_config(worker_name)
   end
@@ -51,11 +50,16 @@ class ImageJob
 
 
   def execute
+    log "-----------------------Start Demon: #{@worker_name}---------------------"
     while true
-      imgs = QueueImage.where("status = #{STATUS_NOT_PROCESSED} ").order('created_at ASC')
-      if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
+
+
+      item = get_images_from_queue  # QueueImage.where("status = #{STATUS_NOT_PROCESSED}").order('created_at ASC')
+
+      if !item.nil? #&& imgs.count > 0 && !imgs.first.nil?
+        log("Images: #{item.attributes}")
         set_config(@worker_name)
-        item = imgs.first
+        #item = imgs.first
         res = execute_image(item)
       else
         log "-----------------------Stop Demon---------------------------"
@@ -65,6 +69,17 @@ class ImageJob
     end
   end
 
+  def get_images_from_queue
+    cl = Client.find_by_sql("select * from clients c where lastprocess is null and exists (select * from queue_images q where c.id = q.client_id and status = 1) order by created_at ASC")
+    if cl.count == 0
+      cl = Client.find_by_sql("select * from clients c where exists (select * from queue_images q where c.id = q.client_id and status = 1) order by lastprocess ASC")
+    end
+    return nil if cl.count == 0
+    cl = cl.first
+    log("Client: #{cl.attributes}")
+    cl.queue_images.where("status = 1").order('created_at ASC').first
+  end
+
 
   def execute_debug
     #set_config(@worker_name)
@@ -72,7 +87,8 @@ class ImageJob
     #return
 
     loop do
-      imgs = QueueImage.where("status = #{STATUS_NOT_PROCESSED}").order('created_at ASC')
+
+      imgs = get_images_from_queue #QueueImage.where("status = #{STATUS_NOT_PROCESSED}").order('created_at ASC')
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         set_config(@worker_name)
         item = imgs.first
@@ -156,7 +172,7 @@ class ImageJob
       ImageMailer.send_error(@admin_email,"",item,errors).deliver_now
       log "wait_images: #{errors}"
     end
-
+    item.client.update({:lastprocess => Time.now})
     #Change status to PROCESSED
     #item.status = @STATUS_PROCESSED
     #item.save

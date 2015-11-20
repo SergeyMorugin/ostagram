@@ -5,12 +5,21 @@ class QueueImagesController < ApplicationController
   # GET /queue_images
   # GET /queue_images.json
   def index
-    @items= QueueImage.where("status > 0 AND status < 3").order('created_at DESC')
+    if !client_signed_in?
+      redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+      return
+    end
+    #@items= current_client.queue_images.all.order('created_at DESC')
+    @items= current_client.queue_images.all.order('created_at DESC').paginate(:page => params[:page], :per_page => 6)
+
+    #@items= QueueImage.where("status > 9").order('ftime DESC').paginate(:page => params[:page], :per_page => 6)
   end
 
   # GET /queue_images/1
   # GET /queue_images/1.json
   def show
+    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+    return
   end
 
   # GET /queue_images/new
@@ -20,7 +29,8 @@ class QueueImagesController < ApplicationController
 
   # GET /queue_images/1/edit
   def edit
-
+    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+    return
   end
 
   # POST /queue_images
@@ -52,6 +62,8 @@ class QueueImagesController < ApplicationController
   # PATCH/PUT /queue_images/1
   # PATCH/PUT /queue_images/1.json
   def update
+    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+    return
     respond_to do |format|
       if @queue_image.update(queue_image_params)
         format.html { redirect_to @queue_image, notice: 'Queue image was successfully updated.' }
@@ -66,6 +78,10 @@ class QueueImagesController < ApplicationController
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy
+    if @queue_image.status == 2
+      redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+      return
+    end
     @queue_image.destroy
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }

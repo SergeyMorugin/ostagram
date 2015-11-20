@@ -12,7 +12,7 @@ module WorkerHelper
     else
       img_job = ImageJob.new(:server1)
       #img_job.set_config()
-      img_job.execute_debug
+      img_job.execute
       #ResqueJob.perform(worker_name)
       #pri = ImageJob.new(:s2)
       #@result = pri.execute
