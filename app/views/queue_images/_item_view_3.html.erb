@@ -6,7 +6,7 @@
 <div class="row styleRow2-lg">
 
         <div class="visible-lg  col-lg-2 col-lg-offset-2 userAvatarStyle-lg" >
-          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle") %>
         </div>
         <div class="visible-lg  col-lg-2 userAvatarStyle-lg">
           <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
@@ -14,7 +14,7 @@
 
 
         <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 col-md-offset-2 userAvatarStyle-lg" >
-          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle") %>
+          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle")%>
         </div>
         <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
           <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle") %>

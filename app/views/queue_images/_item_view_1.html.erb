@@ -1,4 +1,4 @@
-<% debug = true %>
+<% debug = false %>
 
 <%item = item_view_1 %>
 <%res_img = item.result_image %>
@@ -20,15 +20,17 @@
          </span>
       </div>
 
-      <div class="col-lg-2 styleHeadCol2-lg">
+      <div class="col-lg-3 styleHeadCol2-lg">
+        <% if debug %>
         <span class="user">
             <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } if debug %>
         </span>
+        <% end %>
       </div>
 
-      <div class="col-lg-2 styleHeadCol2-lg">
+      <div class="col-lg-1 styleHeadCol2-lg">
         <span class="user">
-            <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
+            <%= item.time_ago %>
         </span>
       </div>
     </div>
@@ -38,7 +40,7 @@
     <div class="col-lg-4 styleContentImage1-lg ">
       <div class="row">
         <div class="imageBlock200-lg col-lg-12" >
-          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle") %>
         </div>
         <div class="imageBlock200-lg col-lg-12">
           <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
@@ -63,25 +65,25 @@
       <%= image_tag(item.client.avatar.avatar100.url, class: "userAvatarImage-xl") if !item.client.nil? %>
     </div>
 
-    <div class="col-md-7 col-sm-7 col-xs-7 styleHeadCol2-xs">
+    <div class="col-md-8 col-sm-8 col-xs-8 styleHeadCol2-xs">
       <span class="textUserStyle-xs">
         <%= truncate(item.client.name, :length => 15)  if !item.client.nil? %>
       </span>
     </div>
 
-    <div class="col-md-3 col-sm-3 col-xs-3 styleHeadCol2-xs">
-      <% if debug %>
+    <div class="col-md-2 col-sm-2 col-xs-2 styleHeadCol2-xs">
+
       <span class="textHeadStyle-xs">
-      <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
+       <%= item.time_ago%>
       </span>
-      <% end %>
+
 
     </div>
   </div>
 
   <div class="row">
        <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs" >
-         <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "contentImageStyle-xs"), item.content_image.url, class: "contentImageStyle-xs") %>
+         <%= image_tag(item.content_image.thumb200.url, class: "contentImageStyle-xs")%>
        </div>
        <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs">
          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "contentImageStyle-xs"), item.style_image.url, class: "contentImageStyle-xs") %>

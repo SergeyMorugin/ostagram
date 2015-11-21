@@ -153,12 +153,24 @@ namespace :deploy do
   end
 
 
+  namespace :linking do
+    task :uploads do
+      on roles :all do
+        desc 'Создание симлинка на изображения'
+        sudo :ln, "-s #{shared_path}/current/public/uploads /home/deploy/disk600/server/ostagram/public/uploads"
+      end
+    end
+  end
+
+
+
   #before 'deploy:setup', 'git:push'
   after :finishing, 'deploy:migrate'
-  after :finishing, 'application:stop'
-  after :finishing, 'application:stop'
-  after :finishing, 'application:start'
-  after :finishing, 'nginx:reload'
+  after :finishing, 'linking:uploads'
+ # after :finishing, 'application:stop'
+  #after :finishing, 'application:stop'
+  #after :finishing, 'application:start'
+  #after :finishing, 'nginx:reload'
   after :finishing, :cleanup
   #after :restart, :clear_cache do
   # on roles(:web), in: :groups, limit: 3, wait: 10 do

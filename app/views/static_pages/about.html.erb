@@ -1,27 +1,40 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-6 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12">
-        <h3>О проекте</h3>
-        <p>
-          Проект <a href="http://ostagram.ru/">Ostagram</a> является web интервейсом для взаимодействия с открытым проектом машинного обучения <a href="https://github.com/torch/torch7">Torch7</a>.</p>
-        <p>
-          Был сделан сантехником в момент запоя. Enjoy.
-        </p>
-        <p> Пожалуйста, зарегистрируйтесь что бы добавлять изображения на обработку</p>
+        <h3>Привет</h3>
+        <p>  На нашем <a href="http://ostagram.ru/lenta">портале</a> вы можете прикоснуться к искусству, не умея рисовать и даже ровно писать. Загрузив фотографию, которую хотите обработать, и фото,
+         стиль которого будет использоваться, вы можете получить совершенно неожиданный результат, который не мог присниться даже в детстве. </p>
+        <p>Для примера, берем фото вашей девушки (если конечно она у вас есть, привет Женек),</p>
+        <%=image_tag("/megan.jpg", class: "imagesStyle")%>
+        <p></p>
+        <p>и добавляем немного искусства, стоимостью около десяти миллионов мужских носков,</p>
+
+        <%=image_tag("/starry_night.jpg", class: "imagesStyle")%>
+        <p></p>
+        <p>получаем шедевр, который можно повесить напротив плиты.</p>
+        <%=image_tag("/starry_megan.png", class: "imagesStyle")%>
+        <p></p>
+        <p>  Процесс создания картины компьютером конечно не настолько трудоемок, как попытаться нарисовать ее самому, но занимает продолжительное время.
+          Поэтому не стоит ждать результат мгновенно, а стоит полистать <a href="http://ostagram.ru/lenta">ленту</a> уже готовых работ компьютерного Ван Гога. <p>
+
+        <p>  А теперь заумный текст, который я сам не понимаю. Для создания картин используется сверточные нейронные сети и алгоритм художественно стиля by Leon A. Gatys, Alexander S. Ecker, and Matthias Bethge.
+          Более подробно с этим можно ознакомиться по ссылке на <a href="https://github.com/jcjohnson/neural-style">GitHub</a>.</p>
+
+        <p>  Для добавления фото необходимо зарегистрироваться. Процесс прост как пять копеек, а в подарок вы будете получать свои обработанные фото на почту, как только они «нарисуются».</p>
+
+      <% if !client_signed_in? %>
+        <div class="actions">
+          <%= link_to "Зарегистрироваться", new_client_registration_path , class: "btn btn-primary btn-large", style: "width: 100%" %>
+        </div>
+        <h3></h3>
+        <div class="actions">
+          <%= link_to "Перейти к просмотру", lenta_path, class: "btn btn-primary", style: "width: 100%" %>
+        </div>
+      <% end %>
     </div>
+
   </div>
 
-  <% if !client_signed_in? %>
-  <div class="row">
-    <div class="col-lg-2 col-lg-offset-4 col-md-6 col-mdlg-offset-1 col-sm-6 col-sm-offset-1 col-xs-6 col-xs-offset-1">
-      <h3></h3>
-      <%= link_to "Зарегистрироваться", new_client_registration_path , class: "btn btn-primary" %>
-    </div>
-    <div class="col-lg-1 col-md-5 col-sm-5 col-xs-5">
-      <h3></h3>
-      <%= link_to "Войти", new_client_session_path, class: "btn btn-primary" %>
-    </div>
-  </div>
-  <% end %>
+
 
  </div>
