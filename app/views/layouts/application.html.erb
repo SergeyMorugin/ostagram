@@ -8,6 +8,7 @@
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/shim' %>
+    <%= analytics_init if Rails.env.production? %>
   </head>
   <body>
     <%= render 'layouts/header' %>

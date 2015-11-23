@@ -45,15 +45,5 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.raise_delivery_errors = true
 
-  #config.action_mailer.smtp_settings = {
-   #   :address => "smtp.yandex.ru",
-    #  :port => 587,
-     # :domain => 'yandex.ru',
-      #:authentication => :plain,
-      #:user_name => 'out@ostagram.ru',
-      #:password => '0sMGmcg0DIpB',
-      #:enable_starttls_auto => true,
-      #:ssl => true
-
- # }
+  GA.tracker = "UA-70545706-1"
 end
