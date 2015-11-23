@@ -37,10 +37,15 @@ class AvatarUploader < CarrierWave::Uploader::Base
   process :resize_to_fit => [1600, 1600], if: :is_content_style_image?
 
 
+  version :to_proc, :if => :is_content_style_image? do
+    process :resize_to_fit => [1500, 1500]
+    process :resize_to_fill => [1000, 1000]
+  end
+
   version :thumb200, :if => :is_content_style_image? do
     #process convert: 'png'
     process :resize_to_fit => [300, 300]
-    process convert: 'png'
+    #process convert: 'png'
     process :resize_to_fill => [180, 180]
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
@@ -51,7 +56,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   version :thumb400, :if => :is_processed_image? do
     #process convert: 'png'
     process :resize_to_fit => [600, 600]
-    process convert: 'png'
+    #process convert: 'png'
     process :resize_to_fill => [400, 400]
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face

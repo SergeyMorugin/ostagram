@@ -11,7 +11,7 @@ class QueueImage < ActiveRecord::Base
 
 
     return 'сейчас' if t_ago < 1
-    str = "#{t_ago.to_i} мин"
+    str = "#{t_ago.to_i} м"
     t_ago = (t_ago/60)
     if t_ago < 1
       return str

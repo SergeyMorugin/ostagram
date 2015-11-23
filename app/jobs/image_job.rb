@@ -152,8 +152,8 @@ class ImageJob
     #Upload images to workserver
     @content_image_name = "content.#{item.content_image.to_s.split('.').last}"
     @style_image_name = "style.#{item.style_image.to_s.split('.').last}"
-    return "upload_content_image: false" unless upload_image(item.content_image, "output/#{@content_image_name}")
-    return "upload_stule_image: false" unless upload_image(item.style_image, "output/#{@style_image_name}")
+    return "upload_content_image: false" unless upload_image(item.content_image.to_proc.url, "output/#{@content_image_name}")
+    return "upload_stule_image: false" unless upload_image(item.style_image.to_proc.url, "output/#{@style_image_name}")
     #Run process
     send_start_process_comm()
     sleep 10
