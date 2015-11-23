@@ -77,7 +77,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.serve_static_assets = true
+  #config.serve_static_assets = true
 
   GA.tracker = "UA-70545706-1"
 end

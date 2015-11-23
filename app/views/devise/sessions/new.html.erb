@@ -13,6 +13,12 @@
         <%= f.password_field :password, autocomplete: "off" %>
       </div>
 
+      <% if devise_mapping.rememberable? -%>
+         <div class="field hidden">
+            <%= f.check_box :remember_me,  {checked: true} %>
+            <%= f.label :remember_me %>
+         </div>
+      <% end -%>
 
 
       <div class="actions">
