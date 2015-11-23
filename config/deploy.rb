@@ -157,7 +157,7 @@ namespace :deploy do
     task :uploads do
       on roles :all do
         desc 'Создание симлинка на изображения'
-        sudo :ln, "-s #{shared_path}/current/public/uploads /home/deploy/disk600/server/ostagram/public/uploads"
+        sudo :ln, "-s /home/deploy/disk600/server/ostagram/public/uploads #{release_path}/public/uploads "
       end
     end
   end
