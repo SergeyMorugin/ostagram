@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  resources :styles
+  resources :contents
   get 'admin_pages/main'
 
   get 'admin_pages/images'
