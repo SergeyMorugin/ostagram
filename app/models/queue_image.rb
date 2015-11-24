@@ -1,8 +1,10 @@
 class QueueImage < ActiveRecord::Base
   has_many :pimages , dependent: :destroy
   belongs_to :client
-  mount_uploader :content_image, AvatarUploader
-  mount_uploader :style_image, AvatarUploader
+  belongs_to :content
+  belongs_to :style
+  #mount_uploader :content_image, AvatarUploader
+  #mount_uploader :style_image, AvatarUploader
 
 
   def time_ago

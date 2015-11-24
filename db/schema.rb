@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118143239) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20151124144219) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -41,10 +38,17 @@ ActiveRecord::Schema.define(version: 20151118143239) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "clients", ["confirmation_token"], name: "index_clients_on_confirmation_token", unique: true, using: :btree
-  add_index "clients", ["email"], name: "index_clients_on_email", unique: true, using: :btree
-  add_index "clients", ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true, using: :btree
-  add_index "clients", ["unlock_token"], name: "index_clients_on_unlock_token", unique: true, using: :btree
+  add_index "clients", ["confirmation_token"], name: "index_clients_on_confirmation_token", unique: true
+  add_index "clients", ["email"], name: "index_clients_on_email", unique: true
+  add_index "clients", ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true
+  add_index "clients", ["unlock_token"], name: "index_clients_on_unlock_token", unique: true
+
+  create_table "contents", force: :cascade do |t|
+    t.string   "image",                  null: false
+    t.integer  "status",     default: 0, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "pimages", force: :cascade do |t|
     t.integer  "queue_image_id"
@@ -55,17 +59,34 @@ ActiveRecord::Schema.define(version: 20151118143239) do
   end
 
   create_table "queue_images", force: :cascade do |t|
-    t.integer  "client_id",                  null: false
-    t.string   "content_image",              null: false
-    t.string   "style_image",                null: false
-    t.string   "init_str",      default: ""
-    t.integer  "status",        default: 0
-    t.string   "result",        default: ""
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "client_id",               null: false
+    t.string   "init_str",   default: ""
+    t.integer  "status",     default: 0
+    t.string   "result",     default: ""
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.time     "ptime"
     t.datetime "stime"
     t.datetime "ftime"
+    t.integer  "style_id",   default: 0,  null: false
+    t.integer  "content_id", default: 0,  null: false
+    t.integer  "end_status", default: 11, null: false
+  end
+
+  create_table "styles", force: :cascade do |t|
+    t.string   "image",                   null: false
+    t.string   "init"
+    t.integer  "status",      default: 0, null: false
+    t.integer  "use_counter", default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

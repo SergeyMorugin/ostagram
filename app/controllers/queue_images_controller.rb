@@ -1,5 +1,6 @@
 class QueueImagesController < ApplicationController
   include WorkerHelper
+  include ConstHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy]
 
   # GET /queue_images
@@ -40,15 +41,9 @@ class QueueImagesController < ApplicationController
       redirect_to new_queue_image_path
       return
     end
-
-
-    #
-    #eml = params[:queue_image][:user_id]
-    #usr = User.find_or_create_by(email: eml)
-    @queue_image = current_client.queue_images.build(queue_image_params)
-    @queue_image.status = 1
+    save_status = create_queue
     respond_to do |format|
-      if @queue_image.save
+      if save_status
         start_workers()
         format.html { redirect_to queue_images_path, notice: 'Изображения успешно добавлены в очередь обработки.' }
         format.json { render :show, status: :created, location: @queue_image }
@@ -82,7 +77,8 @@ class QueueImagesController < ApplicationController
       redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
       return
     end
-    @queue_image.destroy
+    @queue_image.status = 0
+    @queue_image.save
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
       format.json { head :no_content }
@@ -90,6 +86,30 @@ class QueueImagesController < ApplicationController
   end
 
   private
+
+    def create_queue
+      queue_params = queue_image_params()
+      save_status = false
+      QueueImage.transaction do
+        ci = Content.new(image: queue_params[:content_image])
+        save_status = ci.save
+        if queue_params[:from_file].blank? || queue_params[:from_file] == '1'
+          si = Style.new(image: queue_params[:style_image])
+          save_status &= si.save
+        else
+          si = Style.find(queue_params[:queue_image][:style_id])
+        end
+        @queue_image = current_client.queue_images.new()
+        @queue_image.content_id = ci.id
+        @queue_image.style_id = si.id
+        @queue_image.status = STATUS_NOT_PROCESSED
+        @queue_image.end_status = STATUS_PROCESSED
+        save_status &= @queue_image.save
+      end
+      save_status
+    end
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_queue_image
       @queue_image = QueueImage.find(params[:id])
@@ -97,7 +117,7 @@ class QueueImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def queue_image_params
-      params.require(:queue_image).permit(:content_image, :style_image) #, :init_str, :status, :result)
+      params.require(:queue_image).permit(:content_image, :from_file, :style_image, :style_id) #, :init_str, :status, :result)
     end
 
     def valid_queue_image_params

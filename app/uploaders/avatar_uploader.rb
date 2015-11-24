@@ -107,11 +107,19 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   def is_content_style_image? picture
-    model.class.to_s.underscore == "queue_image"
+    model.class.to_s.underscore == "content" || model.class.to_s.underscore == "style"
   end
 
   def is_user_avatar? picture
     model.class.to_s.underscore == "client"
+  end
+
+  def is_content_image? picture
+    model.class.to_s.underscore == "content"
+  end
+
+  def is_style_image? picture
+    model.class.to_s.underscore == "style"
   end
 
 

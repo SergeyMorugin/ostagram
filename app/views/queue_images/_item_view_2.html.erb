@@ -6,18 +6,18 @@
 <div class="row styleRow2-lg">
 
         <div class="visible-lg  col-lg-2 col-lg-offset-2" >
-          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle") %>
+          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle") %>
         </div>
         <div class="visible-lg  col-lg-2">
-          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
 
 
         <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 col-md-offset-2" >
-          <%= link_to(image_tag(item.content_image.thumb200.url, alt:item.content_image, class: "imagesStyle"), item.content_image.url,class: "imagesStyle") %>
+          <%= link_to(image_tag(item.content.image.thumb200.url, alt:item.content.image, class: "imagesStyle"), item.content.image.url,class: "imagesStyle") %>
         </div>
         <div class="hidden-lg col-md-2 col-sm-6 col-xs-6 ">
-          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle") %>
+          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle") %>
         </div>
 
 

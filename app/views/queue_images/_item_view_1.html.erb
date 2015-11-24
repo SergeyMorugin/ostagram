@@ -40,10 +40,10 @@
     <div class="col-lg-4 styleContentImage1-lg ">
       <div class="row">
         <div class="imageBlock200-lg col-lg-12" >
-          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle") %>
+          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle") %>
         </div>
         <div class="imageBlock200-lg col-lg-12">
-          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
       </div>
     </div>
@@ -83,10 +83,10 @@
 
   <div class="row">
        <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs" >
-         <%= image_tag(item.content_image.thumb200.url, class: "contentImageStyle-xs")%>
+         <%= image_tag(item.content.image.thumb200.url, class: "contentImageStyle-xs")%>
        </div>
        <div class="col-md-6 col-sm-6 col-xs-6  imageBlock200-xs">
-         <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "contentImageStyle-xs"), item.style_image.url, class: "contentImageStyle-xs") %>
+         <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "contentImageStyle-xs"), item.style.image.url, class: "contentImageStyle-xs") %>
        </div>
   </div>
 
