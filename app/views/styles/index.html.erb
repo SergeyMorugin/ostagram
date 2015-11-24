@@ -1,0 +1,23 @@
+<h4>Styles</h4>
+<%= link_to 'New style', new_style_path %>
+<br>
+  <div class="content">
+    <% @styles.each do |style| %>
+      <div class="row">
+        <div class="col-lg-2 col-lg-offset-1"><%= image_tag(style.image, alt:style.image, class: "imagesStyle") %></div>
+        <div class="col-lg-3"><%= style.init %></div>
+        <div class="col-lg-1"><td><%= style.status %></div>
+        <div class="col-lg-1"><%= style.use_counter %></div>
+        <div class="col-lg-2">
+        <p><%= link_to 'Show', style %></p>
+        <p><%= link_to 'Edit', edit_style_path(style) %></p>
+        <p><%= link_to 'Destroy', style, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+
+
+
+

@@ -1,0 +1,25 @@
+<%= form_for(@content, :html => {:multipart => true}) do |f| %>
+  <% if @content.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@content.errors.count, "error") %> prohibited this content from being saved:</h2>
+
+      <ul>
+      <% @content.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :image %><br>
+    <%= f.file_field :image %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.number_field :status %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>

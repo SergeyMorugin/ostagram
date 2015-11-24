@@ -2,13 +2,14 @@ require 'net/ssh'
 require 'net/scp'
 class ImageJob
   include DebHelper
+  include ConstHelper
   #@queue = :error_server
   #
-  STATUS_ERROR = -1
-  STATUS_DELETED = 0
-  STATUS_NOT_PROCESSED = 1
-  STATUS_IN_PROCESS = 2
-  STATUS_PROCESSED = 11
+  #STATUS_ERROR = -1
+  #STATUS_DELETED = 0
+  #STATUS_NOT_PROCESSED = 1
+  #STATUS_IN_PROCESS = 2
+  #STATUS_PROCESSED = 11
   #
   @hostname = "localhost"
   @username = "root"
@@ -72,7 +73,7 @@ class ImageJob
   def get_images_from_queue
     cl = Client.find_by_sql("select * from clients c where lastprocess is null and exists (select * from queue_images q where c.id = q.client_id and status = 1) order by created_at ASC")
     if cl.count == 0
-      cl = Client.find_by_sql("select * from clients c where exists (select * from queue_images q where c.id = q.client_id and status = 1) order by lastprocess ASC")
+      cl = Client.find_by_sql("select * from clients c where exists (select * from queue_images q where c.id = q.client_id and status = #{STATUS_NOT_PROCESSED}) order by lastprocess ASC")
     end
     return nil if cl.count == 0
     cl = cl.first
@@ -142,26 +143,26 @@ class ImageJob
     log "-----------------------"
     log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
-    log "0"
+    #log "0"
     item.update({:status => STATUS_IN_PROCESS, :stime => process_time})
     # Check connection to workserver
-    log "1"
+    #log "1"
     return "get_server_name: false" if get_server_name.nil?
-    log "2"
+    #log "2"
     # Clear remote tmp folger
     return "rm_file_on_server: false" unless rm_file_on_server
-    log "3"
+    #log "3"
     #Upload images to workserver
     @content_image_name = "content.#{item.content.image.to_s.split('.').last}"
     @style_image_name = "style.#{item.style.image.to_s.split('.').last}"
-    log "4"
+    #log "4"
     return "upload_content_image: false" unless upload_image(item.content.image.to_proc.url, "output/#{@content_image_name}")
     return "upload_stule_image: false" unless upload_image(item.style.image, "output/#{@style_image_name}")
-    log "5"
+    #log "5"
     #Run process
     send_start_process_comm()
     sleep 10
-    log "6"
+    #log "6"
     # Wait processed images
     errors = wait_images(item)
     #

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  image: MyString
+  init: MyString
+  status: 1
+  use_counter: 1
+
+two:
+  image: MyString
+  init: MyString
+  status: 1
+  use_counter: 1
