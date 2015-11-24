@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   resources :styles
   resources :contents
   get 'admin_pages/main'
-
   get 'admin_pages/images'
-
   get 'admin_pages/users'
+  get 'admin_pages/startbot'
+  get 'admin_pages/startprocess'
 
   devise_for :clients
   resources :queue_images

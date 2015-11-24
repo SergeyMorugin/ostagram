@@ -1,4 +1,5 @@
 class AdminPagesController < ApplicationController
+  include WorkerHelper
   def main
   end
 
@@ -7,5 +8,17 @@ class AdminPagesController < ApplicationController
   end
 
   def users
+  end
+
+  def startbot
+    start_bot
+    redirect_to admin_pages_main_path
+    return
+  end
+
+  def startprocess
+    start_workers
+    redirect_to admin_pages_main_path
+    return
   end
 end

@@ -1,18 +1,38 @@
-class ImageJob
+class BotJob
   include DebHelper
   include ConstHelper
+  include WorkerHelper
 
-  @worker_name = :bot1
+
+  def initialize
+    @worker_name = :bot1
+    @admin_email = "cmorugin@gmail.com"
+  end
+
+
 
   def execute
+
+    log('-----------------------Start-------------------')
+    adm = Client.find_by(email: @admin_email)
+    log("Admin_id = #{adm.id}")
     loop do
-      #sleep 2
-      log('-----------------------Start-------------------')
-      next if !check_idle
+      sleep 10
+      log('------Loop start-------')
+      if !check_idle
+        log("Queue busy")
+        next
+      end
       ci = get_random_content
-      next if ci.nil?
+      if ci.nil?
+        log("No content")
+        next
+      end
       si = get_random_style
-      next if si.nil?
+      if si.nil?
+        log("No style")
+        next
+      end
       log("Content: #{ci.attributes}")
       log("Style: #{si.attributes}")
       qi = QueueImage.new
@@ -20,12 +40,15 @@ class ImageJob
       qi.end_status = STATUS_VISIBLE_FOR_BOT
       qi.content_id = ci.id
       qi.style_id = si.id
-      qi.user_id = 1
+
+      qi.client_id = adm.id
       qi.save
+
+      start_workers
       log("Queue: #{qi.attributes}")
-      log('-----------------------Stop-------------------')
+      log('----------Loop stop----------')
       #
-      break
+      #break
     end
   end
 
@@ -53,7 +76,8 @@ class ImageJob
   end
 
    def log(msg)
-     write_log(msg, @worker_name)
+     write_log(msg, @worker_name.to_s)
    end
+
 
 end

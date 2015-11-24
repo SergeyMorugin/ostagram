@@ -73,7 +73,7 @@ class ImageJob
   def get_images_from_queue
     cl = Client.find_by_sql("select * from clients c where lastprocess is null and exists (select * from queue_images q where c.id = q.client_id and status = 1) order by created_at ASC")
     if cl.count == 0
-      cl = Client.find_by_sql("select * from clients c where exists (select * from queue_images q where c.id = q.client_id and status = 1) order by lastprocess ASC")
+      cl = Client.find_by_sql("select * from clients c where exists (select * from queue_images q where c.id = q.client_id and status = #{STATUS_NOT_PROCESSED}) order by lastprocess ASC")
     end
     return nil if cl.count == 0
     cl = cl.first

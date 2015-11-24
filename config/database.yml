@@ -15,16 +15,15 @@ default: &default
 
 
 development:
-  <<: *default
-  database: db/development.sqlite3
-
- # adapter: postgresql
- # encoding: unicode
-  #database: ostagram_dev_2
-  #pool: 5
-  #timeout: 5000
-  #username: matthew
-  #password: (ntvg123
+  #<<: *default
+  #database: db/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: ostagram_dev_2
+  pool: 5
+  timeout: 5000
+  username: matthew
+  password: (ntvg123
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
