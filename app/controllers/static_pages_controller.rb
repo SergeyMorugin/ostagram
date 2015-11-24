@@ -24,7 +24,7 @@ class StaticPagesController < ApplicationController
     #img_job.execute_debug
     #start_workers
     #process_image
-    ImageMailer.send_error("cmorugin@gmail.com","","","error").deliver_now
+    #ImageMailer.send_error("cmorugin@gmail.com","","","error").deliver_now
   end
 
 

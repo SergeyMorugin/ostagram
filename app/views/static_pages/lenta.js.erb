@@ -1,6 +1,4 @@
-//lenta.js.erb
+
 $('#posts').append('<%= escape_javascript render(partial: 'queue_images/item_view_1', collection: @items, format: 'html') %>');
-
-
 $('.pagination').replaceWith('<%= escape_javascript will_paginate(@items) %>');
 

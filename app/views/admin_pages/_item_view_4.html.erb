@@ -1,0 +1,82 @@
+<% debug = false %>
+
+<%item = item_view_4 %>
+<%res_img = item.result_image %>
+
+<div class="row styleRow2-lg">
+
+        <div class="visible-lg  col-lg-2 col-lg-offset-2 userAvatarStyle-lg" >
+          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle") %>
+        </div>
+        <div class="visible-lg  col-lg-2 userAvatarStyle-lg">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+        </div>
+
+
+        <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 col-md-offset-2 userAvatarStyle-lg" >
+          <%= image_tag(item.content_image.thumb200.url, class: "imagesStyle")%>
+        </div>
+        <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
+          <%= link_to(image_tag(item.style_image.thumb200.url, alt:item.style_image, class: "imagesStyle"), item.style_image.url, class: "imagesStyle") %>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
+
+          <div class="visible-lg" >
+            <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
+          </div>
+          <div class="hidden-lg" >
+            <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle")  if res_img %>
+          </div>
+        </div>
+
+
+
+
+
+        <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
+          <span class="textAboutStyle">
+           <%= item.client.email %>
+          </span>
+
+          <% if false %>
+          <span class="textAboutStyle">
+           <%= link_to "поделиться", item, method: :delete,
+                       data: { confirm: "You sure?" } %>
+          </span>
+          <% end %>
+
+          <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%><br></span>
+
+          <span class="textAboutStyle">
+            <% if item.status < 0 %>
+                Ошибка при обработке
+            <% elsif item.status == 1 %>
+                Ожидает обработку
+            <% elsif item.status == 2 %>
+                 Обработано на <%= item.pimages.count * 10 %>%
+            <% elsif item.status >= 10 %>
+                 Обработано за <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %>
+            <% end %>
+          </span>
+
+          <span class="">
+            <p> </p>
+            <% if item.status != 1 %>
+              <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
+            <% end %>
+          </span>
+
+        </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+

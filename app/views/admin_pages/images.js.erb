@@ -1,0 +1,3 @@
+
+$('#posts').append('<%= escape_javascript render(partial: 'item_view_4', collection:  @items, format: 'html') %>');
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@items) %>');

@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
 
 
+  get 'admin_pages/main'
+
+  get 'admin_pages/images'
+
+  get 'admin_pages/users'
+
   devise_for :clients
   resources :queue_images
 
@@ -10,7 +16,7 @@ Rails.application.routes.draw do
   match '/home', to: 'static_pages#home', via: 'get'
   match '/error', to: 'static_pages#error', via: 'get'
   match '/lenta', to: 'static_pages#lenta', via: 'get'
-  match '/admin', to: 'admin_pages#error', via: 'get'
+  #match '/admin', to: 'admin_pages#error', via: 'get'
 
 
   root "static_pages#home"
