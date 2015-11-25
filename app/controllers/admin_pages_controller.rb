@@ -21,4 +21,12 @@ class AdminPagesController < ApplicationController
     redirect_to admin_pages_main_path
     return
   end
+
+  def image_visible
+
+  end
+
+  def image_hidden
+
+  end
 end

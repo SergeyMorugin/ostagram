@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   devise_for :clients
   resources :queue_images
+  match '/queue_images/:id/visible', to: 'queue_images#visible', via: 'put'
+  match '/queue_images/:id/hidden', to: 'queue_images#hidden', via: 'put'
 
   get 'static_pages/lenta', as: 'user_root'
 

@@ -7,6 +7,7 @@ class BotJob
   def initialize
     @worker_name = :bot1
     @admin_email = "cmorugin@gmail.com"
+    @sleep_time = 10
   end
 
 
@@ -17,7 +18,7 @@ class BotJob
     adm = Client.find_by(email: @admin_email)
     log("Admin_id = #{adm.id}")
     loop do
-      sleep 10
+      sleep @sleep_time
       log('------Loop start-------')
       if !check_idle
         log("Queue busy")
@@ -37,7 +38,7 @@ class BotJob
       log("Style: #{si.attributes}")
       qi = QueueImage.new
       qi.status = STATUS_NOT_PROCESSED
-      qi.end_status = STATUS_VISIBLE_FOR_BOT
+      qi.end_status = STATUS_PROCESSED_BY_BOT
       qi.content_id = ci.id
       qi.style_id = si.id
 

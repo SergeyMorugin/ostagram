@@ -1,7 +1,7 @@
 class QueueImagesController < ApplicationController
   include WorkerHelper
   include ConstHelper
-  before_action :set_queue_image, only: [:show, :edit, :update, :destroy]
+  before_action :set_queue_image, only: [:show, :edit, :update, :destroy, :visible, :hidden]
 
   # GET /queue_images
   # GET /queue_images.json
@@ -57,8 +57,8 @@ class QueueImagesController < ApplicationController
   # PATCH/PUT /queue_images/1
   # PATCH/PUT /queue_images/1.json
   def update
-    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-    return
+    #redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
+    #return
     respond_to do |format|
       if @queue_image.update(queue_image_params)
         format.html { redirect_to @queue_image, notice: 'Queue image was successfully updated.' }
@@ -77,12 +77,24 @@ class QueueImagesController < ApplicationController
       redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
       return
     end
-    @queue_image.status = 0
-    @queue_image.save
+
+    @queue_image.delete
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
       format.json { head :no_content }
     end
+  end
+
+  def visible
+    @queue_image.update(status: 11)
+    redirect_to admin_pages_images_path
+    return
+  end
+
+  def hidden
+    @queue_image.update(status: 0)
+    redirect_to admin_pages_images_path
+    return
   end
 
   private
@@ -110,6 +122,8 @@ class QueueImagesController < ApplicationController
     end
 
 
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_queue_image
       @queue_image = QueueImage.find(params[:id])
@@ -117,7 +131,7 @@ class QueueImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def queue_image_params
-      params.require(:queue_image).permit(:content_image, :from_file, :style_image, :style_id) #, :init_str, :status, :result)
+      params.require(:queue_image).permit(:content_image, :from_file, :style_image, :style_id, :init_str, :status, :result)
     end
 
     def valid_queue_image_params

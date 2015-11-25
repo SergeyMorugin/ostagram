@@ -165,7 +165,7 @@ namespace :deploy do
 
 
   #before 'deploy:setup', 'git:push'
-  after :finishing, 'deploy:migrate'
+  #after :finishing, 'deploy:migrate'
   after :finishing, 'linking:uploads'
  # after :finishing, 'application:stop'
   #after :finishing, 'application:stop'
