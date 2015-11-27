@@ -3,9 +3,13 @@ class QueueImagesController < ApplicationController
   include ConstHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy, :visible, :hidden]
   after_action :verify_authorized
+
   def pundit_user
     current_client
   end
+
+
+
   # GET /queue_images
   # GET /queue_images.json
   def index
