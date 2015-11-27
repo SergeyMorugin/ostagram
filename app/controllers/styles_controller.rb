@@ -1,6 +1,11 @@
 class StylesController < ApplicationController
   before_action :set_style, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  before_action :set_authorize
 
+  def pundit_user
+    current_client
+  end
   # GET /styles
   # GET /styles.json
   def index
@@ -62,6 +67,9 @@ class StylesController < ApplicationController
   end
 
   private
+    def set_authorize
+      authorize Style
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_style
       @style = Style.find(params[:id])

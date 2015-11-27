@@ -6,24 +6,39 @@ class BotJob
 
   def initialize
     @worker_name = :bot1
-    @admin_email = "cmorugin@gmail.com"
+    @admin_email = "xxx@gmail.com"
     @sleep_time = 10
+    @end_status = 11
+    @debug = true
+  end
+
+  def set_config(bot_name)
+    return if bot_name.nil?
+    @worker_name = bot_name
+    file = Rails.root.join('config/config.secret')
+    par = load_settings(file)
+    par = par[bot_name.to_s]
+    return if par.blank?
+    @admin_email = par[:admin_email]
+    @sleep_time = par[:sleep_time]
+    @end_status = par[:end_status]
+    @debug = par[:debug]
+
+    log "config: #{par.to_s}"
   end
 
 
-
   def execute
-
     log('-----------------------Start-------------------')
-    adm = Client.find_by(email: @admin_email)
-    log("Admin_id = #{adm.id}")
     loop do
       sleep @sleep_time
+      @admin = Client.find_by(email: @admin_email)
       log('------Loop start-------')
       if !check_idle
         log("Queue busy")
         next
       end
+      set_config(@worker_name)
       ci = get_random_content
       if ci.nil?
         log("No content")
@@ -42,12 +57,12 @@ class BotJob
       qi.content_id = ci.id
       qi.style_id = si.id
 
-      qi.client_id = adm.id
+      qi.client_id = @admin.id
       qi.save
 
       start_workers
       log("Queue: #{qi.attributes}")
-      log('----------Loop stop----------')
+      log('----------Loop end----------')
       #
       #break
     end
@@ -56,7 +71,8 @@ class BotJob
   private
 
   def check_idle
-    q = QueueImage.where("status = #{STATUS_NOT_PROCESSED} or status = #{STATUS_IN_PROCESS}")
+    #q = QueueImage.where("status = #{STATUS_NOT_PROCESSED} or status = #{STATUS_IN_PROCESS}")
+    q = QueueImage.where("client_id = #{@admin.id} and status = #{STATUS_NOT_PROCESSED}")
     q.count == 0
   end
 
@@ -77,7 +93,7 @@ class BotJob
   end
 
    def log(msg)
-     write_log(msg, @worker_name.to_s)
+     write_log(msg, @worker_name.to_s) if @debug
    end
 
 

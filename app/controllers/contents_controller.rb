@@ -1,6 +1,11 @@
 class ContentsController < ApplicationController
   before_action :set_content, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  before_action :set_authorize
 
+  def pundit_user
+    current_client
+  end
   # GET /contents
   # GET /contents.json
   def index
@@ -54,6 +59,7 @@ class ContentsController < ApplicationController
   # DELETE /contents/1
   # DELETE /contents/1.json
   def destroy
+    authorize
     @content.destroy
     respond_to do |format|
       format.html { redirect_to contents_url, notice: 'content was successfully destroyed.' }
@@ -62,6 +68,9 @@ class ContentsController < ApplicationController
   end
 
   private
+    def set_authorize
+      authorize Content
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_content
       @content = Content.find(params[:id])
