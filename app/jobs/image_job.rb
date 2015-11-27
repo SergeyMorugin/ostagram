@@ -143,24 +143,25 @@ class ImageJob
     log "-----------------------"
     log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
-    #log "0"
+
     item.update({:status => STATUS_IN_PROCESS, :stime => process_time})
     # Check connection to workserver
-    #log "1"
+    log "item.update"
     return "get_server_name: false" if get_server_name.nil?
-    #log "2"
+    log "get_server_name not nil"
     # Clear remote tmp folger
     return "rm_file_on_server: false" unless rm_file_on_server
-    #log "3"
+    log "rm_file_on_server"
     #Upload images to workserver
     @content_image_name = "content.#{item.content.image.to_s.split('.').last}"
     @style_image_name = "style.#{item.style.image.to_s.split('.').last}"
     #log "4"
     return "upload_content_image: false" unless upload_image(item.content.image.to_proc.url, "output/#{@content_image_name}")
     return "upload_stule_image: false" unless upload_image(item.style.image, "output/#{@style_image_name}")
-    #log "5"
+    log "upload_content_style_image"
     #Run process
     send_start_process_comm()
+    log "send_start_process_comm"
     sleep 10
     #log "6"
     # Wait processed images

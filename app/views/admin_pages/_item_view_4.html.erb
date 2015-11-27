@@ -6,7 +6,7 @@
 <div class="row styleRow2-lg">
 
         <div class="visible-lg  col-lg-2 col-lg-offset-2 userAvatarStyle-lg" >
-          <%= link_to(image_tag(item.content.image.thumb200.url, alt:item.content.image, class: "imagesStyle"), item.style.content.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= link_to(image_tag(item.content.image.thumb200.url, alt:item.content.image, class: "imagesStyle"), item.content.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
         <div class="visible-lg  col-lg-2 userAvatarStyle-lg">
           <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
@@ -62,6 +62,16 @@
         </div>
 
 </div>
+
+<div class="row" style="height: 50%">
+  <% item.pimages.each do |pi| %>
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <%= link_to(image_tag(pi.imageurl.thumb400.url, alt:pi.imageurl, class: "imagesStyle"), pi.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
+      </div>
+  <% end %>
+
+</div>
+
 
 
 

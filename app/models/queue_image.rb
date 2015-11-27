@@ -8,8 +8,8 @@ class QueueImage < ActiveRecord::Base
 
 
   def time_ago
-    return '' if ftime.nil?
-    t_ago = (Time.now - ftime)/60
+    return '' if updated_at.nil?
+    t_ago = (Time.now - updated_at)/60
 
 
     return 'сейчас' if t_ago < 1

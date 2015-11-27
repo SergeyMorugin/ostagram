@@ -1,3 +1,5 @@
+<%= link_to 'Main', admin_pages_main_path %>
+
 <div id="posts">
   <% if @items.count > 0 %>
       <%= render partial: 'item_view_4', collection:  @items %>

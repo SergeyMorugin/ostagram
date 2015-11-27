@@ -28,7 +28,7 @@ class StylesController < ApplicationController
 
     respond_to do |format|
       if @style.save
-        format.html { redirect_to @style, notice: 'style was successfully created.' }
+        format.html { redirect_to new_style_path, notice: 'style was successfully created.' }
         format.json { render :show, status: :created, location: @style }
       else
         format.html { render :new }

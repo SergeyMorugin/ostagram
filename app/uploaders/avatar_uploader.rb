@@ -133,7 +133,8 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
    def filename
      #"#{original_filename.split('.').first}.png" if original_filename
-     original_filename if original_filename
+     "img.#{original_filename.split('.').last}"
+     #original_filename if original_filename
    end
 
   def rounded_corners
