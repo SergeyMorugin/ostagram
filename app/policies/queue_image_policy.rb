@@ -21,33 +21,33 @@ class QueueImagePolicy < ApplicationPolicy
   end
 
   # GET /queue_images/1/edit
-  def edit
+  def edit?
     update?
   end
 
   # POST /queue_images
   # POST /queue_images.json
-  def create
+  def create?
     !user.nil?
   end
 
   # PATCH/PUT /queue_images/1
   # PATCH/PUT /queue_images/1.json
-  def update
+  def update?
     user.admin?
   end
 
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
-  def destroy
+  def destroy?
     user.admin? && record.status != ConstHelper::STATUS_IN_PROCESS
   end
 
-  def visible
-    user.admin? || user.id == record.user_id
+  def visible?
+    user.admin?
   end
 
-  def hidden
+  def hidden?
     visible?
   end
 

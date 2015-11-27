@@ -1,7 +1,8 @@
 <div class="navbar navbar-fixed-top navbar-inverse  visible-lg" role="navigation">
   <div class="container headerStyle-lg">
-      <%= link_to "Ostagram", root_path, id: "logo" %>
-
+      <div id="logo-lg">
+        <%= image_tag('/logo.png', class: "imagesStyle") %>
+      </div>
       <ul class="nav nav-pills pull-right">
         <% if client_signed_in? %>
           <li><%= link_to "Добавить изображения", new_queue_image_path, class: "btn btn-primary" %></li>
@@ -32,7 +33,9 @@
         <span class="icon-bar"></span>
       </button>
 
-      <%= link_to "Ostagram", root_path, class: "logoStyle" %>
+      <div id="logo-xs">
+        <%= image_tag('/logo.png', class: "imagesStyle") %>
+      </div>
     </div>
     <div class="navbar-collapse collapse" aria-expanded="false">
       <ul class="nav navbar-nav">

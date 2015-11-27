@@ -47,7 +47,7 @@
           </span>
           <% end %>
 
-              <span class="textAboutStyle"><p><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
+          <span class="textAboutStyle"><p><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
 
           <span class="textAboutStyle">
             <% if item.status < 0 %>
@@ -60,13 +60,24 @@
                 <p> Обработано за <%= item.ptime.strftime("%H:%M:%S")if !item.ptime.nil? %> </p>
             <% end %>
           </span>
-
-          <span class="">
-            <p> </p>
-            <% if debug || item.status == 1 %>
+          <% if debug || item.status == 1 || policy(item).destroy? %>
+            <span class="">
+              <br>
               <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
-            <% end %>
-          </span>
+            </span>
+          <% end %>
+
+
+          <% if policy(item).visible? %>
+            <br><br>
+            <span class="">
+              <% if item.status == ConstHelper::STATUS_DELETED %>
+                <%= link_to "ПОКАЗАТЬ", "/queue_images/#{item.id}/visible", method: :put %>
+              <% else %>
+                <%= link_to "СКРЫТЬ", "/queue_images/#{item.id}/hidden", method: :put %>
+              <% end %>
+            </span>
+          <% end %>
 
         </div>
 
