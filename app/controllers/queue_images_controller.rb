@@ -2,16 +2,17 @@ class QueueImagesController < ApplicationController
   include WorkerHelper
   include ConstHelper
   before_action :set_queue_image, only: [:show, :edit, :update, :destroy, :visible, :hidden]
-
+  after_action :verify_authorized
+  def pundit_user
+    current_client
+  end
   # GET /queue_images
   # GET /queue_images.json
   def index
-    if !client_signed_in?
-      redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-      return
-    end
     #@items= current_client.queue_images.all.order('created_at DESC')
-    @items= current_client.queue_images.all.order('created_at DESC').paginate(:page => params[:page], :per_page => 6)
+    #@items= policy_scope(current_client.queue_images).order('created_at DESC').paginate(:page => params[:page], :per_page => 6)
+    authorize QueueImage
+    @items = policy_scope(current_client.queue_images).order('created_at DESC').paginate(:page => params[:page], :per_page => 6)
 
     #@items= QueueImage.where("status > 9").order('ftime DESC').paginate(:page => params[:page], :per_page => 6)
   end
@@ -19,19 +20,18 @@ class QueueImagesController < ApplicationController
   # GET /queue_images/1
   # GET /queue_images/1.json
   def show
-    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-    return
+
   end
 
   # GET /queue_images/new
   def new
     @queue_image = QueueImage.new
+    authorize @queue_image
   end
 
   # GET /queue_images/1/edit
   def edit
-    redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-    return
+
   end
 
   # POST /queue_images
@@ -41,6 +41,7 @@ class QueueImagesController < ApplicationController
       redirect_to new_queue_image_path
       return
     end
+    authorize QueueImage
     save_status = create_queue
     respond_to do |format|
       if save_status
@@ -57,8 +58,6 @@ class QueueImagesController < ApplicationController
   # PATCH/PUT /queue_images/1
   # PATCH/PUT /queue_images/1.json
   def update
-    #redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-    #return
     respond_to do |format|
       if @queue_image.update(queue_image_params)
         format.html { redirect_to @queue_image, notice: 'Queue image was successfully updated.' }
@@ -73,11 +72,6 @@ class QueueImagesController < ApplicationController
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy
-    if @queue_image.status == 2
-      redirect_to error_path, alert: 'Невозможно совершить данную операцию.'
-      return
-    end
-
     @queue_image.delete
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
@@ -86,13 +80,13 @@ class QueueImagesController < ApplicationController
   end
 
   def visible
-    @queue_image.update(status: 11)
+    @queue_image.update(status: STATUS_PROCESSED)
     redirect_to admin_pages_images_path
     return
   end
 
   def hidden
-    @queue_image.update(status: 0)
+    @queue_image.update(status: STATUS_DELETED)
     redirect_to admin_pages_images_path
     return
   end
@@ -127,6 +121,7 @@ class QueueImagesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_queue_image
       @queue_image = QueueImage.find(params[:id])
+      authorize @queue_image
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

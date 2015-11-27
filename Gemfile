@@ -51,6 +51,8 @@ gem 'devise', '~> 3.5'
 gem 'will_paginate'
 
 gem 'google-analytics-rails'
+
+gem 'pundit'
 #gem 'kaminari'
 #gem 'lightbox-bootstrap-rails'
 #gem 'resue-scheduler'

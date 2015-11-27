@@ -8,6 +8,10 @@ module ConstHelper
   ##
   BOT_STYLE_IMAGE = 101
   BOT_CONTENT_IMAGE = 101
+  ##
+  CLIENT_TYPE_ADMIN = 300
+  CLIENT_TYPE_USER = 0
+
 
   def get_queue_item_status(item)
      case item.status

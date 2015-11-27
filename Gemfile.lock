@@ -121,6 +121,8 @@ GEM
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
     pg (0.18.4)
+    pundit (1.0.1)
+      activesupport (>= 3.0.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -236,6 +238,7 @@ DEPENDENCIES
   net-scp
   net-ssh
   pg
+  pundit
   rails (= 4.2.4)
   resque
   sass-rails (~> 5.0)

@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+  include ConstHelper
   has_many :queue_images
   mount_uploader :avatar, AvatarUploader
   # Include default devise modules. Others available are:
@@ -10,6 +11,14 @@ class Client < ActiveRecord::Base
   validates :name, uniqueness: true, if: -> { self.name.present? }
   validates :avatar, presence: true
   #before_save {|r| r.lastprocess = Time.now}
+
+  def user?
+    role_id.nil? || role_id == CLIENT_TYPE_USER
+  end
+
+  def admin?
+    !role_id.nil? && role_id == CLIENT_TYPE_ADMIN
+  end
 
   private
 
