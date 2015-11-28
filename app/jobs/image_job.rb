@@ -18,6 +18,7 @@ class ImageJob
   @iteration_count = 10
   @local_tmp_path = '~/tmp/output'
   @worker_name = :server1
+  @square_format = false
 
   def initialize(worker_name)
     @worker_name = worker_name
@@ -44,6 +45,7 @@ class ImageJob
     @content_image_name = "content.jpg"
     @style_image_name = "style.jpg"
     @admin_email = config["admin_email"]
+    @square_format = config["square_format"]
     ##debug
     config["password"] = "*"
     log "config: #{config.to_s}"
@@ -156,7 +158,11 @@ class ImageJob
     @content_image_name = "content.#{item.content.image.to_s.split('.').last}"
     @style_image_name = "style.#{item.style.image.to_s.split('.').last}"
     #log "4"
-    return "upload_content_image: false" unless upload_image(item.content.image.to_proc.url, "output/#{@content_image_name}")
+    if @square_format
+      return "upload_content_image: false" unless upload_image(item.content.image.to_proc.url, "output/#{@content_image_name}")
+    else
+      return "upload_content_image: false" unless upload_image(item.content.image, "output/#{@content_image_name}")
+    end
     return "upload_stule_image: false" unless upload_image(item.style.image, "output/#{@style_image_name}")
     log "upload_content_style_image"
     #Run process

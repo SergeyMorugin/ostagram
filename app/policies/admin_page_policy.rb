@@ -24,5 +24,8 @@ class AdminPagePolicy < ApplicationPolicy
     !user.nil? && user.admin?
   end
 
+  def unregworkers?
+    !user.nil? && user.admin?
+  end
 
 end

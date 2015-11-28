@@ -3,6 +3,12 @@
 class StaticPagesController < ApplicationController
   include WorkerHelper
   include DebHelper
+
+  def pundit_user
+    current_client
+  end
+
+
   def home
     if client_signed_in?
       redirect_to lenta_path

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'admin_pages/users'
   get 'admin_pages/startbot'
   get 'admin_pages/startprocess'
+  get 'admin_pages/unregworkers'
 
   devise_for :clients
   resources :queue_images

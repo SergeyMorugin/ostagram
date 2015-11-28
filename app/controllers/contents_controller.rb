@@ -59,7 +59,6 @@ class ContentsController < ApplicationController
   # DELETE /contents/1
   # DELETE /contents/1.json
   def destroy
-    authorize
     @content.destroy
     respond_to do |format|
       format.html { redirect_to contents_url, notice: 'content was successfully destroyed.' }

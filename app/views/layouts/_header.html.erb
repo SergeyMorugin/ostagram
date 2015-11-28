@@ -1,10 +1,10 @@
 <div class="navbar navbar-fixed-top navbar-inverse  visible-lg" role="navigation">
   <div class="container headerStyle-lg">
       <div id="logo-lg">
-        <%= image_tag('/logo.png', class: "imagesStyle") %>
+        <%= link_to(image_tag('/logo.png', class: "imagesStyle"), root_path )%>
       </div>
       <ul class="nav nav-pills pull-right">
-        <% if policy(AdminPage).main? %>
+        <% if client_signed_in? && current_client.admin? %>
             <li><%= link_to "Admin", admin_pages_main_path %></li>
         <% end %>
         <% if client_signed_in? %>
@@ -37,11 +37,14 @@
       </button>
 
       <div id="logo-xs">
-        <%= image_tag('/logo.png', class: "imagesStyle") %>
+        <%= link_to(image_tag('/logo.png', class: "imagesStyle"), root_path) %>
       </div>
     </div>
     <div class="navbar-collapse collapse" aria-expanded="false">
       <ul class="nav navbar-nav">
+        <% if client_signed_in? && current_client.admin? %>
+            <li><%= link_to "Admin", admin_pages_main_path %></li>
+        <% end %>
         <% if client_signed_in? %>
             <li><%= link_to "ОБРАБОТАТЬ ИЗОБРАЖЕНИЕ", new_queue_image_path %></li>
             <li style="border-top: 1px solid #000000;box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);" ><%= link_to "МОЯ КОЛЛЕКЦИЯ",    queue_images_path %></li>

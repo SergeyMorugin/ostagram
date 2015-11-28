@@ -8,8 +8,6 @@ class QueueImagesController < ApplicationController
     current_client
   end
 
-
-
   # GET /queue_images
   # GET /queue_images.json
   def index
@@ -76,7 +74,7 @@ class QueueImagesController < ApplicationController
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy
-    @queue_image.delete
+    @queue_image.destroy
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
       format.json { head :no_content }

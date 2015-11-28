@@ -13,18 +13,20 @@ class BotJob
   end
 
   def set_config(bot_name)
+    log "set config"
     return if bot_name.nil?
     @worker_name = bot_name
     file = Rails.root.join('config/config.secret')
     par = load_settings(file)
     par = par[bot_name.to_s]
-    return if par.blank?
-    @admin_email = par[:admin_email]
-    @sleep_time = par[:sleep_time]
-    @end_status = par[:end_status]
-    @debug = par[:debug]
-
     log "config: #{par.to_s}"
+    return if par.blank?
+    @admin_email = par["admin_email"]
+    @sleep_time = par["sleep_time"]
+    @end_status = par["end_status"]
+    @debug = par["debug"]
+    @admin = Client.find_by_email(@admin_email)
+    log "admin_id: #{@admin.id}"
   end
 
 
@@ -32,13 +34,14 @@ class BotJob
     log('-----------------------Start-------------------')
     loop do
       sleep @sleep_time
-      @admin = Client.find_by(email: @admin_email)
+      log("sleep #{@sleep_time}")
+      set_config(:bot1)
       log('------Loop start-------')
       if !check_idle
         log("Queue busy")
         next
       end
-      set_config(@worker_name)
+
       ci = get_random_content
       if ci.nil?
         log("No content")
