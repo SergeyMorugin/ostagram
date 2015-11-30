@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get 'admin_pages/startbot'
   get 'admin_pages/startprocess'
   get 'admin_pages/unregworkers'
+  get 'admin_pages/update_queue_status'
+  match '/admin_pages/update_queue_status', to: 'admin_pages#update_queue_status', via: 'put'
+  match '/admin_pages/update_style_status', to: 'admin_pages#update_style_status', via: 'put'
 
   devise_for :clients
   resources :queue_images

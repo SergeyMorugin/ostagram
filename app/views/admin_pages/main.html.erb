@@ -1,6 +1,13 @@
-<p><%= link_to 'Очередь ', admin_pages_images_path %><p/>
-<p><%= link_to 'Contents', contents_path %><p/>
-<p><%= link_to 'Styles', styles_path %><p/>
-<p><%= link_to 'Start bot', admin_pages_startbot_path %><p/>
-<p><%= link_to 'Start process', admin_pages_startprocess_path %><p/>
-<p><%= link_to 'Unreg workers', admin_pages_unregworkers_path %><p/>
+<br>
+<br>
+<p><%= link_to 'Очередь ', admin_pages_images_path , class: "btn btn-primary btn-large" %><p/>
+<p><%= link_to 'Contents', contents_path, class: "btn btn-primary btn-large" %><p/>
+<p><%= link_to 'Styles', styles_path, class: "btn btn-primary btn-large" %><p/>
+<p><%= link_to 'Start bot', admin_pages_startbot_path, class: "btn btn-primary btn-large" %><p/>
+<p><%= link_to 'Start process', admin_pages_startprocess_path, class: "btn btn-primary btn-large" %><p/>
+<p><%= link_to 'Unreg workers', admin_pages_unregworkers_path, class: "btn btn-primary btn-large" %><p/>
+
+<br>
+<p>Clients: <%= Client.all.count%><p/>
+<p>Unprocessed: <%= QueueImage.where(status: 1).count%><p/>
+<p>Processed: <%= QueueImage.where(status: 11).count %><p/>

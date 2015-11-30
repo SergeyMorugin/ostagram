@@ -28,4 +28,12 @@ class AdminPagePolicy < ApplicationPolicy
     !user.nil? && user.admin?
   end
 
+  def update_queue_status?
+    !user.nil? && user.admin?
+  end
+
+  def update_style_status?
+    !user.nil? && user.admin?
+  end
+
 end

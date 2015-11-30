@@ -42,6 +42,25 @@ class AdminPagesController < ApplicationController
     return
   end
 
+  def update_queue_status
+    @queue_image = QueueImage.find(params[:id])
+    @queue_image.update(status: params[:status])
+    respond_to do |format|
+      format.html { redirect_to admin_pages_images_path }
+      format.js
+    end
+  end
+
+  def update_style_status
+    @queue_image = QueueImage.find(params[:id])
+    @style = @queue_image.style
+    @style.update(status: params[:status])
+    respond_to do |format|
+      format.html { redirect_to admin_pages_images_path }
+      format.js
+    end
+  end
+
   private
   def set_authorize
     authorize AdminPage

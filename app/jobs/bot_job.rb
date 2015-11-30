@@ -33,10 +33,10 @@ class BotJob
   def execute
     log('-----------------------Start-------------------')
     loop do
+      log('------Loop start-------')
       sleep @sleep_time
       log("sleep #{@sleep_time}")
       set_config(:bot1)
-      log('------Loop start-------')
       if !check_idle
         log("Queue busy")
         next
@@ -54,9 +54,15 @@ class BotJob
       end
       log("Content: #{ci.attributes}")
       log("Style: #{si.attributes}")
+      qi = QueueImage.where("content_id = #{ci.id} and style_id = #{si.id} and status = #{STATUS_PROCESSED}")
+      if qi.count > 0
+        log("Queue exists")
+        next
+      end
+
       qi = QueueImage.new
       qi.status = STATUS_NOT_PROCESSED
-      qi.end_status = STATUS_PROCESSED_BY_BOT
+      qi.end_status = @end_status
       qi.content_id = ci.id
       qi.style_id = si.id
 

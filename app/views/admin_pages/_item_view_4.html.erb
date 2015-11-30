@@ -30,38 +30,22 @@
           </div>
         </div>
 
-
-
-
-
         <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
-          <span class="textAboutStyle">
-           <%= item.client.email if !item.client.nil? %>
-          </span>
-
+          <span class="textAboutStyle"><%= item.client.email if !item.client.nil? %></span>
           <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%><br></span>
-
-          <span class="textAboutStyle"><%= get_queue_item_status(item) %></span>
-
-
-          <span class="">
-            <% if item.status == ConstHelper::STATUS_DELETED || item.status == ConstHelper::STATUS_PROCESSED_BY_BOT %>
-              <%= link_to "ПОКАЗАТЬ", "/queue_images/#{item.id}/visible", method: :put %>
-            <% else %>
-              <%= link_to "СКРЫТЬ", "/queue_images/#{item.id}/hidden", method: :put %>
-            <% end %>
-          </span>
-
-
-
-          <span class="textAboutStyle">
-            <br> <br>
-            <%= link_to "удалить", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
-          </span>
-
+          <div id="qi_status_<%= item.id %>">
+            <span class="textAboutStyle"><%= get_queue_item_status(item) %></span>
+          </div>
         </div>
 
 </div>
+
+<div class="row">
+      <div class=" col-lg-offset-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= render  partial: 'statuses', :locals => {item: item}  %>
+      </div>
+</div>
+
 
 <div class="row" style="height: 50%">
   <% item.pimages.each do |pi| %>

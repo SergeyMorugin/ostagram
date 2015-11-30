@@ -1,0 +1,14 @@
+<div id="status_panel_<%= item.id %>">
+  <%= link_to "УДАЛЕННЫЙ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_DELETED), method: :put, remote: true %> |
+  <%= link_to "ОШИБКА", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_ERROR), method: :put, remote: true %> |
+  <%= link_to "СКРЫТЫЙ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_HIDDEN), method: :put, remote: true %> |
+  <%= link_to "ОЖИДАЕТ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_NOT_PROCESSED), method: :put, remote: true %> |
+  <%= link_to "ОБРАБАТЫВАЕТСЯ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_IN_PROCESS), method: :put, remote: true %> |
+  <%= link_to "ОБРАБОТАН",  url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_PROCESSED), method: :put, remote: true %> |
+
+  <% if item.style.status == ConstHelper::BOT_STYLE_IMAGE%>
+    <%= link_to "ОТНЯТЬ ФИЛЬТР У БОТА", url_for(controller: 'admin_pages', action: 'update_style_status', id: item.id, status: 0), method: :put, remote: true %>
+  <% else %>
+    <%= link_to "ДАТЬ ФИЛЬТР БОТУ", url_for(controller: 'admin_pages', action: 'update_style_status', id: item.id, status: ConstHelper::BOT_STYLE_IMAGE), method: :put, remote: true %>
+  <% end %>
+</div>

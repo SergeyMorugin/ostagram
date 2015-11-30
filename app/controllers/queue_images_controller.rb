@@ -74,7 +74,7 @@ class QueueImagesController < ApplicationController
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy
-    @queue_image.destroy
+    @queue_image.update(status: STATUS_DELETED)
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения удалены.' }
       format.json { head :no_content }
@@ -83,14 +83,18 @@ class QueueImagesController < ApplicationController
 
   def visible
     @queue_image.update(status: STATUS_PROCESSED)
-    redirect_to admin_pages_images_path
-    return
+    respond_to do |format|
+      format.html { redirect_to queue_images_url, notice: 'Изображения открыты.' }
+      format.json { head :no_content }
+    end
   end
 
   def hidden
-    @queue_image.update(status: STATUS_DELETED)
-    redirect_to admin_pages_images_path
-    return
+    @queue_image.update(status: STATUS_HIDDEN)
+    respond_to do |format|
+      format.html { redirect_to queue_images_url, notice: 'Изображения скрыты.' }
+      format.json { head :no_content }
+    end
   end
 
   private
@@ -116,9 +120,6 @@ class QueueImagesController < ApplicationController
       end
       save_status
     end
-
-
-
 
     # Use callbacks to share common setup or constraints between actions.
     def set_queue_image

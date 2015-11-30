@@ -1,7 +1,7 @@
 class QueueImagePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-       scope.where(status: ConstHelper::STATUS_PROCESSED)
+       scope.where("status > -10 and status < 20")
     end
   end
 
@@ -40,15 +40,15 @@ class QueueImagePolicy < ApplicationPolicy
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy?
-    user.admin? #&& record.status != ConstHelper::STATUS_IN_PROCESS
+    user.admin? || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_NOT_PROCESSED)#&& record.status != ConstHelper::STATUS_IN_PROCESS
   end
 
   def visible?
-    user.admin?
+    (user.admin? && record.status == ConstHelper::STATUS_HIDDEN) || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_HIDDEN)
   end
 
   def hidden?
-    visible?
+    (user.admin? && record.status != ConstHelper::STATUS_HIDDEN) || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_PROCESSED )
   end
 
 end

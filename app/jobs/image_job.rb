@@ -5,12 +5,6 @@ class ImageJob
   include ConstHelper
   #@queue = :error_server
   #
-  #STATUS_ERROR = -1
-  #STATUS_DELETED = 0
-  #STATUS_NOT_PROCESSED = 1
-  #STATUS_IN_PROCESS = 2
-  #STATUS_PROCESSED = 11
-  #
   @hostname = "localhost"
   @username = "root"
   @password = "123"
