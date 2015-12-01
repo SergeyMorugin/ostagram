@@ -26,7 +26,7 @@ module ConstHelper
        when STATUS_ERROR then return "Ошибка при обработке"
        when STATUS_HIDDEN  then return "Скрыто"
        when STATUS_NOT_PROCESSED  then return "Ожидает обработку"
-       when STATUS_IN_PROCESS  then return "Обработано на #{item.pimages.count * 10}%"
+       when STATUS_IN_PROCESS  then return "Обрабатывается"
        when STATUS_PROCESSED then return "Обработано за #{item.ptime.strftime("%H:%M:%S") if !item.ptime.nil?}"
        when STATUS_PROCESSED_BY_BOT then return "Обработано ботом за #{item.ptime.strftime("%H:%M:%S") if !item.ptime.nil?}"
      end

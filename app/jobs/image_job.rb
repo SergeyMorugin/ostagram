@@ -45,14 +45,32 @@ class ImageJob
     log "config: #{config.to_s}"
   end
 
+  def set_init_str(item)
+    uc = item.style.use_counter
+    item.style.update(use_counter: uc+1)
+    init = item.style.init
+    return true if init.nil?
+    item.update(init_str: init)
+    log "init: #{init}"
+    @init_params = init
+    arr = init.split(' -')
+    arr.each do |a|
+      if a.scan('num_iterations').size > 0
+        ar = a.split(' ')
+        return false if ar.size < 2
+         @iteration_count = (ar[1].to_i / 100).to_i
+         log "iteration_count: #{@iteration_count}"
+        return true
+      end
+    end
+    false
+  end
+
 
   def execute
     log "-----------------------Start Demon: #{@worker_name}---------------------"
     while true
-
-
       item = get_images_from_queue  # QueueImage.where("status = #{STATUS_NOT_PROCESSED}").order('created_at ASC')
-
       if !item.nil? #&& imgs.count > 0 && !imgs.first.nil?
         log("Images: #{item.attributes}")
         set_config(@worker_name)
@@ -89,6 +107,7 @@ class ImageJob
       if !imgs.nil? && imgs.count > 0 && !imgs.first.nil?
         set_config(@worker_name)
         item = imgs.first
+
         #
         process_time = Time.now
 
@@ -139,7 +158,13 @@ class ImageJob
     log "-----------------------"
     log "execute_image item.id = #{item.id}"
     #Change status to IN_PROCESS
-
+    if !set_init_str(item)
+      err = "Init string ERROR"
+      item.update({:status => STATUS_ERROR, :result => err})
+      log err
+      return err
+    end
+    #
     item.update({:status => STATUS_IN_PROCESS, :stime => process_time})
     # Check connection to workserver
     log "item.update"

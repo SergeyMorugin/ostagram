@@ -49,11 +49,11 @@ class QueueImagesController < ApplicationController
   # POST /queue_images
   # POST /queue_images.json
   def create
+    authorize QueueImage
     unless valid_queue_image_params
       redirect_to new_queue_image_path
       return
     end
-    authorize QueueImage
     save_status = create_queue
     respond_to do |format|
       if save_status
@@ -115,11 +115,11 @@ class QueueImagesController < ApplicationController
       QueueImage.transaction do
         ci = Content.new(image: queue_params[:content_image])
         save_status = ci.save
-        if queue_params[:view_style].blank? || queue_params[:view_style] == '1'
+        if queue_params[:view_style].blank? || queue_params[:view_style] == VIEW_STYLE_LOAD_FILE.to_s
           si = Style.new(image: queue_params[:style_image])
           save_status &= si.save
-        else
-          si = Style.find(queue_params[:queue_image][:style_id])
+        elsif queue_params[:view_style] == VIEW_STYLE_FROM_LIST.to_s
+          si = Style.find(queue_params[:style_id])
         end
         @queue_image = current_client.queue_images.new()
         @queue_image.content_id = ci.id
@@ -147,10 +147,20 @@ class QueueImagesController < ApplicationController
       if par.nil?
         flash[:alert] = "Пожалуйста, добавьте изображение для обработки"
         return false
-      elsif params[:queue_image][:style_image].nil?
-        flash[:alert] = "Пожалуйста, добавьте изображение шаблона"
-        return false
       end
+      par = params[:queue_image][:view_style]
+      if par.nil? || par == VIEW_STYLE_LOAD_FILE.to_s
+        if params[:queue_image][:style_image].nil?
+          flash[:alert] = "Пожалуйста, добавьте изображение фильтра"
+          return false
+        end
+      elsif par == VIEW_STYLE_FROM_LIST.to_s
+        if params[:queue_image][:style_id].nil?
+          flash[:alert] = "Пожалуйста, выберите изображение фильтра"
+          return false
+        end
+      end
+
       true
     end
 

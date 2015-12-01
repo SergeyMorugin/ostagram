@@ -7,10 +7,10 @@ class StylesController < ApplicationController
     current_client
   end
 
-  def check
-    @check_stale_id = nil
-    if !params[:check_style_id].blank?
-      @check_stale_id = params[:check_style_id]
+  def mark
+    @mark_stale_id = nil
+    if !params[:id].blank?
+      @mark_style_id = params[:id]
     end
     respond_to do |format|
       format.js

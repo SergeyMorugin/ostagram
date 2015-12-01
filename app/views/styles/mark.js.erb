@@ -1,0 +1,5 @@
+$('#marked').replaceWith('')
+<% if !@mark_style_id.nil? %>
+  $("#mark_style_<%= @mark_style_id %>").replaceWith('<div id="mark_style_<%= @mark_style_id %>"><div id="marked"><%= image_tag("/check.png", class: "imagesStyle") %><%= hidden_field_tag 'queue_image[style_id]', @mark_style_id %></div></div>')
+
+<% end %>
