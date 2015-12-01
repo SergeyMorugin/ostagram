@@ -1,0 +1,34 @@
+
+<div id="view_style">
+  <p>Выберите из галереи или загрузите из файла изображение-фильтр, стиль которого будет использоваться</p>
+  <% if view_style == ConstHelper::VIEW_STYLE_LOAD_FILE %>
+    <%= link_to "ИЗ ГАЛЕРЕИ", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_FROM_LIST), remote: true, class: "btn btn-large btn-default" %>
+    <%= link_to "ИЗ ФАЙЛА", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_LOAD_FILE), remote: true, class: "btn btn-large btn-success"  %>
+
+    <div class="field">
+      <br>
+      <%= label_tag "Загрузите файл фильтра:"%><br>
+      <%= file_field_tag 'queue_image[style_image]'%>
+    </div>
+  <% end %>
+
+  <% if view_style == ConstHelper::VIEW_STYLE_FROM_LIST%>
+      <%= link_to "ИЗ ГАЛЕРЕИ", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_FROM_LIST), remote: true, class: "btn btn-large btn-success" %>
+      <%= link_to "ИЗ ФАЙЛА", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_LOAD_FILE), remote: true, class: "btn btn-large btn-default"  %>
+      <br><br>
+      <div class="row">
+        <% Style.where(status: ConstHelper::GALLERY_STYLE_IMAGE).order('use_counter desc').each do |si| %>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 clearLRpadding" style="position	: relative;">
+              <%= link_to(image_tag(si.image.thumb200.url, class: "imagesStyle"), "/styles/#{si.id}/mark", method: :put, remote: true)  %>
+              <div id="mark_style_<%= si.id %>">
+
+              </div>
+            </div>
+        <% end %>
+      </div>
+  <% end %>
+
+  <%= hidden_field_tag 'queue_image[view_style]', view_style%>
+
+
+</div>

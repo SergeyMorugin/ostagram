@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
 
   resources :styles
+  match '/styles/:id/mark', to: 'styles#check', via: 'put'
+
   resources :contents
   get 'admin_pages/main'
   get 'admin_pages/images'

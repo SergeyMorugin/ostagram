@@ -6,10 +6,26 @@ class StylesController < ApplicationController
   def pundit_user
     current_client
   end
+
+  def mark
+    @mark_stale_id = nil
+    if !params[:id].blank?
+      @mark_style_id = params[:id]
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /styles
   # GET /styles.json
   def index
-    @styles = Style.all.order('created_at DESC')
+    st = params[:status]
+    if !st.nil? && st.to_i
+      @styles = Style.where(status: st.to_i).order('created_at DESC')
+    else
+      @styles = Style.all.order('created_at DESC')
+    end
   end
 
   # GET /styles/1
