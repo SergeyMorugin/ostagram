@@ -50,9 +50,9 @@ class ImageJob
     item.style.update(use_counter: uc+1)
     init = item.style.init
     return true if init.nil?
+    @init_params = init
     item.update(init_str: init)
     log "init: #{init}"
-    @init_params = init
     arr = init.split(' -')
     arr.each do |a|
       if a.scan('num_iterations').size > 0

@@ -1,4 +1,10 @@
-<%= link_to 'Main', admin_pages_main_path %>
+<br>
+<%= link_to 'Main', admin_pages_main_path %> |
+<%= link_to 'Deleted', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_DELETED)%> |
+<%= link_to 'Error', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_ERROR)%> |
+<%= link_to 'Hidden', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_HIDDEN)%> |
+<%= link_to 'Not processed', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_NOT_PROCESSED)%>
+<br>
 
 <div id="posts">
   <% if @items.count > 0 %>

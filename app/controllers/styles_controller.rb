@@ -20,7 +20,12 @@ class StylesController < ApplicationController
   # GET /styles
   # GET /styles.json
   def index
-    @styles = Style.all.order('created_at DESC')
+    st = params[:status]
+    if !st.nil? && st.to_i
+      @styles = Style.where(status: st.to_i).order('created_at DESC')
+    else
+      @styles = Style.all.order('created_at DESC')
+    end
   end
 
   # GET /styles/1

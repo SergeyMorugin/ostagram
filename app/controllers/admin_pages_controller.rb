@@ -17,7 +17,12 @@ class AdminPagesController < ApplicationController
   end
 
   def images
-    @items= QueueImage.all.order('updated_at DESC').paginate(:page => params[:page], :per_page => 10)
+    st = params[:status]
+    if !st.nil? && st.to_i
+      @items= QueueImage.where(status: st.to_i).order('updated_at DESC').paginate(:page => params[:page], :per_page => 10)
+    else
+      @items= QueueImage.all.order('updated_at DESC').paginate(:page => params[:page], :per_page => 10)
+    end
   end
 
   def users
