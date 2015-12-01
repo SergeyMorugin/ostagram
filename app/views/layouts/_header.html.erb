@@ -43,7 +43,7 @@
     <div class="navbar-collapse collapse" aria-expanded="false">
       <ul class="nav navbar-nav">
         <% if client_signed_in? && current_client.admin? %>
-            <li><%= link_to "Admin", admin_pages_main_path %></li>
+            <li><%= link_to "ADMIN", admin_pages_main_path %></li>
         <% end %>
         <% if client_signed_in? %>
             <li><%= link_to "ОБРАБОТАТЬ ИЗОБРАЖЕНИЕ", new_queue_image_path %></li>
