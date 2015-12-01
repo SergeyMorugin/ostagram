@@ -6,6 +6,17 @@ class StylesController < ApplicationController
   def pundit_user
     current_client
   end
+
+  def check
+    @check_stale_id = nil
+    if !params[:check_style_id].blank?
+      @check_stale_id = params[:check_style_id]
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /styles
   # GET /styles.json
   def index

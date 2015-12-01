@@ -28,7 +28,17 @@ class QueueImagesController < ApplicationController
   # GET /queue_images/new
   def new
     @queue_image = QueueImage.new
+    case params[:view_style]
+      when '0' then @view_style = VIEW_STYLE_LOAD_FILE
+      when '1' then @view_style = VIEW_STYLE_FROM_LIST
+      when '2' then @view_style = VIEW_STYLE_FROM_LENTA
+      else  @view_style = VIEW_STYLE_FROM_LIST
+    end
     authorize @queue_image
+    respond_to do |format|
+      format.html { render :new}
+      format.js
+    end
   end
 
   # GET /queue_images/1/edit
@@ -105,7 +115,7 @@ class QueueImagesController < ApplicationController
       QueueImage.transaction do
         ci = Content.new(image: queue_params[:content_image])
         save_status = ci.save
-        if queue_params[:from_file].blank? || queue_params[:from_file] == '1'
+        if queue_params[:view_style].blank? || queue_params[:view_style] == '1'
           si = Style.new(image: queue_params[:style_image])
           save_status &= si.save
         else
@@ -129,7 +139,7 @@ class QueueImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def queue_image_params
-      params.require(:queue_image).permit(:content_image, :from_file, :style_image, :style_id, :init_str, :status, :result)
+      params.require(:queue_image).permit(:content_image, :view_style , :style_image, :style_id, :init_str, :status, :result)
     end
 
     def valid_queue_image_params

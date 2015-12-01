@@ -8,10 +8,16 @@ module ConstHelper
   STATUS_PROCESSED_BY_BOT = 101
   ##
   BOT_STYLE_IMAGE = 101
+  GALLERY_STYLE_IMAGE = 201
+  #
   BOT_CONTENT_IMAGE = 101
   ##
   CLIENT_TYPE_ADMIN = 300
   CLIENT_TYPE_USER = 0
+  ##
+  VIEW_STYLE_LOAD_FILE = 0
+  VIEW_STYLE_FROM_LIST = 1
+  VIEW_STYLE_FROM_LENTA = 2
 
 
   def get_queue_item_status(item)

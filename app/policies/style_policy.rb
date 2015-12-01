@@ -4,4 +4,7 @@ class StylePolicy < ApplicationPolicy
       scope
     end
   end
+  def check?
+    true
+  end
 end

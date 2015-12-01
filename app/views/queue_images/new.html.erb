@@ -1,4 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-offset-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
 
-<%= render 'form' %>
+      <%= form_for(@queue_image) do |f| %>
+          <div class="actions">
+          <%= f.submit "Добавить в обработку", class: "btn btn-large btn-primary" %>
+          </div>
+          <br>
+          <div class="field">
+            <%= f.label "Обрабатываемое изображение:" %><br>
+            <%= f.file_field :content_image %>
+          </div>
 
+          <%= render :partial => "view_style", :locals => {view_style: @view_style, item: @queue_image} %>
+
+
+
+      <% end %>
+    </div>
+  </div>
+</div>
 
