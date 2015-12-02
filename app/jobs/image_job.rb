@@ -49,7 +49,7 @@ class ImageJob
     uc = item.style.use_counter
     item.style.update(use_counter: uc+1)
     init = item.style.init
-    return true if init.nil?
+    return true if init.blank?
     @init_params = init
     item.update(init_str: init)
     log "init: #{init}"
@@ -363,6 +363,7 @@ class ImageJob
       begin
         scr = File.read(loc)
         com = "th neural_style.lua #{@init_params} -style_image output/#{@style_image_name} -content_image output/#{@content_image_name} > output/output.log 2> output/error.log &"
+        log("command: #{com}")
         scr << com
         Net::SCP.upload!(@hostname, @username, StringIO.new(scr), rem, :password => @password)
         return true

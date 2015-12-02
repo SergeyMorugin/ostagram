@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 
   resources :styles
-  match '/styles/:id/mark', to: 'styles#check', via: 'put'
+  match '/styles/:id/mark', to: 'styles#mark', via: 'put'
 
   resources :contents
   get 'admin_pages/main'
