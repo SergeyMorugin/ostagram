@@ -1,5 +1,6 @@
 <h4>Styles</h4>
 <%= link_to 'New style', new_style_path %> |
+<%= link_to 'All', url_for(controller: 'styles', action: 'index')%> |
 <%= link_to 'Bot styles', url_for(controller: 'styles', action: 'index', status: ConstHelper::BOT_STYLE_IMAGE)%> |
 <%= link_to 'Gallery styles', url_for(controller: 'styles', action: 'index', status: ConstHelper::GALLERY_STYLE_IMAGE)%>
 <br>

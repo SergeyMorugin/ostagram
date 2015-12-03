@@ -132,7 +132,7 @@ class QueueImagesController < ApplicationController
         ci = Content.new(image: queue_params[:content_image])
         save_status = ci.save
         if queue_params[:view_style].blank? || queue_params[:view_style] == VIEW_STYLE_LOAD_FILE.to_s
-          si = Style.new(image: queue_params[:style_image])
+          si = Style.new(image: queue_params[:style_image], init: queue_params[:init])
           save_status &= si.save
         elsif queue_params[:view_style] == VIEW_STYLE_FROM_LIST.to_s
           si = Style.find(queue_params[:style_id])
@@ -142,6 +142,11 @@ class QueueImagesController < ApplicationController
         @queue_image.style_id = si.id
         @queue_image.status = STATUS_NOT_PROCESSED
         @queue_image.end_status = STATUS_PROCESSED
+        if queue_params[:end_status].nil?
+          @queue_image.end_status = STATUS_PROCESSED
+        else
+          @queue_image.end_status = queue_params[:end_status].to_i
+        end
         save_status &= @queue_image.save
       end
       save_status
@@ -155,7 +160,7 @@ class QueueImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def queue_image_params
-      params.require(:queue_image).permit(:content_image, :view_style , :style_image, :style_id, :init_str, :status, :result)
+      params.require(:queue_image).permit(:content_image, :view_style , :style_image, :style_id, :init_str, :status, :result, :init, :end_status)
     end
 
     def valid_queue_image_params

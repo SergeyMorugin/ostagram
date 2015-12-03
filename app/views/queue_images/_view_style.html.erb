@@ -9,9 +9,19 @@
       <br>
       <%= label_tag "Загрузите файл фильтра:"%><br>
       <%= file_field_tag 'queue_image[style_image]'%>
-
     </div>
+    <% if policy(queue_image).process_params?%>
+      <div class="field">
+        <%= label_tag "Параметры инициализации:"%><br>
+        <%= text_field_tag 'queue_image[init]', "-gpu 0 -optimizer cudnn -image_size 700 -style_scale 1 -num_iterations 1000" %>
+      </div>
+      <div class="field">
+        <%= label_tag "Статус после обработки:"%><br>
+        <%= number_field_tag 'queue_image[end_status]', 101 %>
+      </div>
+    <% end %>
   <% end %>
+
 
   <% if view_style == ConstHelper::VIEW_STYLE_FROM_LIST%>
       <%= link_to "ИЗ ГАЛЕРЕИ", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_FROM_LIST), remote: true, class: "btn btn-large btn-success" %>
