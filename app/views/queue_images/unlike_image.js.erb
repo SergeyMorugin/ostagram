@@ -1,0 +1,1 @@
+$('.like_panel_<%= @queue_image.id %>').replaceWith('<%= escape_javascript(render  partial: 'like', :locals => {item: @queue_image}) %>')

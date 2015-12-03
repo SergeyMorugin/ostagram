@@ -23,6 +23,7 @@ class BotJob
     return if par.blank?
     @admin_email = par["admin_email"]
     @sleep_time = par["sleep_time"]
+    @user_priority = par["user_priority"]
     @end_status = par["end_status"]
     @debug = par["debug"]
     @admin = Client.find_by_email(@admin_email)
@@ -81,7 +82,11 @@ class BotJob
 
   def check_idle
     #q = QueueImage.where("status = #{STATUS_NOT_PROCESSED} or status = #{STATUS_IN_PROCESS}")
-    q = QueueImage.where("client_id = #{@admin.id} and status = #{STATUS_NOT_PROCESSED}")
+    if @user_priority
+      q = QueueImage.where("status = #{STATUS_NOT_PROCESSED} or status = #{STATUS_IN_PROCESS}")
+    else
+      q = QueueImage.where("client_id = #{@admin.id} and status = #{STATUS_NOT_PROCESSED}")
+    end
     q.count == 0
   end
 

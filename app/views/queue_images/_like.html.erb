@@ -1,0 +1,4 @@
+<div class="like_panel_<%= item.id %>">
+  <%= link_to(image_tag("/like.png", alt:"like", class: "imagesStyle"), "/queue_images/#{item.id}/like", method: :put, remote: true)  if policy(item).like_image? %>
+  <%= link_to(image_tag("/unlike.png", alt:"like", class: "imagesStyle"), "/queue_images/#{item.id}/unlike", method: :put, remote: true)  if policy(item).unlike_image? %>
+</div>

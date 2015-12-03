@@ -34,7 +34,7 @@ class QueueImagePolicy < ApplicationPolicy
   # PATCH/PUT /queue_images/1
   # PATCH/PUT /queue_images/1.json
   def update?
-    user.admin?
+    !user.nil? && user.admin?
   end
 
   # DELETE /queue_images/1
@@ -49,6 +49,18 @@ class QueueImagePolicy < ApplicationPolicy
 
   def hidden?
     (user.admin? && record.status != ConstHelper::STATUS_HIDDEN) || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_PROCESSED )
+  end
+
+  def like_image?
+    !user.nil? && Like.where("client_id = #{user.id} and queue_id = #{record.id}").count == 0
+  end
+
+  def unlike_image?
+    !user.nil? && Like.where("client_id = #{user.id} and queue_id = #{record.id}").count == 1
+  end
+
+  def process_params?
+    !user.nil? && user.admin?
   end
 
 end
