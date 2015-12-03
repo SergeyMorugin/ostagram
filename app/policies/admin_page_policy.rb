@@ -36,4 +36,7 @@ class AdminPagePolicy < ApplicationPolicy
     !user.nil? && user.admin?
   end
 
+  def update_content_status?
+    !user.nil? && user.admin?
+  end
 end

@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-lg-2 col-lg-offset-1"><%= image_tag(content.image.thumb200.url, alt:content.image, class: "imagesStyle") %></div>
+  <div class="col-lg-1"><td><%= content.status %></div>
+  <div class="col-lg-2">
+    <p><%= link_to 'Show', content %></p>
+    <p><%= link_to 'Edit', edit_content_path(content) %></p>
+    <p><%= link_to 'Destroy', content, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+  </div>
+</div>

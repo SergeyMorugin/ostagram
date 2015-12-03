@@ -22,9 +22,9 @@ class StylesController < ApplicationController
   def index
     st = params[:status]
     if !st.nil? && st.to_i
-      @styles = Style.where(status: st.to_i).order('created_at DESC')
+      @styles = Style.where(status: st.to_i).order('created_at DESC').paginate(:page => params[:page], :per_page => 10)
     else
-      @styles = Style.all.order('created_at DESC')
+      @styles = Style.all.order('created_at DESC').paginate(:page => params[:page], :per_page => 10)
     end
   end
 

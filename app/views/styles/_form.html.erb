@@ -10,6 +10,11 @@
       </ul>
     </div>
   <% end %>
+    <div class="content">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><%= image_tag(@style.image, alt:@style.image, class: "imagesStyle") if !@style.image.blank? %></div>
+      </div>
+    </div>
 
   <div class="field">
     <%= f.label :image %><br>
@@ -21,7 +26,7 @@
   </div>
   <div class="field">
     <%= f.label :status %><br>
-    <%= f.number_field :status, value: 101 %>
+    <%= f.number_field :status, value: 201 %>
   </div>
   <div class="field">
     <%= f.label :use_counter %><br>

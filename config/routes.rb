@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-
-
   resources :styles
   match '/styles/:id/mark', to: 'styles#mark', via: 'put'
 
@@ -14,6 +12,7 @@ Rails.application.routes.draw do
   get 'admin_pages/update_queue_status'
   match '/admin_pages/update_queue_status', to: 'admin_pages#update_queue_status', via: 'put'
   match '/admin_pages/update_style_status', to: 'admin_pages#update_style_status', via: 'put'
+  match '/admin_pages/update_content_status', to: 'admin_pages#update_content_status', via: 'put'
 
   devise_for :clients
   resources :queue_images
@@ -29,7 +28,7 @@ Rails.application.routes.draw do
   #match '/admin', to: 'admin_pages#error', via: 'get'
 
 
-  root "static_pages#home"
+  root "static_pages#error"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -20,10 +20,9 @@
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
-          <% if item.status > 4 %>
+          <% if !res_img.nil? %>
               <div class="visible-lg" >
                 <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
-
               </div>
               <div class="hidden-lg" >
                 <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle")  if res_img %>
@@ -43,7 +42,7 @@
               <%= link_to "УДАЛИТЬ", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
             <% end %>
             <% if policy(item).hidden? %>
-              <%= link_to "СКРЫТЬ", "/queue_images/#{item.id}/hidden", method: :put %>
+              <%= link_to "СКРЫТЬ", "/queue_images/#{item.id}/hidden", method: :put, data: { confirm: "Пожалуйста используйте это функцию в крайнем случае! Например если вы в розыске:) Делитесь свои хорошими и не очень результатами с миром. Вы все еще уверены что надо скрыть?" } %>
             <% end %>
             <% if policy(item).visible? %>
               <%= link_to "ПОКАЗАТЬ", "/queue_images/#{item.id}/visible", method: :put %>

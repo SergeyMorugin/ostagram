@@ -1,8 +1,10 @@
+
 <div class="navbar navbar-fixed-top navbar-inverse  visible-lg" role="navigation">
   <div class="container headerStyle-lg">
       <div id="logo-lg">
         <%= link_to(image_tag('/logo.png', class: "imagesStyle"), root_path )%>
       </div>
+
       <ul class="nav nav-pills pull-right">
         <% if client_signed_in? && current_client.admin? %>
             <li><%= link_to "Admin", admin_pages_main_path %></li>
@@ -40,6 +42,7 @@
         <%= link_to(image_tag('/logo.png', class: "imagesStyle"), root_path) %>
       </div>
     </div>
+
     <div class="navbar-collapse collapse" aria-expanded="false">
       <ul class="nav navbar-nav">
         <% if client_signed_in? && current_client.admin? %>

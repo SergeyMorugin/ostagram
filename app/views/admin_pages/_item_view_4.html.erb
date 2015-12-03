@@ -41,6 +41,12 @@
 </div>
 
 <div class="row">
+  <div class=" col-lg-offset-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <%= item.init_str if !item.init_str.blank? %>
+  </div>
+</div>
+
+<div class="row">
       <div class=" col-lg-offset-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <%= render  partial: 'statuses', :locals => {item: item}  %>
       </div>

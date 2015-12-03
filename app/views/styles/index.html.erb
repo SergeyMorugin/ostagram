@@ -4,23 +4,12 @@
 <%= link_to 'Gallery styles', url_for(controller: 'styles', action: 'index', status: ConstHelper::GALLERY_STYLE_IMAGE)%>
 <br>
 <br>
-  <div class="content">
-    <% @styles.each do |style| %>
-      <div class="row">
-        <div class="col-lg-2 col-lg-offset-1"><%= image_tag(style.image, alt:style.image, class: "imagesStyle") %></div>
-        <div class="col-lg-3"><%= style.init %></div>
-        <div class="col-lg-1"><td><%= style.status %></div>
-        <div class="col-lg-1"><%= style.use_counter %></div>
-        <div class="col-lg-2">
-        <p><%= link_to 'Show', style %></p>
-        <p><%= link_to 'Edit', edit_style_path(style) %></p>
-        <p><%= link_to 'Destroy', style, method: :delete, data: { confirm: 'Are you sure?' } %></p>
-        </div>
-      </div>
-    <% end %>
+<div class="content">
+  <div id="posts">
+     <%= render partial: 'style', collection:  @styles %>
   </div>
+</div>
 
 
-
-
+<%= will_paginate @styles %>
 
