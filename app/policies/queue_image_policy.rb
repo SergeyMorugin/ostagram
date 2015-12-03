@@ -51,4 +51,12 @@ class QueueImagePolicy < ApplicationPolicy
     (user.admin? && record.status != ConstHelper::STATUS_HIDDEN) || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_PROCESSED )
   end
 
+  def like_image?
+    !user.nil? && Like.where("client_id = #{user.id} and queue_id = #{record.id}").count == 0
+  end
+
+  def unlike_image?
+    !user.nil? && Like.where("client_id = #{user.id} and queue_id = #{record.id}").count == 1
+  end
+
 end

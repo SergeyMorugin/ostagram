@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   resources :queue_images
   match '/queue_images/:id/visible', to: 'queue_images#visible', via: 'put'
   match '/queue_images/:id/hidden', to: 'queue_images#hidden', via: 'put'
+  match '/queue_images/:id/like', to: 'queue_images#like_image', via: 'put'
+  match '/queue_images/:id/unlike', to: 'queue_images#unlike_image', via: 'put'
 
   get 'static_pages/lenta', as: 'user_root'
 

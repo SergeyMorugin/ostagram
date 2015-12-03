@@ -3,9 +3,6 @@
 <%item = item_view_1 %>
 <%res_img = item.result_image %>
 
-
-
-
   <div class="row visible-lg styleRow-lg">
     <div class="col-lg-6 col-lg-offset-3 ">
 
@@ -28,10 +25,8 @@
         <% end %>
       </div>
 
-      <div class="col-lg-1 styleHeadCol2-lg">
-        <span class="user">
-            <%= item.time_ago %>
-        </span>
+      <div class="col-lg-1 userAvatarStyle-lg">
+        <%= render(partial: 'queue_images/like', :locals => {item: item}) %>
       </div>
     </div>
 
@@ -71,13 +66,8 @@
       </span>
     </div>
 
-    <div class="col-md-2 col-sm-2 col-xs-2 styleHeadCol2-xs">
-
-      <span class="textHeadStyle-xs">
-       <%= item.time_ago%>
-      </span>
-
-
+    <div class="col-md-2 col-sm-2 col-xs-2 styleHeadCol1-xs">
+       <%= render(partial: 'queue_images/like', :locals => {item: item}) %>
     </div>
   </div>
 

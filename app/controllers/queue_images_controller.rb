@@ -1,7 +1,7 @@
 class QueueImagesController < ApplicationController
   include WorkerHelper
   include ConstHelper
-  before_action :set_queue_image, only: [:show, :edit, :update, :destroy, :visible, :hidden]
+  before_action :set_queue_image, only: [:show, :edit, :update, :destroy, :visible, :hidden, :like_image, :unlike_image]
   after_action :verify_authorized
 
   def pundit_user
@@ -104,6 +104,22 @@ class QueueImagesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to queue_images_url, notice: 'Изображения скрыты.' }
       format.json { head :no_content }
+    end
+  end
+
+  def like_image
+    Like.create(queue_id: @queue_image.id, client_id: current_client.id)
+    respond_to do |format|
+      format.html { redirect_to queue_images_url}
+      format.js
+    end
+  end
+
+  def unlike_image
+    Like.where("client_id = #{current_client.id} and queue_id = #{@queue_image.id}").destroy_all
+    respond_to do |format|
+      format.html { redirect_to queue_images_url}
+      format.js
     end
   end
 

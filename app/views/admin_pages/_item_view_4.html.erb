@@ -21,7 +21,6 @@
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
-
           <div class="visible-lg" >
             <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
           </div>
@@ -32,7 +31,8 @@
 
         <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
           <span class="textAboutStyle"><%= item.client.email if !item.client.nil? %></span>
-          <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%><br></span>
+          <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></span><br>
+          <span class="textAboutStyle"><%= "like: #{Like.where(queue_id: item.id).count}" %></span>
           <div id="qi_status_<%= item.id %>">
             <span class="textAboutStyle"><%= get_queue_item_status(item) %></span>
           </div>
