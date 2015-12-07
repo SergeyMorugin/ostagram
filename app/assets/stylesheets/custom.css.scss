@@ -532,7 +532,6 @@ aside {
     padding-top: 30%;
     font-size: 5vw;
   }
-
 }
 
 
@@ -658,3 +657,10 @@ aside {
   height: 100%;
 }
 
+.roundImageStyle{
+  -moz-border-radius: 15px; /* закругление для старых Mozilla Firefox */
+  -webkit-border-radius: 15px; /* закругл. для старых Chrome и Safari */
+  -khtml-border-radius:15px; /* закругл. для браузера Konquerer системы Linux */
+  border-radius: 15px; /* закругление углов для всех, кто понимает */
+  padding: 2px;
+}

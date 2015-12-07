@@ -6,26 +6,26 @@
 <div class="row styleRow2-lg">
 
         <div class="visible-lg  col-lg-2 col-lg-offset-2 userAvatarStyle-lg" >
-          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle") %>
+          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle roundImageStyle") %>
         </div>
         <div class="visible-lg  col-lg-2 userAvatarStyle-lg">
-          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
+          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle roundImageStyle"), item.style.image.url, class: "imagesStyle", data:{ lightbox: "content"}) %>
         </div>
 
         <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 col-md-offset-2 userAvatarStyle-lg" >
-          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle")%>
+          <%= image_tag(item.content.image.thumb200.url, class: "imagesStyle roundImageStyle")%>
         </div>
         <div class="hidden-lg col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
-          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle"), item.style.image.url, class: "imagesStyle") %>
+          <%= link_to(image_tag(item.style.image.thumb200.url, alt:item.style.image, class: "imagesStyle roundImageStyle"), item.style.image.url, class: "imagesStyle") %>
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 userAvatarStyle-lg">
           <% if !res_img.nil? %>
               <div class="visible-lg" >
-                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
+                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle roundImageStyle"), res_img.imageurl.url, class: "imagesStyle", data:{ lightbox: "content"})  if res_img %>
               </div>
               <div class="hidden-lg" >
-                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle"), res_img.imageurl.url, class: "imagesStyle")  if res_img %>
+                <%= link_to(image_tag(res_img.imageurl.thumb400.url, alt:res_img.imageurl, class: "imagesStyle roundImageStyle"), res_img.imageurl.url, class: "imagesStyle")  if res_img %>
               </div>
           <% else %>
             <%= image_tag("/loading_2.png", class: "imagesStyle") %>
@@ -40,7 +40,7 @@
             <br>
             <% if policy(item).destroy? %>
               <%= link_to "УДАЛИТЬ", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
-            <% end %>
+            <% end %><br>
             <% if policy(item).hidden? %>
               <%= link_to "СКРЫТЬ", "/queue_images/#{item.id}/hidden", method: :put, data: { confirm: "Пожалуйста используйте это функцию в крайнем случае! Например если вы в розыске:) Делитесь свои хорошими и не очень результатами с миром. Вы все еще уверены что надо скрыть?" } %>
             <% end %>

@@ -40,7 +40,7 @@ class QueueImagePolicy < ApplicationPolicy
   # DELETE /queue_images/1
   # DELETE /queue_images/1.json
   def destroy?
-    user.admin? || (user.user? && user.id == record.client_id && record.status == ConstHelper::STATUS_NOT_PROCESSED)#&& record.status != ConstHelper::STATUS_IN_PROCESS
+    user.admin? || (user.user? && user.id == record.client_id && (record.status == ConstHelper::STATUS_NOT_PROCESSED || record.status == ConstHelper::STATUS_PROCESSED))#&& record.status != ConstHelper::STATUS_IN_PROCESS
   end
 
   def visible?

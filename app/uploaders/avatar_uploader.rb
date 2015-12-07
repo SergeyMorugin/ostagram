@@ -66,7 +66,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #process :convert => format
   end
 
-  version :avatar50, :if => :is_user_avatar? do
+  version :avatar50, :if => false do
     #process convert: 'png'
     process :resize_to_fit => [80, 80]
     #process convert: 'png'
@@ -74,7 +74,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                         :width => 100, :height => 100, :crop => :thumb, :gravity => :face
 
-    #process :round => [2]
+    process :round => [2]
     #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
     #process :convert => format
   end
