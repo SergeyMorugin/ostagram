@@ -108,7 +108,10 @@ class QueueImagesController < ApplicationController
   end
 
   def like_image
-    Like.create(queue_id: @queue_image.id, client_id: current_client.id)
+    Like.transaction do
+      Like.create(queue_id: @queue_image.id, client_id: current_client.id)
+      @queue_image.update(likes_count: @queue_image.likes_count+1)
+    end
     respond_to do |format|
       format.html { redirect_to queue_images_url}
       format.js
@@ -116,7 +119,10 @@ class QueueImagesController < ApplicationController
   end
 
   def unlike_image
-    Like.where("client_id = #{current_client.id} and queue_id = #{@queue_image.id}").destroy_all
+    Like.transaction do
+      Like.where("client_id = #{current_client.id} and queue_id = #{@queue_image.id}").destroy_all
+      @queue_image.update(likes_count: @queue_image.likes_count-1)
+    end
     respond_to do |format|
       format.html { redirect_to queue_images_url}
       format.js

@@ -51,7 +51,6 @@ class ImageJob
     init = item.style.init
     return true if init.blank?
     @init_params = init
-    item.update(init_str: init)
     log "init: #{init}"
     arr = init.split(' -')
     arr.each do |a|
@@ -164,8 +163,7 @@ class ImageJob
       log err
       return err
     end
-    #
-    item.update({:status => STATUS_IN_PROCESS, :stime => process_time})
+    item.update({:status => STATUS_IN_PROCESS, :stime => process_time, :init_str => @init_params})
     # Check connection to workserver
     log "item.update"
     return "get_server_name: false" if get_server_name.nil?

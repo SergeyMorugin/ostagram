@@ -1,5 +1,5 @@
 <div class="like_panel_<%= item.id %>">
-  <div class="likeTextStyle textAboutStyle"><%= Like.where(queue_id: item.id).count %></div>
+  <div class="likeTextStyle textAboutStyle"><%= item.likes_count %></div>
   <div class="likeStyle">
   <% if client_signed_in? %>
     <% if policy(item).like_image? %>

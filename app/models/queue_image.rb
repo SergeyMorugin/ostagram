@@ -5,6 +5,7 @@ class QueueImage < ActiveRecord::Base
   belongs_to :style
   #mount_uploader :content_image, AvatarUploader
   #mount_uploader :style_image, AvatarUploader
+  scope :last_n_days, lambda {|d|  where('ftime > ?' , Time.now - d.days)}
 
 
   def time_ago
