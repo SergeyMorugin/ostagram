@@ -23,6 +23,11 @@ class AdminPagesController < ApplicationController
     else
       @items= QueueImage.all.order('updated_at DESC').paginate(:page => params[:page], :per_page => 10)
     end
+    @pimage_show = false
+    pis = params[:pimage]
+    if !pis.nil? && pis == 'true'
+      @pimage_show = true
+    end
   end
 
   def users

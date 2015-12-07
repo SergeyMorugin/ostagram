@@ -7,7 +7,8 @@
     <div class="col-lg-6 col-lg-offset-3 ">
 
     <div class="row styleHeadRow-lg">
-      <div class="col-lg-1 userAvatarStyle-lg">
+
+      <div class="col-lg-1 clearLRpadding">
         <%= image_tag(item.client.avatar.avatar100.url, class: "userAvatarImage-lg") if !item.client.nil? %>
       </div>
 
@@ -25,7 +26,7 @@
         <% end %>
       </div>
 
-      <div class="col-lg-1 userAvatarStyle-lg">
+      <div class="col-lg-1" style="height: 100%">
         <%= render(partial: 'queue_images/like', :locals => {item: item}) %>
       </div>
     </div>
@@ -66,7 +67,7 @@
       </span>
     </div>
 
-    <div class="col-md-2 col-sm-2 col-xs-2 styleHeadCol1-xs">
+    <div class="col-md-2 col-sm-2 col-xs-2 clearLRpadding" style="height: 100%">
        <%= render(partial: 'queue_images/like', :locals => {item: item}) %>
     </div>
   </div>

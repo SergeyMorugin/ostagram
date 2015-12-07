@@ -1,11 +1,13 @@
 <br>
 <%= link_to 'Main', admin_pages_main_path %> |
 <%= link_to 'All', url_for(controller: 'admin_pages', action: 'images')%> |
+<%= link_to 'All with result', url_for(controller: 'admin_pages', action: 'images', pimage: true)%> |
 <%= link_to 'Deleted', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_DELETED)%> |
 <%= link_to 'Error', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_ERROR)%> |
 <%= link_to 'Hidden', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_HIDDEN)%> |
-<%= link_to 'Not processed', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_NOT_PROCESSED)%>|
-<%= link_to 'Processed', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_PROCESSED)%>
+<%= link_to 'Not processed', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_NOT_PROCESSED)%> |
+<%= link_to 'Processed', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_PROCESSED)%> |
+<%= link_to 'Processed by bot', url_for(controller: 'admin_pages', action: 'images', status: ConstHelper::STATUS_PROCESSED_BY_BOT)%>
 <br>
 
 <div id="posts">

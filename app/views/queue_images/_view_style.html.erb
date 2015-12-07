@@ -13,7 +13,7 @@
     <% if policy(queue_image).process_params?%>
       <div class="field">
         <%= label_tag "Параметры инициализации:"%><br>
-        <%= text_field_tag 'queue_image[init]', "-gpu 0 -optimizer cudnn -image_size 700 -style_scale 1 -num_iterations 1000" %>
+        <%= text_field_tag 'queue_image[init]', "-gpu 0 -backend cudnn -image_size 700 -style_scale 1 -num_iterations 1000" %>
       </div>
       <div class="field">
         <%= label_tag "Статус после обработки:"%><br>

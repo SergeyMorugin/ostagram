@@ -411,14 +411,11 @@ aside {
   font-weight: bold;
 }
 
-.clearLRpadding{
-  padding-right: 0!important;
-  padding-left: 0!important;
-}
+
 
 
 ///////////////////////////////////////////////////////////////
-.styleRow-xs{
+.styleRow-xs {
   //margin-top: 20px;
   //padding-top: 15px;
   //height: 50px;
@@ -426,6 +423,7 @@ aside {
   //border: 1px solid lightgray;
   //border-bottom: 1px solid lightgray;
   margin-top: 5%;
+}
 
   .styleHeadRow-xs{
     //margin-top: 20px;
@@ -468,15 +466,15 @@ aside {
   .contentImageStyle-xs{
     width: 100%;
     //height: 100%;
-  }
+ }
 
-  .textHeadStyle-xs{
+ .textHeadStyle-xs{
     font-size: 5vw;
 
-  }
+ }
 
 
-}
+
 .userAvatarImage-xl{
   height: 100%;
   width: 100%;
@@ -503,6 +501,39 @@ aside {
 
 }
 
+.clearLRpadding{
+  padding-right: 0!important;
+  padding-left: 0!important;
+}
+
+.heightWidth100{
+  height: 100%;
+  width: 100%;
+}
+
+
+.likeStyle{
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.likeTextStyle{
+  padding-top: 13px;
+  //margin-top: 50%;
+  margin-left: 0;
+  text-align: center;
+  width: 100%;
+
+}
+
+@media (max-width: 1199px) {
+  .likeTextStyle{
+    padding-top: 30%;
+    font-size: 5vw;
+  }
+
+}
 
 
 /* microposts */
@@ -626,3 +657,4 @@ aside {
   width: 100%;
   height: 100%;
 }
+

@@ -34,7 +34,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # end
   # process convert: 'png'
   # Create different versions of your uploaded files:
-  process :resize_to_fit => [1600, 1600], if: :is_content_style_image?
+  #process :resize_to_fit => [1600, 1600], if: :is_content_style_image?
 
 
   version :to_proc, :if => :is_content_style_image? do
@@ -49,7 +49,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     process :resize_to_fill => [180, 180]
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
-    process :round => [10]
+    #process :round => [10]
 
   end
 
@@ -61,7 +61,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                          :width => 100, :height => 100, :crop => :thumb, :gravity => :face
 
-    process :round => [20]
+    #process :round => [20]
     #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
     #process :convert => format
   end
@@ -74,7 +74,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     #cloudinary_transformation :effect => "brightness:30", :radius => 20,
     #                         :width => 100, :height => 100, :crop => :thumb, :gravity => :face
 
-    process :round => [2]
+    #process :round => [2]
     #format = "\( +clone -crop 16x16+0+0  -fill white -colorize 100% -draw 'fill black circle 15,15 15,0' -background Red  -alpha shape \( +clone -flip \) \( +clone -flop \) \( +clone -flip \)  \)"
     #process :convert => format
   end
