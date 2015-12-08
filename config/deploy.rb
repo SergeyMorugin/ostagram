@@ -7,7 +7,7 @@ set :username, 'deploy'
 
 
 
-set :repo_url, 'git@github.com:SergeyMorugin/ostagram.git'
+set :repo_url, 'git@bitbucket.org:SergeyMorugin/ostagram.git'
 set :reils_env, 'production'
 set :branch, 'develop'
 #set :shared_path, ''
@@ -162,11 +162,21 @@ namespace :deploy do
     end
   end
 
+  task :precompile do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute "cd #{release_path} && (RAILS_ENV=#{fetch(:stage)}  ~/.rvm/bin/rvm default do rake assets:precompile)"
+        end
+      end
+    end
+  end
 
 
   #before 'deploy:setup', 'git:push'
   after :finishing, 'deploy:migrate'
   after :finishing, 'linking:uploads'
+  after :finishing, 'deploy:precompile'
  # after :finishing, 'application:stop'
   #after :finishing, 'application:stop'
   #after :finishing, 'application:start'
