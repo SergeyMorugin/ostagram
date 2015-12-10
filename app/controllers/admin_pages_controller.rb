@@ -71,6 +71,15 @@ class AdminPagesController < ApplicationController
     end
   end
 
+  def delete_queue
+    @queue_image = QueueImage.find(params[:id])
+    @queue_image.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_pages_images_path }
+      format.js
+    end
+  end
+
   def update_content_status
     @queue_image = QueueImage.find(params[:id])
     @content = @queue_image.content

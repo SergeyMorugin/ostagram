@@ -1,4 +1,5 @@
 <div id="status_panel_<%= item.id %>">
+  <%= link_to "DESTROY", url_for(controller: 'admin_pages', action: 'delete_queue', id: item.id), method: :put%> |
   <%= link_to "УДАЛЕННЫЙ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_DELETED), method: :put, remote: true %> |
   <%= link_to "ОШИБКА", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_ERROR), method: :put, remote: true %> |
   <%= link_to "СКРЫТЫЙ", url_for(controller: 'admin_pages', action: 'update_queue_status', id: item.id, status: ConstHelper::STATUS_HIDDEN), method: :put, remote: true %> |

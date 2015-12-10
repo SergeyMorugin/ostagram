@@ -39,4 +39,8 @@ class AdminPagePolicy < ApplicationPolicy
   def update_content_status?
     !user.nil? && user.admin?
   end
+
+  def delete_queue?
+    !user.nil? && user.admin?
+  end
 end

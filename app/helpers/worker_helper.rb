@@ -30,12 +30,9 @@ module WorkerHelper
       end
       #@result = Resque.size(:server1).to_s
     else
-      img_job = ImageJob.new(:server1)
-      #img_job.set_config()
-      img_job.execute
-      #ResqueJob.perform(worker_name)
-      #pri = ImageJob.new(:s2)
-      #@result = pri.execute
+      bot_job = BotJob.new()
+      bot_job.execute
+
     end
   end
 

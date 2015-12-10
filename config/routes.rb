@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   match '/admin_pages/update_queue_status', to: 'admin_pages#update_queue_status', via: 'put'
   match '/admin_pages/update_style_status', to: 'admin_pages#update_style_status', via: 'put'
   match '/admin_pages/update_content_status', to: 'admin_pages#update_content_status', via: 'put'
+  match '/admin_pages/delete_queue', to: 'admin_pages#delete_queue', via: 'put'
 
   devise_for :clients
   resources :queue_images

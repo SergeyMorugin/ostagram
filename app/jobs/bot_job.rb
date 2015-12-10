@@ -28,6 +28,11 @@ class BotJob
     @debug = par["debug"]
     @admin = Client.find_by_email(@admin_email)
     log "admin_id: #{@admin.id}"
+    @with_init_params = par["with_init_params"]
+    @init_params = []
+    if @with_init_params
+      par["init_params"].each { |k,v|  @init_params.push v }
+    end
   end
 
 
@@ -35,9 +40,9 @@ class BotJob
     log('-----------------------Start-------------------')
     loop do
       log('------Loop start-------')
+      set_config(:bot1)
       sleep @sleep_time
       log("sleep #{@sleep_time}")
-      set_config(:bot1)
       if !check_idle
         log("Queue busy")
         next
@@ -55,27 +60,47 @@ class BotJob
       end
       log("Content: #{ci.attributes}")
       log("Style: #{si.attributes}")
-      qi = QueueImage.where("content_id = #{ci.id} and style_id = #{si.id} and status = #{STATUS_PROCESSED}")
+      qi = QueueImage.where("content_id = #{ci.id} and style_id = #{si.id} and status > #{STATUS_IN_PROCESS}")
       if qi.count > 0
         log("Queue exists")
         next
       end
 
-      qi = QueueImage.new
-      qi.status = STATUS_NOT_PROCESSED
-      qi.end_status = @end_status
-      qi.content_id = ci.id
-      qi.style_id = si.id
 
-      qi.client_id = @admin.id
-      qi.save
-
-      start_workers
-      log("Queue: #{qi.attributes}")
+      if @with_init_params
+        i = 0
+        loop do
+          break if i >= @init_params.size
+          sleep @sleep_time
+          if !check_idle
+            log("Queue busy 2")
+            next
+          end
+          create_queue(ci,si,@init_params[i])
+          i += 1
+          start_workers
+        end
+      else
+        create_queue(ci,si,nil)
+        start_workers
+      end
       log('----------Loop end----------')
       #
       #break
     end
+  end
+
+  def create_queue(content, style, init)
+    qi = QueueImage.new
+    qi.status = STATUS_NOT_PROCESSED
+    qi.end_status = @end_status
+    qi.content_id = content.id
+    qi.style_id = style.id
+    qi.init_str = init
+    qi.client_id = @admin.id
+    qi.save
+
+    log("Queue: #{qi.attributes}")
   end
 
   private

@@ -46,10 +46,16 @@ class ImageJob
   end
 
   def set_init_str(item)
-    uc = item.style.use_counter
-    item.style.update(use_counter: uc+1)
     init = item.style.init
+    if !item.init_str.blank?
+      init = item.init_str
+    end
     return true if init.blank?
+    init = merge_init_params(@init_params, init)
+    if init.nil?
+      log "Merge init error: init_params[#{@init_params}] init[#{init}]"
+      return false
+    end
     @init_params = init
     log "init: #{init}"
     arr = init.split(' -')
@@ -65,6 +71,33 @@ class ImageJob
     false
   end
 
+  def merge_init_params(init, par)
+    init_hash = str_to_hash(' ' + init)
+    par_hash = str_to_hash(' ' + par)
+    return nil if init_hash.nil? || par_hash.nil?
+    par_hash.each do |k,v|
+      init_hash[k] = v
+    end
+    res = ''
+    init_hash.each do |k,v|
+      res << " -#{k} #{v}"
+    end
+    res
+  end
+
+  def str_to_hash(str)
+    res = {}
+    arr = str.split(' -')
+    arr.each do |a|
+      ar = a.split(' ')
+      if ar.count == 2
+        res[ar[0]] = ar[1]
+      elsif ar.count == 1
+        res[ar[0]] = ''
+      end
+    end
+    res
+  end
 
   def execute
     log "-----------------------Start Demon: #{@worker_name}---------------------"
@@ -163,7 +196,9 @@ class ImageJob
       log err
       return err
     end
+    #
     item.update({:status => STATUS_IN_PROCESS, :stime => process_time, :init_str => @init_params})
+    item.style.update(use_counter: item.style.use_counter+1)
     # Check connection to workserver
     log "item.update"
     return "get_server_name: false" if get_server_name.nil?
