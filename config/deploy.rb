@@ -7,7 +7,7 @@ set :username, 'deploy'
 
 
 
-set :repo_url, 'git@bitbucket.org:SergeyMorugin/ostagram.git'
+set :repo_url, 'git@github.com:SergeyMorugin/ostagram.git'
 set :reils_env, 'production'
 set :branch, 'develop'
 #set :shared_path, ''
