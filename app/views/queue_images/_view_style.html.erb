@@ -1,6 +1,6 @@
 
 <div id="view_style">
-  <p>Выберите из галереи или загрузите из файла изображение-фильтр, стиль которого будет использоваться</p>
+  <p>Выберите из галереи или загрузите из файла изображение-фильтр, стиль которого будет использоваться. Обработка одного изображения займет от 2 до 4 мин.</p>
   <% if view_style == ConstHelper::VIEW_STYLE_LOAD_FILE %>
     <%= link_to "ИЗ ГАЛЕРЕИ", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_FROM_LIST), remote: true, class: "btn btn-large btn-default" %>
     <%= link_to "ИЗ ФАЙЛА", url_for(controller: 'queue_images', action: 'new', view_style: ConstHelper::VIEW_STYLE_LOAD_FILE), remote: true, class: "btn btn-large btn-success"  %>

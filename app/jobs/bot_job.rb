@@ -19,7 +19,7 @@ class BotJob
     file = Rails.root.join('config/config.secret')
     par = load_settings(file)
     par = par[bot_name.to_s]
-    log "config: #{par.to_s}"
+
     return if par.blank?
     @admin_email = par["admin_email"]
     @sleep_time = par["sleep_time"]
@@ -33,6 +33,8 @@ class BotJob
     if @with_init_params
       par["init_params"].each { |k,v|  @init_params.push v }
     end
+    par["init_params"] = ''
+    log "config: #{par.to_s}"
   end
 
 
@@ -60,10 +62,12 @@ class BotJob
       end
       log("Content: #{ci.attributes}")
       log("Style: #{si.attributes}")
-      qi = QueueImage.where("content_id = #{ci.id} and style_id = #{si.id} and status > #{STATUS_IN_PROCESS}")
-      if qi.count > 0
-        log("Queue exists")
-        next
+      if !@with_init_params
+        qi = QueueImage.where("content_id = #{ci.id} and style_id = #{si.id} and status > #{STATUS_IN_PROCESS}")
+        if qi.count > 0
+          log("Queue exists")
+          next
+        end
       end
 
 
@@ -80,6 +84,7 @@ class BotJob
           i += 1
           start_workers
         end
+        si.update(status: 103)
       else
         create_queue(ci,si,nil)
         start_workers

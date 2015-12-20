@@ -9,7 +9,12 @@ class ContentsController < ApplicationController
   # GET /contents
   # GET /contents.json
   def index
-    @contents = Content.all.order('created_at DESC').paginate(:page => params[:page], :per_page => 10)
+    st = params[:status]
+    if !st.nil? && st.to_i
+      @contents = Content.where(status: st.to_i).order('created_at DESC').paginate(:page => params[:page], :per_page => 10)
+    else
+      @contents = Content.all.order('created_at DESC').paginate(:page => params[:page], :per_page => 10)
+    end
   end
 
   # GET /contents/1

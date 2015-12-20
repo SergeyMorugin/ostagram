@@ -1,5 +1,7 @@
 <h4>Contents</h4>
-<%= link_to 'New content', new_content_path %>
+<%= link_to 'New content', new_content_path %> |
+<%= link_to 'All', url_for(controller: 'contents', action: 'index')%> |
+<%= link_to 'Bot content', url_for(controller: 'contents', action: 'index', status: ConstHelper::BOT_CONTENT_IMAGE)%> |
 <br>
   <div class="content">
     <div id="posts">
