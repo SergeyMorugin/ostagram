@@ -1,6 +1,7 @@
 class Client < ActiveRecord::Base
   include ConstHelper
   has_many :queue_images
+  has_many :likes
   mount_uploader :avatar, AvatarUploader
   # Include default devise modules. Others available are:
   # :, :lockable, :timeoutable and :omniauthable :confirmable,

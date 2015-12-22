@@ -12,7 +12,7 @@ class QueueImagePolicy < ApplicationPolicy
   # GET /queue_images/1
   # GET /queue_images/1.json
   def show?
-    false
+    !user.nil? && user.admin?
   end
 
   # GET /queue_images/new

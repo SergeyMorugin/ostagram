@@ -10,7 +10,9 @@
             <li><%= link_to "Admin", admin_pages_main_path %></li>
         <% end %>
         <% if client_signed_in? %>
+
           <li><%= link_to "Добавить изображения", new_queue_image_path, class: "btn btn-primary" %></li>
+
           <li><%= link_to "Моя коллекция",    queue_images_path %></li>
         <% end %>
         <li><%= link_to "Лента",    lenta_path %></li>

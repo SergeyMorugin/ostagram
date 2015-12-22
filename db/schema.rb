@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151207202330) do
+ActiveRecord::Schema.define(version: 20151222172729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,19 +70,20 @@ ActiveRecord::Schema.define(version: 20151207202330) do
   end
 
   create_table "queue_images", force: :cascade do |t|
-    t.integer  "client_id",                null: false
+    t.integer  "client_id",                 null: false
     t.string   "init_str",    default: ""
     t.integer  "status",      default: 0
     t.string   "result",      default: ""
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.time     "ptime"
     t.datetime "stime"
     t.datetime "ftime"
-    t.integer  "style_id",    default: 0,  null: false
-    t.integer  "content_id",  default: 0,  null: false
-    t.integer  "end_status",  default: 11, null: false
+    t.integer  "style_id",    default: 0,   null: false
+    t.integer  "content_id",  default: 0,   null: false
+    t.integer  "end_status",  default: 11,  null: false
     t.integer  "likes_count", default: 0
+    t.float    "progress",    default: 0.0
   end
 
   create_table "styles", force: :cascade do |t|

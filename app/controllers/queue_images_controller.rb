@@ -22,7 +22,7 @@ class QueueImagesController < ApplicationController
   # GET /queue_images/1
   # GET /queue_images/1.json
   def show
-
+    authorize @queue_image
   end
 
   # GET /queue_images/new

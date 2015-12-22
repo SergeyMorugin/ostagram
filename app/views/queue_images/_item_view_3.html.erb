@@ -33,11 +33,9 @@
         </div>
 
         <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
-          <span class="textAboutStyle"><p><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></p> </span>
-          <span class="textAboutStyle"><%= get_queue_item_status(item) %></span>
-          <br>
+          <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></span><br>
+          <span class="textAboutStyle"><%= get_queue_item_status(item) %></span><br>
           <span class="textAboutStyle">
-            <br>
             <% if policy(item).destroy? %>
               <%= link_to "УДАЛИТЬ", item, method: :delete, data: { confirm: "Вы точно хотите удалить?" } %>
             <% end %><br>
@@ -47,7 +45,13 @@
             <% if policy(item).visible? %>
               <%= link_to "ПОКАЗАТЬ", "/queue_images/#{item.id}/visible", method: :put %>
             <% end %>
+
           </span>
+          <% if item.status == ConstHelper::STATUS_IN_PROCESS %>
+            <div class="progressBar">
+              <span style="width: <%= item.progress.to_i%>%"></span>
+            </div>
+          <% end %>
         </div>
 
 </div>

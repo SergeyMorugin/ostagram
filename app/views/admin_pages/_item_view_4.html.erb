@@ -33,9 +33,11 @@
           <span class="textAboutStyle"><%= item.client.email if !item.client.nil? %></span>
           <span class="textAboutStyle"><%= (item.created_at+10800).strftime("%d.%m.%Y %H:%M:%S")%></span><br>
           <span class="textAboutStyle"><%= "like: #{Like.where(queue_id: item.id).count}" %></span>
+
           <div id="qi_status_<%= item.id %>">
             <span class="textAboutStyle"><%= get_queue_item_status(item) %></span>
           </div>
+          <%= link_to 'SHOW', queue_image_path(item) %><br>
         </div>
 
 </div>

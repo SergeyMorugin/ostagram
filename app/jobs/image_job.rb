@@ -8,7 +8,7 @@ class ImageJob
   @hostname = "localhost"
   @username = "root"
   @password = "123"
-  @remote_neural_path = "~/neural-style-master"
+  @remote_neural_path = "~/neural-style"
   @iteration_count = 10
   @local_tmp_path = '~/tmp/output'
   @worker_name = :server1
@@ -301,6 +301,7 @@ class ImageJob
             sleep 2
             download_n_save_result(iter,item)
             iter += 1
+            item.update(progress: iter/@iteration_count*100)
             next
           end
         end

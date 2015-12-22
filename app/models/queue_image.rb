@@ -3,6 +3,7 @@ class QueueImage < ActiveRecord::Base
   belongs_to :client
   belongs_to :content
   belongs_to :style
+  has_many :likes, foreign_key: "queue_id"
   #mount_uploader :content_image, AvatarUploader
   #mount_uploader :style_image, AvatarUploader
   scope :last_n_days, lambda {|d|  where('ftime > ?' , Time.now - d.days)}
