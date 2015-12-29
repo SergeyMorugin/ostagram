@@ -300,8 +300,8 @@ class ImageJob
           if !str.nil? && str.scan(s).size > 0
             sleep 2
             download_n_save_result(iter,item)
+            item.update(progress: iter.to_d/@iteration_count*100)
             iter += 1
-            item.update(progress: iter/@iteration_count*100)
             next
           end
         end
