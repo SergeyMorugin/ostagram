@@ -46,7 +46,7 @@ gem 'resque'
 
 gem 'lightbox2-rails'
 
-gem 'devise', '~> 3.5'
+gem 'devise', '~> 4.7'
 
 gem 'will_paginate'
 
