@@ -138,7 +138,7 @@ GEM
     public_suffix (4.0.7)
     pundit (1.0.1)
       activesupport (>= 3.0.0)
-    rack (1.6.4)
+    rack (1.6.12)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
